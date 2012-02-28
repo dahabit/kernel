@@ -1,3 +1,11 @@
 {
-	"name": "fuel/kernel"
+	"name": "fuel/kernel",
+	"type": "framework",
+	"description": "Foundation of the FuelPHP framework.",
+	"keywords": ["framework","mvc","hmvc"],
+	"homepage": "http://fuelphp.com/",
+	"license": "MIT",
+	"require": {
+		"php": ">=5.3.0"
+	}
 }
