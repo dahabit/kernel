@@ -17,6 +17,16 @@ class Composer implements Loadable
 	}
 
 	/**
+	 * Returns the base path for this package
+	 *
+	 * @return  string
+	 */
+	public function path()
+	{
+		return _env()->path('fuel');
+	}
+
+	/**
 	 * Attempts to load the class
 	 *
 	 * @param   string  $class

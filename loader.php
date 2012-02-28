@@ -9,7 +9,8 @@ _env('dic')->set_classes(array(
 	'Config'           => 'Fuel\\Kernel\\Data\\Config',
 	'Error'            => 'Fuel\\Kernel\\Error',
 	'Language'         => 'Fuel\\Kernel\\Data\\Language',
-	'Package'          => 'Fuel\\Kernel\\Loader\\Package',
+	'Loader:Composer'  => 'Fuel\\Kernel\\Loader\\Composer',
+	'Loader:Package'   => 'Fuel\\Kernel\\Loader\\Package',
 	'Parser'           => 'Fuel\\Kernel\\Parser\\Php',
 	'Request'          => 'Fuel\\Kernel\\Request\\Fuel',
 	'Response'         => 'Fuel\\Kernel\\Response\\Base',
@@ -21,7 +22,7 @@ _env('dic')->set_classes(array(
 ));
 
 // Forge & return the Kernel Package object
-return _forge('Package')
+return _forge('Loader:Package')
 	->set_path(__DIR__)
 	->set_namespace('Fuel\\Kernel')
 	->add_class_aliases(array(

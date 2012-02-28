@@ -45,6 +45,16 @@ class Package implements Loadable
 	protected $routable = false;
 
 	/**
+	 * Returns the base path for this package
+	 *
+	 * @return  string
+	 */
+	public function path()
+	{
+		return $this->path;
+	}
+
+	/**
 	 * Attempt to load a class from the package
 	 *
 	 * @param   string  $class

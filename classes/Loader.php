@@ -31,33 +31,49 @@ class Loader
 	/**
 	 * Adds a package
 	 *
-	 * @param   string  $name
-	 * @param   int     $type
-	 * @return  Loader\Loadable  for method chaining
+	 * @param   string|Loader\Loadable  $name
+	 * @param   int                     $type
+	 * @return  Loader\Loadable         for method chaining
 	 * @throws  \RuntimeException
 	 */
 	public function load_package($name, $type = Loader::TYPE_PACKAGE)
 	{
-		! is_array($name) and $name = array($name, Environment::instance()->path('fuel').$name.'/');
-		list($name, $path) = $name;
-
-		// Check if the package hasn't already been loaded
-		if (isset($this->packages[$type][$name]))
+		// Directly add an unnamed package
+		if ($name instanceof Loader\Loadable)
 		{
-			throw new \RuntimeException('Package already loaded, can\'t be loaded twice.');
+			$loader = $name;
+			$name = uniqid();
 		}
-
-		// Fetch the Package loader
-		$loader = require $path.'loader.php';
-		if ( ! $loader instanceof Loader\Package)
+		// Directly add a named package: array($name, $loader)
+		elseif (is_array($name) and end($name) instanceof Loader\Loadable)
 		{
-			throw new \RuntimeException('Package loader must implement Fuel\\Kernel\\Loader\\Base');
+			$loader = end($name);
+			$name = reset($name);
+		}
+		// Add a package using a name or using: array($name, $fullpath)
+		else
+		{
+			! is_array($name) and $name = array($name, Environment::instance()->path('fuel').$name.'/');
+			list($name, $path) = $name;
+
+			// Check if the package hasn't already been loaded
+			if (isset($this->packages[$type][$name]))
+			{
+				throw new \RuntimeException('Package already loaded, can\'t be loaded twice.');
+			}
+
+			// Fetch the Package loader
+			$loader = require $path.'loader.php';
+			if ( ! $loader instanceof Loader\Loadable)
+			{
+				throw new \RuntimeException('Package loader must implement Fuel\\Kernel\\Loader\\Base');
+			}
 		}
 
 		// If it's an app, include the Application class
 		if ($type == static::TYPE_APP)
 		{
-			require_once $path.'application.php';
+			require_once $loader->path().'application.php';
 		}
 
 		$this->packages[$type][$name] = $loader;

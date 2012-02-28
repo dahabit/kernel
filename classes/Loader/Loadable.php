@@ -5,6 +5,13 @@ namespace Fuel\Kernel\Loader;
 interface Loadable
 {
 	/**
+	 * Returns the base path for this package
+	 *
+	 * @return  string
+	 */
+	public function path();
+
+	/**
 	 * Classloader
 	 *
 	 * @param   string  $class
