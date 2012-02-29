@@ -68,7 +68,7 @@ class Composer implements Loadable
 		}
 		$file .= str_replace('_', '/', $class).'.php';
 
-		return $basepath.$file;
+		return rtrim($basepath, '/\\').'/'.$file;
 	}
 
 	/**
