@@ -16,16 +16,22 @@ namespace Fuel\Kernel;
  * Sets up the environment for PHP and Fuel.
  *
  * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
  */
 class Environment
 {
 	/**
 	 * @constant  string  version identifier
+	 *
+	 * @since  2.0.0
 	 */
 	const VERSION = '2.0-alpha';
 
 	/**
 	 * @var  Environment  instance
+	 *
+	 * @since  2.0.0
 	 */
 	public static $instance;
 
@@ -33,6 +39,8 @@ class Environment
 	 * Singleton may be evil but to allow multiple instances would be wrong
 	 *
 	 * @return  Environment
+	 *
+	 * @since  2.0.0
 	 */
 	public static function instance()
 	{
@@ -46,98 +54,134 @@ class Environment
 
 	/**
 	 * @var  array  environment names with closures as values
+	 *
+	 * @since  2.0.0
 	 */
 	protected $environments = array();
 
 	/**
 	 * @var  string  name of the current environment
+	 *
+	 * @since  2.0.0
 	 */
 	public $name = 'development';
 
 	/**
 	 * @var  string|null  optional overwrite for system environment setting
+	 *
+	 * @since  2.0.0
 	 */
 	public $locale = null;
 
 	/**
 	 * @var  string  language identifier
+	 *
+	 * @since  2.0.0
 	 */
 	public $language = 'en';
 
 	/**
 	 * @var  string|null  timezone name for php.net/timezones
+	 *
+	 * @since  2.0.0
 	 */
 	public $timezone = 'UTC';
 
 	/**
 	 * @var  bool  whether or not usage of MBSTRING extension is enabled
+	 *
+	 * @since  2.0.0
 	 */
 	public $mbstring = true;
 
 	/**
 	 * @var  string|null  character encoding
+	 *
+	 * @since  2.0.0
 	 */
 	public $encoding = 'UTF-8';
 
 	/**
 	 * @var  bool  whether this is run through the command line
+	 *
+	 * @since  2.0.0
 	 */
 	public $is_cli = false;
 
 	/**
 	 * @var  bool  Readline is an extension for PHP that makes interactive with PHP much more bash-like
+	 *
+	 * @since  2.0.0
 	 */
 	public $readline_support = false;
 
 	/**
 	 * @var  array  appnames and their classnames
+	 *
+	 * @since  2.0.0
 	 */
 	protected $apps = array();
 
 	/**
 	 * @var  array  paths registered in the global environment
+	 *
+	 * @since  2.0.0
 	 */
 	protected $paths = array();
 
 	/**
 	 * @var  string  base url
+	 *
+	 * @since  2.0.0
 	 */
 	public $base_url;
 
 	/**
 	 * @var  string
+	 *
+	 * @since  2.0.0
 	 */
 	public $index_file;
 
 	/**
 	 * @var  Input  the input container
+	 *
+	 * @since  2.0.0
 	 */
 	public $input;
 
 	/**
 	 * @var  Loader  the loader container
+	 *
+	 * @since  2.0.0
 	 */
 	public $loader;
 
 	/**
 	 * @var  DiC\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public $dic;
 
 	/**
-	 * @var  Application\Base;
+	 * @var  Application\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public $active_app;
 
 	/**
 	 * @var  array  container for environment variables
+	 *
+	 * @since  2.0.0
 	 */
 	protected $vars = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @return  void
+	 * @since  2.0.0
 	 */
 	public function __construct()
 	{
@@ -150,6 +194,8 @@ class Environment
 	 *
 	 * @param   array  $config
 	 * @return  Environment  to allow method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function init(array $config)
 	{
@@ -243,6 +289,8 @@ class Environment
 	 * Detects and configures the PHP Environment
 	 *
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	protected function php_env()
 	{
@@ -309,6 +357,8 @@ class Environment
 	 * Generates a base url.
 	 *
 	 * @return  string  the base url
+	 *
+	 * @since  2.0.0
 	 */
 	public function detect_base_url()
 	{
@@ -332,6 +382,8 @@ class Environment
 	 *
 	 * @param   string|null  $locale  locale name (OS dependent)
 	 * @return  Environment  to allow method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_locale($locale)
 	{
@@ -345,6 +397,8 @@ class Environment
 	 *
 	 * @param   string|null  $timezone  timezone name (http://php.net/timezones)
 	 * @return  Environment  to allow method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_timezone($timezone)
 	{
@@ -358,6 +412,8 @@ class Environment
 	 *
 	 * @param   string|null  $encoding  encoding name
 	 * @return  Environment  to allow method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_encoding($encoding)
 	{
@@ -371,6 +427,8 @@ class Environment
 	 *
 	 * @param   string|null|Loader  $loader  either a loader instance or its classname
 	 * @return  Environment  to allow method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_loader($loader)
 	{
@@ -403,6 +461,8 @@ class Environment
 	 * @param   string  $appname
 	 * @return  string
 	 * @throws  \OutOfBoundsException
+	 *
+	 * @since  2.0.0
 	 */
 	public function app_class($appname)
 	{
@@ -420,6 +480,8 @@ class Environment
 	 * @param   string  $appname    Given name for an application
 	 * @param   string  $classname  Classname for the application
 	 * @return  Environment
+	 *
+	 * @since  2.0.0
 	 */
 	public function register_app($appname, $classname)
 	{
@@ -433,6 +495,8 @@ class Environment
 	 * @param   string  $name
 	 * @return  string
 	 * @throws  \OutOfBoundsException
+	 *
+	 * @since  2.0.0
 	 */
 	public function path($name)
 	{
@@ -452,6 +516,8 @@ class Environment
 	 * @param   bool         $overwrite  whether or not overwriting existing name is allowed
 	 * @return  Environment  to allow method chaining
 	 * @throws  \OutOfBoundsException
+	 *
+	 * @since  2.0.0
 	 */
 	public function add_path($name, $path, $overwrite = false)
 	{
@@ -470,6 +536,8 @@ class Environment
 	 * @param   string  $name
 	 * @param   mixed   $value
 	 * @return  Environment  to allow method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_var($name, $value)
 	{
@@ -483,6 +551,8 @@ class Environment
 	 * @param   string  $name
 	 * @param   mixed   $default  value to return when name is unknown
 	 * @return  mixed
+	 *
+	 * @since  2.0.0
 	 */
 	public function get_var($name, $default = null)
 	{
@@ -497,6 +567,8 @@ class Environment
 	 * Fetch the time that has elapsed since Fuel Kernel init
 	 *
 	 * @return  float
+	 *
+	 * @since  2.0.0
 	 */
 	public function time_elapsed()
 	{
@@ -508,6 +580,8 @@ class Environment
 	 *
 	 * @param   bool  $peak  whether to report the peak usage instead of the current
 	 * @return  float
+	 *
+	 * @since  2.0.0
 	 */
 	public function mem_usage($peak = false)
 	{
@@ -520,6 +594,8 @@ class Environment
 	 *
 	 * @param   Application\Base  $app
 	 * @return  Environment
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_active_app($app)
 	{
@@ -531,6 +607,8 @@ class Environment
 	 * Fetches the current active Application
 	 *
 	 * @return  Application\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public function active_app()
 	{
@@ -542,6 +620,8 @@ class Environment
 	 *
 	 * @param   string  $class
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function get_class($class)
 	{
@@ -553,6 +633,8 @@ class Environment
 	 *
 	 * @param   string  $class
 	 * @return  object
+	 *
+	 * @since  2.0.0
 	 */
 	public function forge($class)
 	{
@@ -566,6 +648,8 @@ class Environment
 	 * @param   string  $name
 	 * @return  object
 	 * @throws  \RuntimeException
+	 *
+	 * @since  2.0.0
 	 */
 	public function get_object($class, $name = null)
 	{

@@ -16,11 +16,15 @@ namespace Fuel\Kernel;
  * Deals with showing Exceptions and PHP errors.
  *
  * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
  */
 class Error
 {
 	/**
 	 * @var  array  add names for the error levels
+	 *
+	 * @since  2.0.0
 	 */
 	public $levels = array(
 		0                  => 'Error',
@@ -40,6 +44,8 @@ class Error
 
 	/**
 	 * @var  array  types of error that are considered fatal
+	 *
+	 * @since  2.0.0
 	 */
 	public $fatal_levels = array(
 		E_PARSE,
@@ -50,6 +56,8 @@ class Error
 
 	/**
 	 * @var  array  Non fatal errors thrown before a fatal error occurred
+	 *
+	 * @since  2.0.0
 	 */
 	public $non_fatal_cache = array();
 
@@ -58,6 +66,8 @@ class Error
 	 *
 	 * @param   \Exception  $e  the exception
 	 * @return  bool
+	 *
+	 * @since  2.0.0
 	 */
 	public function handle(\Exception $e)
 	{
@@ -74,6 +84,8 @@ class Error
 	 *
 	 * @param   \Exception  $e  the exception to show
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function show_error(\Exception $e)
 	{
@@ -143,6 +155,8 @@ class Error
 	 * @param   \Exception  $e
 	 * @param   bool        $fatal
 	 * @return  array
+	 *
+	 * @since  2.0.0
 	 */
 	protected function prepare_exception(\Exception $e, $fatal = true)
 	{

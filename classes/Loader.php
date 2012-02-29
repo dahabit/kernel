@@ -7,21 +7,29 @@ class Loader
 {
 	/**
 	 * @var  int  Keyname for Application packages
+	 *
+	 * @since  2.0.0
 	 */
 	const TYPE_APP = 0;
 
 	/**
 	 * @var  int  Keyname for normal packages
+	 *
+	 * @since  2.0.0
 	 */
 	const TYPE_PACKAGE = 1000;
 
 	/**
 	 * @var  int  Keyname for "Core" packages (non routable, always last)
+	 *
+	 * @since  2.0.0
 	 */
 	const TYPE_CORE = 100000;
 
 	/**
 	 * @var  array  active loaders in a prioritized list
+	 *
+	 * @since  2.0.0
 	 */
 	protected $packages = array(
 		Loader::TYPE_APP      => array(),
@@ -31,11 +39,15 @@ class Loader
 
 	/**
 	 * @var  array  namespaces that may be aliased to global (for Fuel v1 BC)
+	 *
+	 * @since  2.0.0
 	 */
 	protected $global_ns_aliases = array();
 
 	/**
 	 * @var  string  classname of the class currently being loaded
+	 *
+	 * @since  2.0.0
 	 */
 	protected $__current_class_load = '';
 
@@ -46,6 +58,8 @@ class Loader
 	 * @param   int                     $type
 	 * @return  Loader\Loadable         for method chaining
 	 * @throws  \RuntimeException
+	 *
+	 * @since  2.0.0
 	 */
 	public function load_package($name, $type = Loader::TYPE_PACKAGE)
 	{
@@ -98,6 +112,8 @@ class Loader
 	 * @param   int     $type
 	 * @return  Loader\Loadable
 	 * @throws  \OutOfBoundsException
+	 *
+	 * @since  2.0.0
 	 */
 	public function package($name, $type = Loader::TYPE_PACKAGE)
 	{
@@ -114,6 +130,8 @@ class Loader
 	 * @param   int|null  $type  null for all, int for a specific type
 	 * @return  array
 	 * @throws  \OutOfBoundsException
+	 *
+	 * @since  2.0.0
 	 */
 	public function packages($type = null)
 	{
@@ -136,6 +154,8 @@ class Loader
 	 * @param   Closure  $config
 	 * @return  \Fuel\Kernel\Application\Base
 	 * @throws  \OutOfBoundsException
+	 *
+	 * @since  2.0.0
 	 */
 	public static function load_app($appname, \Closure $config)
 	{
@@ -151,6 +171,8 @@ class Loader
 	 *
 	 * @param   string  $class
 	 * @return  bool
+	 *
+	 * @since  2.0.0
 	 */
 	public function load_class($class)
 	{
@@ -207,6 +229,8 @@ class Loader
 	 *
 	 * @param   string  $class
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	protected function init_class($class)
 	{
@@ -225,6 +249,8 @@ class Loader
 	 *
 	 * @param   string  $ns
 	 * @return  Loader  for method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function add_global_ns_alias($ns)
 	{

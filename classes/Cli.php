@@ -3,7 +3,7 @@
  * Part of the FuelPHP framework.
  *
  * @package    Fuel\Kernel
- * @version    2.0
+ * @version    2.0.0
  * @license    MIT License
  * @copyright  2010 - 2012 Fuel Development Team
  */
@@ -17,21 +17,29 @@ use Fuel\Kernel\Application;
  * Interact with the command line by accepting input options, parameters and output text.
  *
  * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
  */
 class Cli
 {
 	/**
 	 * @var  \Fuel\Kernel\Application\Base
+	 *
+	 * @since  2.0.0
 	 */
 	protected $app;
 
 	/**
 	 * @var  array  arguments passed through the CLI
+	 *
+	 * @since  2.0.0
 	 */
 	protected $args = null;
 
 	/**
 	 * @var  array  named colors for text display
+	 *
+	 * @since  2.0.0
 	 */
 	protected $foreground_colors = array(
 		'black'         => '0;30',
@@ -55,6 +63,8 @@ class Cli
 
 	/**
 	 * @var  array  named colors for text background display
+	 *
+	 * @since  2.0.0
 	 */
 	protected $background_colors = array(
 		'black'       => '40',
@@ -70,8 +80,9 @@ class Cli
 	/**
 	 * Constructor
 	 *
-	 * @param   array|null  $args  command line arguments in an array
-	 * @return  void
+	 * @param  array|null  $args  command line arguments in an array
+	 *
+	 * @since  2.0.0
 	 */
 	public function __construct($args = null)
 	{
@@ -87,6 +98,8 @@ class Cli
 	 *
 	 * @param   \Fuel\Kernel\Application\Base  $app
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function _set_app(Application\Base $app)
 	{
@@ -109,6 +122,8 @@ class Cli
 	 *
 	 * @param   array  $args
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	protected function parse_args(array $args)
 	{
@@ -134,6 +149,8 @@ class Cli
 	 * @param   string|int  $name     the name of the option (int if unnamed)
 	 * @param   mixed       $default
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function option($name, $default = null)
 	{
@@ -152,6 +169,8 @@ class Cli
 	 *
 	 * @param   string|int  $prefix  the name of the option (int if unnamed)
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function input($prefix = '')
 	{
@@ -183,6 +202,8 @@ class Cli
 	 * $ready = CLI::prompt('Are you ready?', array('y','n'));
 	 *
 	 * @return  string  the user input
+	 *
+	 * @since  2.0.0
 	 */
 	public function prompt()
 	{
@@ -289,6 +310,8 @@ class Cli
 	 * @param   null|string   $foreground  textcolor
 	 * @param   null|string   $background  text backgroundcolor
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function write($text = '', $foreground = null, $background = null)
 	{
@@ -312,6 +335,8 @@ class Cli
 	 * @param   null|string   $foreground  textcolor
 	 * @param   null|string   $background  text backgroundcolor
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function error($text = '', $foreground = 'light_red', $background = null)
 	{
@@ -331,7 +356,10 @@ class Cli
 	/**
 	 * Beeps a certain number of times.
 	 *
-	 * @param  int  $num  the number of times to beep
+	 * @param   int  $num  the number of times to beep
+	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function beep($num = 1)
 	{
@@ -345,6 +373,8 @@ class Cli
 	 * @param   int   $seconds    number of seconds
 	 * @param   bool  $countdown  show a countdown or not
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function wait($seconds = 0, $countdown = false)
 	{
@@ -379,6 +409,8 @@ class Cli
 	 * If operating system === windows
 	 *
 	 * @return  bool
+	 *
+	 * @since  2.0.0
 	 */
  	public function is_windows()
  	{
@@ -390,6 +422,8 @@ class Cli
 	 *
 	 * @param   int  Number of lines to output
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function new_line($num = 1)
 	{
@@ -404,6 +438,8 @@ class Cli
 	 * Clears the screen of output
 	 *
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function clear_screen()
 	{
@@ -427,6 +463,8 @@ class Cli
 	 * @param   string  $foreground  the foreground color
 	 * @param   string  $background  the background color
 	 * @return  string  the color coded string
+	 *
+	 * @since  2.0.0
 	 */
 	public function color($text, $foreground, $background = null)
 	{
@@ -468,6 +506,8 @@ class Cli
 	 * @param   string  $call    the system call to make
 	 * @param   string  $output
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function spawn($call, $output = '/dev/null')
 	{

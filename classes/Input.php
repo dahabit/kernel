@@ -16,60 +16,81 @@ namespace Fuel\Kernel;
  * Keeps the HTTP input for a request or the environment as a whole.
  *
  * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
  */
 class Input
 {
 	/**
 	 * @var  Input  parent Input object to fall back on
+	 *
+	 * @since  2.0.0
 	 */
 	protected $parent;
 
 	/**
 	 * @var  null|string  The URI that was detected automatically
+	 *
+	 * @since  2.0.0
 	 */
 	protected $detected_uri = null;
 
 	/**
 	 * @var  null|string  The URI extension that was detected automatically
+	 *
+	 * @since  2.0.0
 	 */
 	protected $detected_ext = null;
 
 	/**
 	 * @var  string  HTTP method used
+	 *
+	 * @since  2.0.0
 	 */
 	protected $http_method = 'GET';
 
 	/**
 	 * @var  array  server variables
+	 *
+	 * @since  2.0.0
 	 */
 	protected $server_vars = array();
 
 	/**
 	 * @var  array  The vars from the HTTP method (GET, POST, PUT, DELETE)
+	 *
+	 * @since  2.0.0
 	 */
 	protected $input_vars = array();
 
 	/**
 	 * @var  array  All of the variables from the URL (= GET when input method is GET)
+	 *
+	 * @since  2.0.0
 	 */
 	protected $uri_vars = array();
 
 	/**
 	 * @var  array  Cookie
+	 *
+	 * @since  2.0.0
 	 */
 	protected $cookie = array();
 
 	/**
 	 * @var  array
+	 *
+	 * @since  2.0.0
 	 */
 	protected $files = array();
 
 	/**
 	 * Constructor
 	 *
-	 * @param   array  $http_vars  HTTP input overwrites
-	 * @param   null   $parent     whether this input object falls back to another one
-	 * @return  void
+	 * @param  array  $http_vars  HTTP input overwrites
+	 * @param  null   $parent     whether this input object falls back to another one
+	 *
+	 * @since  2.0.0
 	 */
 	public function __construct(array $http_vars = array(), $parent = null)
 	{
@@ -120,6 +141,8 @@ class Input
 	 * variables.
 	 *
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function uri()
 	{
@@ -215,6 +238,8 @@ class Input
 	 * Detects and returns the current URI extension
 	 *
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function extension()
 	{
@@ -228,6 +253,8 @@ class Input
 	 *
 	 * @param   string  $default
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function ip($default = '0.0.0.0')
 	{
@@ -247,6 +274,8 @@ class Input
 	 *
 	 * @param   string  @default  default return value when no IP is detected
 	 * @return  string  the real ip address of the user
+	 *
+	 * @since  2.0.0
 	 */
 	public function real_ip($default = '0.0.0.0')
 	{
@@ -275,6 +304,8 @@ class Input
 	 * Returns the protocol that the request was made with
 	 *
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function protocol()
 	{
@@ -291,6 +322,8 @@ class Input
 	 * Returns whether this is an AJAX request or not
 	 *
 	 * @return  bool
+	 *
+	 * @since  2.0.0
 	 */
 	public function is_ajax()
 	{
@@ -303,6 +336,8 @@ class Input
 	 *
 	 * @param   string  $default
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function referrer($default = '')
 	{
@@ -313,6 +348,8 @@ class Input
 	 * Returns the input method used (GET, POST, DELETE, etc.)
 	 *
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function method()
 	{
@@ -324,6 +361,8 @@ class Input
 	 *
 	 * @param   string  $default
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function user_agent($default = '')
 	{
@@ -336,6 +375,8 @@ class Input
 	 * @param   string  $index    The index key
 	 * @param   mixed   $default  The default value
 	 * @return  string|array
+	 *
+	 * @since  2.0.0
 	 */
 	public function file($index = null, $default = null)
 	{
@@ -357,6 +398,8 @@ class Input
 	 * @param   string  $index    The index key
 	 * @param   mixed   $default  The default value
 	 * @return  string|array
+	 *
+	 * @since  2.0.0
 	 */
 	public function query_string($index = null, $default = null)
 	{
@@ -378,6 +421,8 @@ class Input
 	 * @param   string  $index    The index key
 	 * @param   mixed   $default  The default value
 	 * @return  string|array
+	 *
+	 * @since  2.0.0
 	 */
 	public function param($index = null, $default = null)
 	{
@@ -399,6 +444,8 @@ class Input
 	 * @param    string  $index    The index key
 	 * @param    mixed   $default  The default value
 	 * @return   string|array
+	 *
+	 * @since  2.0.0
 	 */
 	public function cookie($index = null, $default = null)
 	{
@@ -420,6 +467,8 @@ class Input
 	 * @param   string  $index    The index key
 	 * @param   mixed   $default  The default value
 	 * @return  string|array
+	 *
+	 * @since  2.0.0
 	 */
 	public function server($index = null, $default = null)
 	{
