@@ -199,8 +199,6 @@ class Environment
 	 */
 	public function init(array $config)
 	{
-		$config = __val($config);
-
 		// Prevent double init
 		static $init = false;
 		if ($init)
