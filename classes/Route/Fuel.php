@@ -111,7 +111,7 @@ class Fuel extends Classes\Route\Base
 		// Return Controller when found
 		if (is_string($translation) and ($controller = $this->find_class($translation)))
 		{
-			$this->match = array($this->app->forge($controller), 'router');
+			$this->match = $this->app->forge($controller);
 			return true;
 		}
 

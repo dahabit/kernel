@@ -1,4 +1,12 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\Application;
 use Fuel\Kernel\DiC;
@@ -6,63 +14,102 @@ use Fuel\Kernel\Loader;
 use Fuel\Kernel\Request;
 use Fuel\Kernel\Route;
 
+/**
+ * Application Base class
+ *
+ * Wraps an application package into an object to work with, must be extended per application.
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
+ */
 abstract class Base
 {
 	/**
 	 * @var  \Fuel\Kernel\Loader\Loadable  the Application's own loader instance
+	 *
+	 * @since  2.0.0
 	 */
 	public $loader;
 
 	/**
 	 * @var  \Fuel\Kernel\Security\Base  the Application's security instance
+	 *
+	 * @since  2.0.0
 	 */
 	public $security;
 
 	/**
 	 * @var  \Fuel\Kernel\Data\Config
+	 *
+	 * @since  2.0.0
 	 */
 	public $config;
 
 	/**
 	 * @var  \Fuel\Kernel\Data\Language
+	 *
+	 * @since  2.0.0
 	 */
 	public $language;
 
 	/**
 	 * @var  \Fuel\Kernel\Error
+	 *
+	 * @since  2.0.0
 	 */
 	public $error;
 
 	/**
 	 * @var  array  route objects
+	 *
+	 * @since  2.0.0
 	 */
 	protected $routes = array();
 
 	/**
 	 * @var  array  packages to load
+	 *
+	 * @since  2.0.0
 	 */
 	protected $packages = array();
 
 	/**
 	 * @var  \Fuel\Kernel\Request\Base  contains the app main request object once created
+	 *
+	 * @since  2.0.0
 	 */
 	public $request;
 
 	/**
 	 * @var  \Fuel\Kernel\Request\Base  current active Request, not necessarily the main request
+	 *
+	 * @since  2.0.0
 	 */
 	protected $active_request;
 
 	/**
 	 * @var  array  active Application stack before activation of this one
+	 *
+	 * @since  2.0.0
 	 */
 	protected $_before_activate = array();
 
 	/**
 	 * @var  \Fuel\Kernel\DiC\Dependable
+	 *
+	 * @since  2.0.0
 	 */
 	public $dic;
 
+	/**
+	 * Constructor
+	 *
+	 * @param  Closure  $config
+	 * @param  \Fuel\Kernel\Loader\Loadable  $loader
+	 *
+	 * @since  2.0.0
+	 */
 	public function __construct(\Closure $config, Loader\Loadable $loader)
 	{
 		$this->loader = $loader;
@@ -103,6 +150,8 @@ abstract class Base
 	 * Setup: this method is run before anything else right after the DiC is initialized
 	 *
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function setup() {}
 
@@ -110,6 +159,8 @@ abstract class Base
 	 * Define the default config for this application
 	 *
 	 * @return  array
+	 *
+	 * @since  2.0.0
 	 */
 	public function config() {}
 
@@ -117,6 +168,8 @@ abstract class Base
 	 * Define the routes for this application
 	 *
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	abstract public function router();
 
@@ -126,6 +179,8 @@ abstract class Base
 	 * @param   string        $name
 	 * @param   string|array  $route
 	 * @return  \Fuel\Kernel\Route\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public function add_route($name, $route)
 	{
@@ -150,6 +205,8 @@ abstract class Base
 	 *
 	 * @param   array  $routes
 	 * @return  Base
+	 *
+	 * @since  2.0.0
 	 */
 	public function add_routes(array $routes)
 	{
@@ -166,6 +223,8 @@ abstract class Base
 	 * @param   string  $name
 	 * @return  \Fuel\Kernel\Route\Base
 	 * @throws  \RuntimeException
+	 *
+	 * @since  2.0.0
 	 */
 	public function get_route($name)
 	{
@@ -182,6 +241,8 @@ abstract class Base
 	 * @param   string  $uri
 	 * @return  array
 	 * @throws  \Fuel\Kernel\Request\Exception_404
+	 *
+	 * @since  2.0.0
 	 */
 	public function process_route($uri)
 	{
@@ -209,6 +270,8 @@ abstract class Base
 	 *
 	 * @param   string  $uri
 	 * @return  \Fuel\Kernel\Request\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public function request($uri)
 	{
@@ -220,6 +283,8 @@ abstract class Base
 	 * Execute the application main request
 	 *
 	 * @return  Base
+	 *
+	 * @since  2.0.0
 	 */
 	public function execute()
 	{
@@ -233,6 +298,8 @@ abstract class Base
 	 * Makes this Application the active one
 	 *
 	 * @return  Base  for method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function activate()
 	{
@@ -245,6 +312,8 @@ abstract class Base
 	 * Deactivates this Application and reactivates the previous active
 	 *
 	 * @return  Base  for method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function deactivate()
 	{
@@ -256,6 +325,8 @@ abstract class Base
 	 * Return the response object
 	 *
 	 * @return  \Fuel\Kernel\Response\Responsible
+	 *
+	 * @since  2.0.0
 	 */
 	public function response()
 	{
@@ -269,6 +340,8 @@ abstract class Base
 	 * @param   string  $file
 	 * @param   bool    $multiple
 	 * @return  array|bool
+	 *
+	 * @since  2.0.0
 	 */
 	public function find_file($location, $file, $multiple = false)
 	{
@@ -312,6 +385,8 @@ abstract class Base
 	 * @param   $location
 	 * @param   $file
 	 * @return  array|bool
+	 *
+	 * @since  2.0.0
 	 */
 	public function find_files($location, $file)
 	{
@@ -324,6 +399,8 @@ abstract class Base
 	 * @param   string  $type
 	 * @param   string  $classname
 	 * @return  bool|string  the controller classname or false on failure
+	 *
+	 * @since  2.0.0
 	 */
 	public function find_class($type, $classname)
 	{
@@ -352,6 +429,8 @@ abstract class Base
 	 *
 	 * @param   string  $class
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function get_class($class)
 	{
@@ -363,6 +442,8 @@ abstract class Base
 	 *
 	 * @param   string|array  $classname  classname or array($obj_name, $classname)
 	 * @return  object
+	 *
+	 * @since  2.0.0
 	 */
 	public function forge($classname)
 	{
@@ -376,6 +457,8 @@ abstract class Base
 	 * @param   string  $name
 	 * @return  object
 	 * @throws  \RuntimeException
+	 *
+	 * @since  2.0.0
 	 */
 	public function get_object($class, $name = null)
 	{
@@ -386,6 +469,8 @@ abstract class Base
 	 * Sets the current active request
 	 *
 	 * @param  \Fuel\Kernel\Request\Base  $request
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_active_request($request)
 	{
@@ -396,6 +481,8 @@ abstract class Base
 	 * Returns current active Request
 	 *
 	 * @return  \Fuel\Kernel\Request\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public function active_request()
 	{

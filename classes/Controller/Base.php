@@ -1,10 +1,27 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\Controller;
 use Fuel\Kernel\Application;
 use Fuel\Kernel\Request;
 use Fuel\Kernel\Response;
 
+/**
+ * Controller Base class
+ *
+ * Default controller class that takes action based on the input it gets.
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
+ */
 abstract class Base
 {
 	/**
@@ -35,29 +52,6 @@ abstract class Base
 	public function _set_app(Application\Base $app)
 	{
 		$this->app = $app;
-	}
-
-	public function router(array $args)
-	{
-		// Determine the method
-		$method = static::$action_prefix.(array_shift($args) ?: static::$default_action);
-
-		// Return false if it doesn't exist
-		if ( ! method_exists($this, $method))
-		{
-			throw new Request\Exception_404('No such action "'.$method.'" in Controller: '.get_class($this));
-		}
-
-		/**
-		 * Return false if the method isn't public
-		 */
-		$method = new \ReflectionMethod($this, $method);
-		if ( ! $method->isPublic())
-		{
-			throw new Request\Exception_404('Unavailable action "'.$method.'" in Controller: '.get_class($this));
-		}
-
-		return $this->execute($method, $args);
 	}
 
 	/**
@@ -95,5 +89,28 @@ abstract class Base
 		}
 
 		return $response;
+	}
+
+	public function __invoke(array $args)
+	{
+		// Determine the method
+		$method = static::$action_prefix.(array_shift($args) ?: static::$default_action);
+
+		// Return false if it doesn't exist
+		if ( ! method_exists($this, $method))
+		{
+			throw new Request\Exception_404('No such action "'.$method.'" in Controller: '.get_class($this));
+		}
+
+		/**
+		 * Return false if the method isn't public
+		 */
+		$method = new \ReflectionMethod($this, $method);
+		if ( ! $method->isPublic())
+		{
+			throw new Request\Exception_404('Unavailable action "'.$method.'" in Controller: '.get_class($this));
+		}
+
+		return $this->execute($method, $args);
 	}
 }
