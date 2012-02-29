@@ -5,6 +5,11 @@ namespace Fuel\Kernel\DiC;
 class Base implements Dependable
 {
 	/**
+	 * @var  string  name for default instance in object container
+	 */
+	const DEFAULT_NAME = '__default';
+
+	/**
 	 * @var  array  classnames and their 'translation'
 	 */
 	protected $classes = array();
@@ -149,24 +154,37 @@ class Base implements Dependable
 	 */
 	public function get_object($classname, $name = null)
 	{
-		$classname = strtolower($classname);
-		$name = is_null($name) ? '__default' : strtolower($name);
-		if ( ! isset($this->objects[$classname][$name]))
-		{
-			if ( ! $this->parent or $name == '__default')
-			{
-				// Return 'default' instance when no name is given, is forged without params
-				if ($name == '__default')
-				{
-					$default = $this->forge($classname);
-					$this->set_object($classname, $name, $default);
-					return $this->objects[$classname][$name];
-				}
+		$class = strtolower($classname);
 
-				throw new \RuntimeException('Instance "'.$name.'" not found for class "'.$classname.'".');
-			}
-			return $this->parent->get_object($classname, $name);
+		// When colon found, shorten to classname without colon
+		// and default name to everything after the first colon
+		if ($pos = strpos($classname, ':'))
+		{
+			$class = strtolower(substr($classname, 0, $pos));
+			is_null($name) and $name = substr($classname, $pos + 1).$name;
 		}
-		return $this->objects[$classname][$name];
+		// When name is still null set it to the default, otherwise lowercase the name
+		$name = is_null($name) ? self::DEFAULT_NAME : strtolower($name);
+
+		if ( ! isset($this->objects[$class][$name]))
+		{
+			// Return 'default' instance when no name is given, is forged without params
+			if ($name == self::DEFAULT_NAME)
+			{
+				$default = $this->forge($classname);
+				$this->set_object($class, $name, $default);
+				return $this->objects[$class][$name];
+			}
+			// Throw exception when given name is not found
+			elseif ( ! $this->parent)
+			{
+				throw new \RuntimeException('Instance "'.$name.'" not found for class "'.ucfirst($class).'".');
+			}
+			// Or attempt parent when possible
+			return $this->parent->get_object($class, $name);
+		}
+
+		// Object was found, return it
+		return $this->objects[$class][$name];
 	}
 }
