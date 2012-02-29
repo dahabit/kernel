@@ -1,34 +1,70 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\DiC;
 
+/**
+ * Dependency Injection Container Base class
+ *
+ * - keeps a list of classnames and the actual class you want for that
+ * - keeps a container of objects that are retrievable
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
+ */
 class Base implements Dependable
 {
 	/**
 	 * @var  string  name for default instance in object container
+	 *
+	 * @since  2.0.0
 	 */
 	const DEFAULT_NAME = '__default';
 
 	/**
 	 * @var  array  classnames and their 'translation'
+	 *
+	 * @since  2.0.0
 	 */
 	protected $classes = array();
 
 	/**
 	 * @var  array  named instances organized by classname
+	 *
+	 * @since  2.0.0
 	 */
 	protected $objects = array();
 
 	/**
 	 * @var  \Fuel\Kernel\Application\Base
+	 *
+	 * @since  2.0.0
 	 */
 	protected $app;
 
 	/**
 	 * @var  Dependable  parent DiC to fall back on
+	 *
+	 * @since  2.0.0
 	 */
 	protected $parent;
 
+	/**
+	 * Constructor
+	 *
+	 * @param  null|\Fuel\Kernel\Application\Base  $app
+	 * @param  null|Base  $parent  fallback if a call to this DiC fails
+	 *
+	 * @since  2.0.0
+	 */
 	public function __construct($app = null, $parent = null)
 	{
 		$this->app = $app;
@@ -44,6 +80,8 @@ class Base implements Dependable
 	 * @param   string     $classname
 	 * @param   string     $actual
 	 * @return  Dependable  to allow method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_class($classname, $actual)
 	{
@@ -56,6 +94,8 @@ class Base implements Dependable
 	 *
 	 * @param   array      $classnames
 	 * @return  Dependable  to allow method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_classes(array $classnames)
 	{
@@ -71,6 +111,8 @@ class Base implements Dependable
 	 *
 	 * @param   string  $classname
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function get_class($classname)
 	{
@@ -99,6 +141,8 @@ class Base implements Dependable
 	 *
 	 * @param   string|array  $classname  classname or array($obj_name, $classname)
 	 * @return  object
+	 *
+	 * @since  2.0.0
 	 */
 	public function forge($classname)
 	{
@@ -137,6 +181,8 @@ class Base implements Dependable
 	 * @param   string  $name
 	 * @param   object  $instance
 	 * @return  Dependable
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_object($classname, $name, $instance)
 	{
@@ -151,6 +197,8 @@ class Base implements Dependable
 	 * @param   string  $name
 	 * @return  object
 	 * @throws  \RuntimeException
+	 *
+	 * @since  2.0.0
 	 */
 	public function get_object($classname, $name = null)
 	{
