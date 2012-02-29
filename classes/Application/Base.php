@@ -87,7 +87,7 @@ abstract class Base
 		$this->error = $this->forge('Error');
 
 		// Load main Application config
-		$this->config = $this->forge('Config')->load('config.php');
+		$this->config = $this->forge('Config', (array) $this->config())->load('config.php');
 
 		// Load the Security class
 		$this->security = $this->forge('Security');
@@ -101,11 +101,22 @@ abstract class Base
 
 	/**
 	 * Setup: this method is run before anything else right after the DiC is initialized
+	 *
+	 * @return  void
 	 */
 	public function setup() {}
 
 	/**
+	 * Define the default config for this application
+	 *
+	 * @return  array
+	 */
+	public function config() {}
+
+	/**
 	 * Define the routes for this application
+	 *
+	 * @return  void
 	 */
 	abstract public function router();
 
@@ -113,7 +124,7 @@ abstract class Base
 	 * Add a route to the Application
 	 *
 	 * @param   string        $name
-	 * @param   string|array  $translation
+	 * @param   string|array  $route
 	 * @return  \Fuel\Kernel\Route\Base
 	 */
 	public function add_route($name, $route)
@@ -168,7 +179,9 @@ abstract class Base
 	/**
 	 * Attempts to route a given URI to a controller (class, Closure or callback)
 	 *
-	 * @param  string  $uri
+	 * @param   string  $uri
+	 * @return  array
+	 * @throws  \Fuel\Kernel\Request\Exception_404
 	 */
 	public function process_route($uri)
 	{
@@ -306,15 +319,16 @@ abstract class Base
 	}
 
 	/**
-	 * Locate the controller
+	 * Locate a specific type of class
 	 *
-	 * @param   string  $controller
+	 * @param   string  $type
+	 * @param   string  $classname
 	 * @return  bool|string  the controller classname or false on failure
 	 */
-	public function find_class($type, $controller)
+	public function find_class($type, $classname)
 	{
 		// First try the Application loader
-		if ($found = $this->loader->find_class($type, $controller))
+		if ($found = $this->loader->find_class($type, $classname))
 		{
 			return $found;
 		}
@@ -323,7 +337,7 @@ abstract class Base
 		foreach ($this->packages as $pkg)
 		{
 			is_array($pkg) and $pkg = reset($pkg);
-			if ($found = _loader()->package($pkg)->find_class($type, $controller))
+			if ($found = _loader()->package($pkg)->find_class($type, $classname))
 			{
 				return $found;
 			}
