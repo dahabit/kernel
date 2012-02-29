@@ -2,6 +2,7 @@
 
 namespace Fuel\Kernel\View;
 use Fuel\Kernel\Application;
+use Fuel\Kernel\Parser;
 
 class Base implements Viewable
 {
@@ -23,7 +24,7 @@ class Base implements Viewable
 	/**
 	 * @var  \Fuel\Kernel\Parser\Parsable
 	 */
-	protected $_parser;
+	protected $_parser = 'Parser:View';
 
 	/**
 	 * @var  \Fuel\Kernel\Application\Base
@@ -35,10 +36,21 @@ class Base implements Viewable
 	 */
 	protected $_context;
 
-	public function __construct($file = null, array $data = array())
+	public function __construct($file = null, array $data = array(), $parser = null)
 	{
 		$this->_path = $file;
 		$this->_data = $data;
+
+		// Allow overwriting default Parsable
+		if ( ! is_null($parser))
+		{
+			// A string Parser classname must be prefixed with 'Parser:'
+			if (is_string($parser) and ! substr($parser, 0, 7) == 'Parser:')
+			{
+				$parser = 'Parser:'.$parser;
+			}
+			$this->_parser = $parser;
+		}
 	}
 
 	/**
@@ -50,7 +62,12 @@ class Base implements Viewable
 	{
 		$this->_app      = $app;
 		$this->_context  = $app->active_request();
-		$this->_parser   = $app->get_object('Parser');
+
+		// Allow for the parser to already have been set as a string or Parsable object
+		if ( ! $this->_parser instanceof Parser\Parsable)
+		{
+			$this->_parser = $app->get_object($this->_parser ?: 'Parser:View');
+		}
 
 		// Fetch the full path from the Application
 		$this->_path and $this->set_filename($this->_path);
