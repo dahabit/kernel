@@ -20,34 +20,45 @@ use Fuel\Kernel\Response;
  *
  * @package  Fuel\Kernel
  *
- * @since  2.0.0
+ * @since  1.0.0
  */
 abstract class Base
 {
 	/**
 	 * @var  string  default method to call on empty action input
+	 *
+	 * @since  2.0.0
 	 */
 	protected static $default_action = 'index';
 
 	/**
 	 * @var  string  required prefix for method to be accessible as action
+	 *
+	 * @since  2.0.0
 	 */
 	protected static $action_prefix = 'action_';
 
 	/**
 	 * @var  \Fuel\Kernel\Application\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public $app;
 
 	/**
 	 * @var  \Fuel\Kernel\Loader\Loadable
+	 *
+	 * @since  2.0.0
 	 */
 	public $loader;
 
 	/**
 	 * Magic Fuel method that is the setter for the current app
 	 *
-	 * @param  \Fuel\Kernel\Application\Base  $app
+	 * @param   \Fuel\Kernel\Application\Base  $app
+	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function _set_app(Application\Base $app)
 	{
@@ -60,6 +71,8 @@ abstract class Base
 	 * @param   \ReflectionMethod|string  $method
 	 * @param   array  $args
 	 * @return  \Fuel\Kernel\Response\Responsible
+	 *
+	 * @since  2.0.0
 	 */
 	public function execute($method, array $args = array())
 	{
@@ -72,6 +85,10 @@ abstract class Base
 
 	/**
 	 * Method to execute for controller setup
+	 *
+	 * @return void
+	 *
+	 * @since  1.0.0
 	 */
 	public function before() {}
 
@@ -80,6 +97,8 @@ abstract class Base
 	 *
 	 * @param   mixed  $response
 	 * @return  \Fuel\Kernel\Response\Base
+	 *
+	 * @since  1.0.0
 	 */
 	public function after($response)
 	{
@@ -91,6 +110,15 @@ abstract class Base
 		return $response;
 	}
 
+	/**
+	 * Makes the Controller instance executable, must be given the URI segments to continue
+	 *
+	 * @param    array  $args
+	 * @return  \Fuel\Kernel\Response\Responsible
+	 * @throws  \Fuel\Kernel\Request\Exception_404
+	 *
+	 * @since  2.0.0
+	 */
 	public function __invoke(array $args)
 	{
 		// Determine the method

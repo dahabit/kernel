@@ -1,25 +1,57 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\Data;
 use Fuel\Kernel\Application;
 
+/**
+ * Data Base class
+ *
+ * Abstract container for classes like Language and Config.
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
+ */
 abstract class Base
 {
 	/**
 	 * @var  array  keeps the data
+	 *
+	 * @since  2.0.0
 	 */
 	protected $_data = array();
 
 	/**
 	 * @var  array  descendants of this class
+	 *
+	 * @since  2.0.0
 	 */
 	protected $_children = array();
 
 	/**
 	 * @var  \Fuel\Kernel\Application\Base
+	 *
+	 * @since  2.0.0
 	 */
 	protected $_app;
 
+	/**
+	 * Constructor
+	 *
+	 * @param  array  $data
+	 * @param  null   $name
+	 * @param  null   $parent
+	 *
+	 * @since  2.0.0
+	 */
 	public function __construct(array $data = array(), $name = null, $parent = null)
 	{
 		$this->_data = $data;
@@ -32,7 +64,10 @@ abstract class Base
 	/**
 	 * Magic Fuel method that is the setter for the current app
 	 *
-	 * @param  \Fuel\Kernel\Application\Base  $app
+	 * @param   \Fuel\Kernel\Application\Base  $app
+	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function _set_app(Application\Base $app)
 	{
@@ -45,6 +80,8 @@ abstract class Base
 	 * @param   string  $name
 	 * @param   Base    $child
 	 * @return  Base
+	 *
+	 * @since  2.0.0
 	 */
 	public function add_child($name, self $child)
 	{
@@ -58,6 +95,8 @@ abstract class Base
 	 * @param   mixed   $key      The dot-notated key or array of keys
 	 * @param   string  $default  The default value
 	 * @return  mixed
+	 *
+	 * @since  2.0.0
 	 */
 	public function get($key, $default = null)
 	{
@@ -99,6 +138,8 @@ abstract class Base
 	 * @param   mixed   $key    The dot-notated key to set or array of keys
 	 * @param   mixed   $value  The value
 	 * @return  Base    for method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function set($key, $value = null)
 	{
@@ -120,6 +161,8 @@ abstract class Base
 	 *
 	 * @param   string  $property
 	 * @return  mixed
+	 *
+	 * @since  2.0.0
 	 */
 	public function __get($property)
 	{
@@ -132,9 +175,23 @@ abstract class Base
 	 * @param   string  $property
 	 * @param   mixed   $value
 	 * @return  void
+	 *
+	 * @since  2.0.0
 	 */
 	public function __set($property, $value)
 	{
 		$this->set($property, $value);
+	}
+
+	/**
+	 * PHP magic method: invoking is the same as using get()
+	 *
+	 * @param   string  $property
+	 * @param   null    $default
+	 * @return  mixed
+	 */
+	public function __invoke($property, $default = null)
+	{
+		return $this->get($property, $default);
 	}
 }

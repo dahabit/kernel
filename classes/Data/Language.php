@@ -1,7 +1,24 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\Data;
 
+/**
+ * Language class
+ *
+ * Language lines container.
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  1.0.0
+ */
 class Language extends \Classes\Data\Base
 {
 	/**
@@ -12,8 +29,11 @@ class Language extends \Classes\Data\Base
 	/**
 	 * Load language file
 	 *
-	 * @param   string  $file
-	 * @return  Config
+	 * @param   string       $file
+	 * @param   null|string  $language
+	 * @return  Language
+	 *
+	 * @since  1.0.0
 	 */
 	public function load($file, $language = null)
 	{
@@ -31,6 +51,8 @@ class Language extends \Classes\Data\Base
 	 * Fetch the language Parser
 	 *
 	 * @return  \Fuel\Kernel\Parser\Parsable
+	 *
+	 * @since  2.0.0
 	 */
 	public function parser()
 	{
@@ -46,10 +68,13 @@ class Language extends \Classes\Data\Base
 	 *
 	 * @param   string  $string
 	 * @param   array   $values
+	 * @param   mixed   $default
 	 * @return  string
+	 *
+	 * @since  1.0.0
 	 */
 	public function parse($string, array $values = array(), $default = null)
 	{
-		return ($string = $this->get($string)) ? $this->parser()->parse_string($string, $values) : $default;
+		return ($string = $this->get($string)) ? $this->parser()->parse_string($string, $values) : __val($default);
 	}
 }
