@@ -24,7 +24,7 @@ class Error
 	/**
 	 * @var  array  add names for the error levels
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public $levels = array(
 		0                  => 'Error',
@@ -45,7 +45,7 @@ class Error
 	/**
 	 * @var  array  types of error that are considered fatal
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public $fatal_levels = array(
 		E_PARSE,
@@ -57,12 +57,14 @@ class Error
 	/**
 	 * @var  array  Non fatal errors thrown before a fatal error occurred
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public $non_fatal_cache = array();
 
 	/**
 	 * @var  \Fuel\Kernel\Application\Base  app that created this request
+	 *
+	 * @since  2.0.0
 	 */
 	public $app;
 
@@ -70,6 +72,8 @@ class Error
 	 * Magic Fuel method that is the setter for the current app
 	 *
 	 * @param  \Fuel\Kernel\Application\Base  $app
+	 *
+	 * @since  2.0.0
 	 */
 	public function _set_app(Application\Base $app)
 	{
@@ -100,7 +104,7 @@ class Error
 	 * @param   \Exception  $e  the exception to show
 	 * @return  void
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function show_error(\Exception $e)
 	{
@@ -171,7 +175,7 @@ class Error
 	 * @param   bool        $fatal
 	 * @return  array
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	protected function prepare_exception(\Exception $e, $fatal = true)
 	{

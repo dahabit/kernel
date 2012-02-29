@@ -31,21 +31,21 @@ class Input
 	/**
 	 * @var  null|string  The URI that was detected automatically
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	protected $detected_uri = null;
 
 	/**
 	 * @var  null|string  The URI extension that was detected automatically
 	 *
-	 * @since  2.0.0
+	 * @since  1.1.0
 	 */
 	protected $detected_ext = null;
 
 	/**
 	 * @var  string  HTTP method used
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	protected $http_method = 'GET';
 
@@ -142,7 +142,7 @@ class Input
 	 *
 	 * @return  string
 	 *
-	 * @since  2.0.0
+	 * @since  1.1.0
 	 */
 	public function uri()
 	{
@@ -239,7 +239,7 @@ class Input
 	 *
 	 * @return  string
 	 *
-	 * @since  2.0.0
+	 * @since  1.1.0
 	 */
 	public function extension()
 	{
@@ -254,7 +254,7 @@ class Input
 	 * @param   string  $default
 	 * @return  string
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function ip($default = '0.0.0.0')
 	{
@@ -273,7 +273,7 @@ class Input
 	 * @param   string  @default  default return value when no IP is detected
 	 * @return  string  the real ip address of the user
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function real_ip($default = '0.0.0.0')
 	{
@@ -303,7 +303,7 @@ class Input
 	 *
 	 * @return  string
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function protocol()
 	{
@@ -321,7 +321,7 @@ class Input
 	 *
 	 * @return  bool
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function is_ajax()
 	{
@@ -335,7 +335,7 @@ class Input
 	 * @param   string  $default
 	 * @return  string
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function referrer($default = '')
 	{
@@ -347,7 +347,7 @@ class Input
 	 *
 	 * @return  string
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function method()
 	{
@@ -360,7 +360,7 @@ class Input
 	 * @param   string  $default
 	 * @return  string
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function user_agent($default = '')
 	{
@@ -374,7 +374,7 @@ class Input
 	 * @param   mixed   $default  The default value
 	 * @return  string|array
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function file($index = null, $default = null)
 	{
@@ -420,7 +420,7 @@ class Input
 	 * @param   mixed   $default  The default value
 	 * @return  string|array
 	 *
-	 * @since  2.0.0
+	 * @since  1.1.0
 	 */
 	public function param($index = null, $default = null)
 	{
@@ -443,7 +443,7 @@ class Input
 	 * @param    mixed   $default  The default value
 	 * @return   string|array
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function cookie($index = null, $default = null)
 	{
@@ -466,7 +466,7 @@ class Input
 	 * @param   mixed   $default  The default value
 	 * @return  string|array
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function server($index = null, $default = null)
 	{

@@ -1,7 +1,22 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\DiC;
 
+/**
+ * Dependency Injection Container Interface
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
+ */
 interface Dependable
 {
 	/**

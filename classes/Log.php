@@ -6,21 +6,29 @@ class Log
 {
 	/**
 	 * @var  int  error level
+	 *
+	 * @since  1.0.0
 	 */
 	const L_ERROR = 1;
 
 	/**
 	 * @var  int  warning level
+	 *
+	 * @since  1.0.0
 	 */
 	const L_WARNING = 2;
 
 	/**
 	 * @var  int  debug level
+	 *
+	 * @since  1.0.0
 	 */
 	const L_DEBUG = 3;
 
 	/**
 	 * @var  int  info level
+	 *
+	 * @since  1.0.0
 	 */
 	const L_INFO = 4;
 
@@ -33,6 +41,8 @@ class Log
 	 * Magic Fuel method that is the setter for the current app
 	 *
 	 * @param  \Fuel\Kernel\Application\Base  $app
+	 *
+	 * @since  2.0.0
 	 */
 	public function _set_app(Application\Base $app)
 	{
@@ -45,6 +55,8 @@ class Log
 	 * @param   string  $msg     The log message
 	 * @param   string  $method  The method that logged
 	 * @return  bool    If it was successfully logged
+	 *
+	 * @since  1.0.0
 	 */
 	public function info($msg, $method = null)
 	{
@@ -57,6 +69,8 @@ class Log
 	 * @param   string  $msg     The log message
 	 * @param   string  $method  The method that logged
 	 * @return  bool    If it was successfully logged
+	 *
+	 * @since  1.0.0
 	 */
 	public function debug($msg, $method = null)
 	{
@@ -69,6 +83,8 @@ class Log
 	 * @param   string  $msg     The log message
 	 * @param   string  $method  The method that logged
 	 * @return  bool    If it was successfully logged
+	 *
+	 * @since  1.0.0
 	 */
 	public function warning($msg, $method = null)
 	{
@@ -81,6 +97,8 @@ class Log
 	 * @param   string  $msg     The log message
 	 * @param   string  $method  The method that logged
 	 * @return  bool    If it was successfully logged
+	 *
+	 * @since  1.0.0
 	 */
 	public function error($msg, $method = null)
 	{
@@ -96,6 +114,8 @@ class Log
 	 * @param   string  $msg     the error message
 	 * @param   string  $method  method or function that triggers this
 	 * @return  bool
+	 *
+	 * @since  1.0.0
 	 */
 	public function write($level, $msg, $method = null)
 	{

@@ -18,7 +18,7 @@ use Fuel\Kernel\Application;
  *
  * @package  Fuel\Kernel
  *
- * @since  2.0.0
+ * @since  1.0.0
  */
 class Cli
 {
@@ -39,7 +39,7 @@ class Cli
 	/**
 	 * @var  array  named colors for text display
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	protected $foreground_colors = array(
 		'black'         => '0;30',
@@ -64,7 +64,7 @@ class Cli
 	/**
 	 * @var  array  named colors for text background display
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	protected $background_colors = array(
 		'black'       => '40',
@@ -150,7 +150,7 @@ class Cli
 	 * @param   mixed       $default
 	 * @return  string
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function option($name, $default = null)
 	{
@@ -170,7 +170,7 @@ class Cli
 	 * @param   string|int  $prefix  the name of the option (int if unnamed)
 	 * @return  string
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function input($prefix = '')
 	{
@@ -203,7 +203,7 @@ class Cli
 	 *
 	 * @return  string  the user input
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function prompt()
 	{
@@ -311,7 +311,7 @@ class Cli
 	 * @param   null|string   $background  text backgroundcolor
 	 * @return  void
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function write($text = '', $foreground = null, $background = null)
 	{
@@ -337,7 +337,7 @@ class Cli
 	 * @param   null|string   $background  text backgroundcolor
 	 * @return  void
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function error($text = '', $foreground = 'light_red', $background = null)
 	{
@@ -361,7 +361,7 @@ class Cli
 	 * @param   int  $num  the number of times to beep
 	 * @return  void
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function beep($num = 1)
 	{
@@ -376,7 +376,7 @@ class Cli
 	 * @param   bool  $countdown  show a countdown or not
 	 * @return  void
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function wait($seconds = 0, $countdown = false)
 	{
@@ -412,7 +412,7 @@ class Cli
 	 *
 	 * @return  bool
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
  	public function is_windows()
  	{
@@ -425,7 +425,7 @@ class Cli
 	 * @param   int  Number of lines to output
 	 * @return  void
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function new_line($num = 1)
 	{
@@ -441,7 +441,7 @@ class Cli
 	 *
 	 * @return  void
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function clear_screen()
 	{
@@ -466,7 +466,7 @@ class Cli
 	 * @param   string  $background  the background color
 	 * @return  string  the color coded string
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function color($text, $foreground, $background = null)
 	{
@@ -509,7 +509,7 @@ class Cli
 	 * @param   string  $output
 	 * @return  void
 	 *
-	 * @since  2.0.0
+	 * @since  1.0.0
 	 */
 	public function spawn($call, $output = '/dev/null')
 	{

@@ -1,15 +1,41 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Core\Loader;
 use Classes\Loader\Loadable;
 
+/**
+ * Composer Loader
+ *
+ * Fuel loader object that autoloads Composer installed classes
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
+ */
 class Composer implements Loadable
 {
 	/**
 	 * @var  array  class mappings gotten from Composer
+	 *
+	 * @since  2.0.0
 	 */
 	protected $mappings = array();
 
+	/**
+	 * Constructor
+	 *
+	 * @param  null|string  $path  where to find the Composer autoload namespaces file
+	 *
+	 * @since  2.0.0
+	 */
 	public function __construct($path = null)
 	{
 		is_null($path) and $path = _env()->path('fuel').'_composer/.composer/autoload_namespaces.php';
@@ -20,6 +46,8 @@ class Composer implements Loadable
 	 * Returns the base path for this package
 	 *
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function path()
 	{
@@ -31,6 +59,8 @@ class Composer implements Loadable
 	 *
 	 * @param   string  $class
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function load_class($class)
 	{
@@ -56,6 +86,8 @@ class Composer implements Loadable
 	 * @param   string  $class
 	 * @param   string  $basepath
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	protected function class_to_path($class, $basepath)
 	{
@@ -76,6 +108,8 @@ class Composer implements Loadable
 	 *
 	 * @param   bool  $routable
 	 * @return  bool
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_routable($routable)
 	{
@@ -88,6 +122,8 @@ class Composer implements Loadable
 	 * @param   string  $type
 	 * @param   string  $path
 	 * @return  bool|string
+	 *
+	 * @since  2.0.0
 	 */
 	public function find_class($type, $path)
 	{
@@ -101,6 +137,8 @@ class Composer implements Loadable
 	 * @param   string  $file
 	 * @param   string  $basepath
 	 * @return  bool|string
+	 *
+	 * @since  2.0.0
 	 */
 	public function find_file($location, $file, $basepath = null)
 	{

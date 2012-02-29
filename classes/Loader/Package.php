@@ -1,21 +1,44 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\Loader;
 
+/**
+ * Package Loader
+ *
+ * Default Fuel Package loader class that allows loading files & classes.
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
+ */
 class Package implements Loadable
 {
 	/**
 	 * @var  string  basepath for the package
+	 *
+	 * @since  2.0.0
 	 */
 	protected $path = '';
 
 	/**
 	 * @var  string  base namespace for the package (with trailing backslash when not empty)
+	 *
+	 * @since  2.0.0
 	 */
 	protected $namespace = '';
 
 	/**
 	 * @var  string  string to prefix the Controller classname with, will be relative to the base namespace
+	 *
+	 * @since  2.0.0
 	 */
 	protected $class_prefixes = array(
 		'controller'  => 'Controller\\',
@@ -26,21 +49,29 @@ class Package implements Loadable
 
 	/**
 	 * @var  array  package modules with array(relative path => relative subnamespace) (with trailing backslash)
+	 *
+	 * @since  2.0.0
 	 */
 	protected $modules = array();
 
 	/**
 	 * @var  array  registered classes, without the base namespace
+	 *
+	 * @since  2.0.0
 	 */
 	protected $classes = array();
 
 	/**
 	 * @var  array  classes that are aliased: classname => actual class
+	 *
+	 * @since  2.0.0
 	 */
 	protected $class_aliases = array();
 
 	/**
 	 * @var  bool|string  whether this package is routable (bool) or routability is triggered by a prefix (string)
+	 *
+	 * @since  2.0.0
 	 */
 	protected $routable = false;
 
@@ -48,6 +79,8 @@ class Package implements Loadable
 	 * Returns the base path for this package
 	 *
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function path()
 	{
@@ -59,6 +92,8 @@ class Package implements Loadable
 	 *
 	 * @param   string  $class
 	 * @return  bool
+	 *
+	 * @since  2.0.0
 	 */
 	public function load_class($class)
 	{
@@ -121,6 +156,8 @@ class Package implements Loadable
 	 * @param   string  $class     classname relative to base/module namespace
 	 * @param   string  $basepath
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	protected function class_to_path($fullname, $class, $basepath)
 	{
@@ -141,6 +178,8 @@ class Package implements Loadable
 	 *
 	 * @param   string  $path
 	 * @return  Package
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_path($path)
 	{
@@ -153,6 +192,8 @@ class Package implements Loadable
 	 *
 	 * @param   string  $namespace
 	 * @return  Package
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_namespace($namespace)
 	{
@@ -166,6 +207,8 @@ class Package implements Loadable
 	 * @param   string  $path
 	 * @param   string  $namespace
 	 * @return  Package
+	 *
+	 * @since  2.0.0
 	 */
 	public function add_module($path, $namespace)
 	{
@@ -178,6 +221,8 @@ class Package implements Loadable
 	 *
 	 * @param   string  $path
 	 * @return  Package
+	 *
+	 * @since  2.0.0
 	 */
 	public function remove_module($path)
 	{
@@ -191,6 +236,8 @@ class Package implements Loadable
 	 * @param   string  $class
 	 * @param   string  $path
 	 * @return  Package
+	 *
+	 * @since  2.0.0
 	 */
 	public function add_class($class, $path)
 	{
@@ -202,6 +249,8 @@ class Package implements Loadable
 	 *
 	 * @param   array  $classes
 	 * @return  Package
+	 *
+	 * @since  2.0.0
 	 */
 	public function add_classes(array $classes)
 	{
@@ -218,6 +267,8 @@ class Package implements Loadable
 	 * @param   string   $alias
 	 * @param   string   $actual
 	 * @return  Package  for method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function add_class_alias($alias, $actual)
 	{
@@ -229,6 +280,8 @@ class Package implements Loadable
 	 *
 	 * @param   array    $classes
 	 * @return  Package  for method chaining
+	 *
+	 * @since  2.0.0
 	 */
 	public function add_class_aliases(array $classes = array())
 	{
@@ -244,6 +297,8 @@ class Package implements Loadable
 	 *
 	 * @param   string  $class
 	 * @return  Package
+	 *
+	 * @since  2.0.0
 	 */
 	public function remove_class($class)
 	{
@@ -256,6 +311,8 @@ class Package implements Loadable
 	 *
 	 * @param   bool  $routable
 	 * @return  Package
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_routable($routable)
 	{
@@ -264,10 +321,13 @@ class Package implements Loadable
 	}
 
 	/**
-	 * Changes the Controller classname prefix
+	 * Change a special class type prefix
 	 *
+	 * @param   string  $type
 	 * @param   string  $prefix
 	 * @return  Package
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_class_type_prefix($type, $prefix)
 	{
@@ -280,6 +340,8 @@ class Package implements Loadable
 	 *
 	 * @param   string  $type
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	public function class_type_prefix($type)
 	{
@@ -293,6 +355,8 @@ class Package implements Loadable
 	 * @param   string  $type  for example: controller or task
 	 * @param   string  $path
 	 * @return  bool|string
+	 *
+	 * @since  2.0.0
 	 */
 	public function find_class($type, $path)
 	{
@@ -340,8 +404,9 @@ class Package implements Loadable
 	 *
 	 * @param   string  $location
 	 * @param   string  $file
-	 * @param   string  $basepath
 	 * @return  bool|string
+	 *
+	 * @since  2.0.0
 	 */
 	public function find_file($location, $file)
 	{
