@@ -12,7 +12,7 @@
  * Fetch the Fuel Environment
  *
  * @param   null|string  $var
- * @return  mixed
+ * @return  Fuel\Kernel\Environment
  *
  * @since  2.0.0
  */
@@ -26,13 +26,13 @@ function _env($var = null)
  * Return the current active Application
  *
  * @param   null|string  $var
- * @return  mixed
+ * @return  Fuel\Kernel\Application\Base
  *
  * @since  2.0.0
  */
 function _app($var = null)
 {
-	if ( ! ($app = _env()->active_app()))
+	if ( ! ($app = _env()->active_application()))
 	{
 		return null;
 	}
@@ -45,7 +45,7 @@ function _app($var = null)
  * Return the current active Request
  *
  * @param   null|string  $var
- * @return  mixed
+ * @return  Fuel\Kernel\Request\Base
  *
  * @since  2.0.0
  */
@@ -71,6 +71,27 @@ function _req($var = null)
 function _forge($classname)
 {
 	return call_user_func_array(array(_app() ?: _env(), 'forge'), func_get_args());
+}
+
+/**
+ * Checks if a return value is a Closure without params, and if
+ * so executes it before returning it.
+ *
+ * @param   mixed  $val
+ * @return  mixed
+ */
+function __val($val)
+{
+	if ($val instanceof Closure)
+	{
+		$refl = new ReflectionFunction($val);
+		if ($refl->getNumberOfParameters() === 0)
+		{
+			return call_user_func($val);
+		}
+	}
+
+	return $val;
 }
 
 /**

@@ -64,7 +64,7 @@ class Fuel extends Classes\Route\Base
 	public function matches($uri)
 	{
 		$request = $this->app->active_request();
-		if ( ! empty($this->methods) and ! in_array(strtoupper($request->input()->method()), $this->methods))
+		if ( ! empty($this->methods) and ! in_array(strtoupper($request->input->method()), $this->methods))
 		{
 			return false;
 		}

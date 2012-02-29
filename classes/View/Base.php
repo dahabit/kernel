@@ -96,7 +96,7 @@ class Base implements Viewable
 			throw new \LogicException('Properties with a single underscore prefix are preserved for Viewable usage.');
 		}
 
-		$this->_data[$name] = $value;
+		$this->_data[$name] = __val($value);
 	}
 
 	/**
@@ -145,7 +145,7 @@ class Base implements Viewable
 
 		// Then make sure the Request that created this is active
 		$request_activated = false;
-		if (_app()->active_request() !== $this->_context)
+		if ($this->_app->active_request() !== $this->_context)
 		{
 			$this->_context->activate();
 			$request_activated = true;

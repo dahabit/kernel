@@ -75,22 +75,22 @@ abstract class Base
 			{
 				$return[$k] = $this->get($k, $default);
 			}
-			return $return;
+			return __val($return);
 		}
 
 		// When found, return
 		if (array_get_dot_key($key, $this->_data, $return))
 		{
-			return $return;
+			return __val($return);
 		}
 		// Attempt to find child that matches first segment and if so attempt there
 		elseif (($pos = strpos($key, '.')) and isset($this->_children[$name = substr($key, 0, $pos)]))
 		{
-			return $this->_children[$name]->get(substr($key, $pos + 1), $default);
+			return __val($this->_children[$name]->get(substr($key, $pos + 1), $default));
 		}
 
 		// Failure
-		return $default;
+		return __val($default);
 	}
 
 	/**
@@ -111,7 +111,7 @@ abstract class Base
 			return $this;
 		}
 
-		array_set_dot_key($key, $this->_data, $value);
+		array_set_dot_key($key, $this->_data, __val($value));
 		return $this;
 	}
 

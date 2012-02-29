@@ -262,11 +262,9 @@ class Input
 		{
 			return $this->server('REMOTE_ADDR');
 		}
-		else
-		{
-			// detection failed, return the default
-			return $default;
-		}
+
+		// detection failed, return the default
+		return __val($default);
 	}
 
 	/**
@@ -297,7 +295,7 @@ class Input
 		}
 
 		// detection failed, return the default
-		return $default;
+		return __val($default);
 	}
 
 	/**
@@ -386,7 +384,7 @@ class Input
 		}
 		elseif ( ! array_get_dot_key($index, $this->files, $return))
 		{
-			return $this->parent ? $this->parent->file($index, $default) : $default;
+			return $this->parent ? $this->parent->file($index, $default) : __val($default);
 		}
 
 		return $return;
@@ -409,7 +407,7 @@ class Input
 		}
 		elseif ( ! array_get_dot_key($index, $this->uri_vars, $return))
 		{
-			return $this->parent ? $this->parent->query_string($index, $default) : $default;
+			return $this->parent ? $this->parent->query_string($index, $default) : __val($default);
 		}
 
 		return $return;
@@ -432,7 +430,7 @@ class Input
 		}
 		elseif ( ! array_get_dot_key($index, $this->input_vars, $return))
 		{
-			return $this->parent ? $this->parent->param($index, $default) : $default;
+			return $this->parent ? $this->parent->param($index, $default) : __val($default);
 		}
 
 		return $return;
@@ -455,7 +453,7 @@ class Input
 		}
 		elseif ( ! array_get_dot_key($index, $this->cookie, $return))
 		{
-			return $this->parent ? $this->parent->cookie($index, $default) : $default;
+			return $this->parent ? $this->parent->cookie($index, $default) : __val($default);
 		}
 
 		return $return;
@@ -482,7 +480,7 @@ class Input
 		}
 		elseif ( ! array_get_dot_key(strtoupper($index), $this->server_vars, $return))
 		{
-			return $this->parent ? $this->parent->server($index, $default) : $default;
+			return $this->parent ? $this->parent->server($index, $default) : __val($default);
 		}
 
 		return $return;

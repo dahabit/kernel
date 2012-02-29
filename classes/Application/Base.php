@@ -236,8 +236,8 @@ abstract class Base
 	 */
 	public function activate()
 	{
-		array_push($this->_before_activate, _env()->active_app());
-		_env()->set_active_app($this);
+		array_push($this->_before_activate, _env()->active_application());
+		_env()->set_active_application($this);
 		return $this;
 	}
 
@@ -248,7 +248,7 @@ abstract class Base
 	 */
 	public function deactivate()
 	{
-		_env()->set_active_app(array_pop($this->_before_activate));
+		_env()->set_active_application(array_pop($this->_before_activate));
 		return $this;
 	}
 

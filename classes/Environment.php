@@ -199,6 +199,8 @@ class Environment
 	 */
 	public function init(array $config)
 	{
+		$config = __val($config);
+
 		// Prevent double init
 		static $init = false;
 		if ($init)
@@ -464,7 +466,7 @@ class Environment
 	 *
 	 * @since  2.0.0
 	 */
-	public function app_class($appname)
+	public function application_class($appname)
 	{
 		if ( ! isset($this->apps[$appname]))
 		{
@@ -483,7 +485,7 @@ class Environment
 	 *
 	 * @since  2.0.0
 	 */
-	public function register_app($appname, $classname)
+	public function register_application($appname, $classname)
 	{
 		$this->apps[$appname] = $classname;
 		return $this;
@@ -597,7 +599,7 @@ class Environment
 	 *
 	 * @since  2.0.0
 	 */
-	public function set_active_app($app)
+	public function set_active_application($app)
 	{
 		$this->active_app = $app;
 		return $this;
@@ -610,7 +612,7 @@ class Environment
 	 *
 	 * @since  2.0.0
 	 */
-	public function active_app()
+	public function active_application()
 	{
 		return $this->active_app;
 	}

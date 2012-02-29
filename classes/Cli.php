@@ -156,7 +156,7 @@ class Cli
 	{
 		if ( ! isset($this->args[$name]))
 		{
-			return $default;
+			return __val($default);
 		}
 		return $this->args[$name];
 	}
@@ -315,6 +315,7 @@ class Cli
 	 */
 	public function write($text = '', $foreground = null, $background = null)
 	{
+		$text = __val($text);
 		if (is_array($text))
 		{
 			$text = implode(PHP_EOL, $text);
@@ -340,6 +341,7 @@ class Cli
 	 */
 	public function error($text = '', $foreground = 'light_red', $background = null)
 	{
+		$text = __val($text);
 		if (is_array($text))
 		{
 			$text = implode(PHP_EOL, $text);

@@ -39,7 +39,7 @@ class Fuel extends \Classes\Request\Base
 		// Create the new Input object when an array was passed
 		if (is_array($this->input))
 		{
-			$this->input = $app->forge('Input', $this->parent ? $this->parent->input() : _env('input'));
+			$this->input = $app->forge('Input', $this->parent ? $this->parent->input : _env('input'));
 		}
 	}
 
