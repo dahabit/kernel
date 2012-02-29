@@ -69,13 +69,24 @@ class Base implements Dependable
 	 */
 	public function get_class($classname)
 	{
+		// First check if classname is available as-is
 		$classlower = strtolower($classname);
 		if (isset($this->classes[$classlower]))
 		{
 			return $this->classes[$classlower];
 		}
 
-		return $this->parent ? $this->parent->get_class($classname) : $classname;
+		// Fall back on the environment if not found here
+		$translated = $this->parent ? $this->parent->get_class($classname) : $classname;
+
+		// When returned unchanged and includes a colon, retry without the colon
+		if ($pos = strrpos($translated, ':'))
+		{
+			return $this->get_class(substr($classname, 0, $pos));
+		}
+
+		// Nothing matched, return unchanged
+		return $classname;
 	}
 
 	/**
