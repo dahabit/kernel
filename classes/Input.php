@@ -1,7 +1,22 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel;
 
+/**
+ * Input
+ *
+ * Keeps the HTTP input for a request or the environment as a whole.
+ *
+ * @package  Fuel\Kernel
+ */
 class Input
 {
 	/**
@@ -49,19 +64,26 @@ class Input
 	 */
 	protected $files = array();
 
-	public function __construct(array $env_vars = array(), $parent = null)
+	/**
+	 * Constructor
+	 *
+	 * @param   array  $http_vars  HTTP input overwrites
+	 * @param   null   $parent     whether this input object falls back to another one
+	 * @return  void
+	 */
+	public function __construct(array $http_vars = array(), $parent = null)
 	{
-		isset($env_vars['server'])
-			? $this->server_vars = $env_vars['server']
+		isset($http_vars['server'])
+			? $this->server_vars = $http_vars['server']
 			: $this->server_vars =& $_SERVER;
 
-		isset($env_vars['method'])
-			? $this->http_method = $env_vars['method']
+		isset($http_vars['method'])
+			? $this->http_method = $http_vars['method']
 			: $this->http_method = $this->server('HTTP_X_HTTP_METHOD_OVERRIDE', $this->server('REQUEST_METHOD', 'GET'));
 
-		if (isset($env_vars['input']))
+		if (isset($http_vars['input']))
 		{
-			$this->input_vars = $env_vars['input'];
+			$this->input_vars = $http_vars['input'];
 		}
 		else
 		{
@@ -78,16 +100,16 @@ class Input
 			}
 		}
 
-		isset($env_vars['uri_vars'])
-			? $this->uri_vars = $env_vars['uri_vars']
+		isset($http_vars['uri_vars'])
+			? $this->uri_vars = $http_vars['uri_vars']
 			: $this->uri_vars =& $_GET;
 
-		isset($env_vars['cookie'])
-			? $this->cookie = $env_vars['cookie']
+		isset($http_vars['cookie'])
+			? $this->cookie = $http_vars['cookie']
 			: $this->cookie =& $_COOKIE;
 
-		isset($env_vars['files'])
-			? $this->files = $env_vars['files']
+		isset($http_vars['files'])
+			? $this->files = $http_vars['files']
 			: $this->files =& $_FILES;
 
 		$this->parent = $parent instanceof static ? $parent : null;
@@ -223,6 +245,7 @@ class Input
 	/**
 	 * Get the real ip address of the user.  Even if they are using a proxy.
 	 *
+	 * @param   string  @default  default return value when no IP is detected
 	 * @return  string  the real ip address of the user
 	 */
 	public function real_ip($default = '0.0.0.0')
@@ -231,18 +254,15 @@ class Input
 		{
 			return $this->server('HTTP_X_CLUSTER_CLIENT_IP');
 		}
-
-		if ($this->server('HTTP_X_FORWARDED_FOR') !== null)
+		elseif ($this->server('HTTP_X_FORWARDED_FOR') !== null)
 		{
 			return $this->server('HTTP_X_FORWARDED_FOR');
 		}
-
-		if ($this->server('HTTP_CLIENT_IP') !== null)
+		elseif ($this->server('HTTP_CLIENT_IP') !== null)
 		{
 			return $this->server('HTTP_CLIENT_IP');
 		}
-
-		if ($this->server('REMOTE_ADDR') !== null)
+		elseif ($this->server('REMOTE_ADDR') !== null)
 		{
 			return $this->server('REMOTE_ADDR');
 		}
@@ -252,7 +272,7 @@ class Input
 	}
 
 	/**
-	 * Return's the protocol that the request was made with
+	 * Returns the protocol that the request was made with
 	 *
 	 * @return  string
 	 */
@@ -268,7 +288,7 @@ class Input
 	}
 
 	/**
-	 * Return's whether this is an AJAX request or not
+	 * Returns whether this is an AJAX request or not
 	 *
 	 * @return  bool
 	 */
@@ -279,7 +299,7 @@ class Input
 	}
 
 	/**
-	 * Return's the referrer
+	 * Returns the referrer
 	 *
 	 * @param   string  $default
 	 * @return  string
@@ -290,7 +310,7 @@ class Input
 	}
 
 	/**
-	 * Return's the input method used (GET, POST, DELETE, etc.)
+	 * Returns the input method used (GET, POST, DELETE, etc.)
 	 *
 	 * @return  string
 	 */
@@ -300,7 +320,7 @@ class Input
 	}
 
 	/**
-	 * Return's the user agent
+	 * Returns the user agent
 	 *
 	 * @param   string  $default
 	 * @return  string

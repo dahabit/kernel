@@ -1,7 +1,22 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel;
 
+/**
+ * Error
+ *
+ * Deals with showing Exceptions and PHP errors.
+ *
+ * @package  Fuel\Kernel
+ */
 class Error
 {
 	/**
@@ -122,6 +137,13 @@ class Error
 		}
 	}
 
+	/**
+	 * Prepares Exception data for passage to the Viewable
+	 *
+	 * @param   \Exception  $e
+	 * @param   bool        $fatal
+	 * @return  array
+	 */
 	protected function prepare_exception(\Exception $e, $fatal = true)
 	{
 		// Convert exception to data array for error View

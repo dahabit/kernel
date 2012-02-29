@@ -1,7 +1,22 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel;
 
+/**
+ * Environment
+ *
+ * Sets up the environment for PHP and Fuel.
+ *
+ * @package  Fuel\Kernel
+ */
 class Environment
 {
 	/**
@@ -120,11 +135,10 @@ class Environment
 	protected $vars = array();
 
 	/**
-	 * @var  bool  whether or not classes from core are aliased to global
-	 * @deprecated  this is for Fuel 1.x BC
+	 * Constructor
+	 *
+	 * @return  void
 	 */
-	protected $global_core_alias = false;
-
 	public function __construct()
 	{
 		$this->vars['init_time'] = microtime(true);
@@ -227,6 +241,8 @@ class Environment
 
 	/**
 	 * Detects and configures the PHP Environment
+	 *
+	 * @return  void
 	 */
 	protected function php_env()
 	{
@@ -490,6 +506,7 @@ class Environment
 	/**
 	 * Fetch the mem usage change since Fuel Kernel init
 	 *
+	 * @param   bool  $peak  whether to report the peak usage instead of the current
 	 * @return  float
 	 */
 	public function mem_usage($peak = false)

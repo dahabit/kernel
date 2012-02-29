@@ -5,8 +5,19 @@ use Fuel\Kernel\Environment;
 
 class Loader
 {
+	/**
+	 * @var  int  Keyname for Application packages
+	 */
 	const TYPE_APP = 0;
+
+	/**
+	 * @var  int  Keyname for normal packages
+	 */
 	const TYPE_PACKAGE = 1000;
+
+	/**
+	 * @var  int  Keyname for "Core" packages (non routable, always last)
+	 */
 	const TYPE_CORE = 100000;
 
 	/**

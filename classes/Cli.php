@@ -1,8 +1,23 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel;
 use Fuel\Kernel\Application;
 
+/**
+ * CLI
+ *
+ * Interact with the command line by accepting input options, parameters and output text.
+ *
+ * @package  Fuel\Kernel
+ */
 class Cli
 {
 	/**
@@ -53,7 +68,10 @@ class Cli
 	);
 
 	/**
-	 * Parse all the CLI params
+	 * Constructor
+	 *
+	 * @param   array|null  $args  command line arguments in an array
+	 * @return  void
 	 */
 	public function __construct($args = null)
 	{
@@ -67,7 +85,8 @@ class Cli
 	/**
 	 * Magic Fuel method that is the setter for the current app
 	 *
-	 * @param  \Fuel\Kernel\Application\Base  $app
+	 * @param   \Fuel\Kernel\Application\Base  $app
+	 * @return  void
 	 */
 	public function _set_app(Application\Base $app)
 	{
@@ -88,7 +107,8 @@ class Cli
 	/**
 	 * Parses a given array into CLI arg array
 	 *
-	 * @param  array  $args
+	 * @param   array  $args
+	 * @return  void
 	 */
 	protected function parse_args(array $args)
 	{
@@ -111,7 +131,8 @@ class Cli
 	 * Named options must be in the following formats:
 	 * php index.php user -v --v -name=John --name=John
 	 *
-	 * @param   string|int  $name  the name of the option (int if unnamed)
+	 * @param   string|int  $name     the name of the option (int if unnamed)
+	 * @param   mixed       $default
 	 * @return  string
 	 */
 	public function option($name, $default = null)
@@ -129,7 +150,7 @@ class Cli
 	 * Named options must be in the following formats:
 	 * php index.php user -v --v -name=John --name=John
 	 *
-	 * @param   string|int  $name  the name of the option (int if unnamed)
+	 * @param   string|int  $prefix  the name of the option (int if unnamed)
 	 * @return  string
 	 */
 	public function input($prefix = '')
@@ -264,7 +285,10 @@ class Cli
 	 * Outputs a string to the cli. If you send an array it will implode them
 	 * with a line break.
 	 *
-	 * @param  string|array  $text  the text to output, or array of lines
+	 * @param   string|array  $text        the text to output, or array of lines
+	 * @param   null|string   $foreground  textcolor
+	 * @param   null|string   $background  text backgroundcolor
+	 * @return  void
 	 */
 	public function write($text = '', $foreground = null, $background = null)
 	{
@@ -284,7 +308,10 @@ class Cli
 	/**
 	 * Outputs an error to the CLI using STDERR instead of STDOUT
 	 *
-	 * @param  string|array  $text  the text to output, or array of errors
+	 * @param   string|array  $text  the text to output, or array of errors
+	 * @param   null|string   $foreground  textcolor
+	 * @param   null|string   $background  text backgroundcolor
+	 * @return  void
 	 */
 	public function error($text = '', $foreground = 'light_red', $background = null)
 	{
@@ -315,8 +342,9 @@ class Cli
 	 * Waits a certain number of seconds, optionally showing a wait message and
 	 * waiting for a key press.
 	 *
-	 * @param  int   $seconds    number of seconds
-	 * @param  bool  $countdown  show a countdown or not
+	 * @param   int   $seconds    number of seconds
+	 * @param   bool  $countdown  show a countdown or not
+	 * @return  void
 	 */
 	public function wait($seconds = 0, $countdown = false)
 	{
@@ -360,7 +388,8 @@ class Cli
 	/**
 	 * Enter a number of empty lines
 	 *
-	 * @param  int  Number of lines to output
+	 * @param   int  Number of lines to output
+	 * @return  void
 	 */
 	public function new_line($num = 1)
 	{
@@ -373,6 +402,8 @@ class Cli
 
 	/**
 	 * Clears the screen of output
+	 *
+	 * @return  void
 	 */
 	public function clear_screen()
 	{
@@ -434,7 +465,9 @@ class Cli
 	 * @author raccettura
 	 * @link http://robert.accettura.com/blog/2006/09/14/asynchronous-processing-with-php/
 	 *
-	 * @param   string  $call  the system call to make
+	 * @param   string  $call    the system call to make
+	 * @param   string  $output
+	 * @return  void
 	 */
 	public function spawn($call, $output = '/dev/null')
 	{
@@ -449,5 +482,4 @@ class Cli
 			pclose(popen($call.' > '.$output.' &', 'r'));
 		}
 	}
-
 }
