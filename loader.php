@@ -1,4 +1,12 @@
 <?php
+/**
+ * Generate Package Loader object and related configuration
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 // Add the Kernel path to the globally available paths
 _env()->add_path('kernel', __DIR__, true);
