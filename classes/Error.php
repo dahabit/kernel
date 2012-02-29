@@ -62,6 +62,21 @@ class Error
 	public $non_fatal_cache = array();
 
 	/**
+	 * @var  \Fuel\Kernel\Application\Base  app that created this request
+	 */
+	public $app;
+
+	/**
+	 * Magic Fuel method that is the setter for the current app
+	 *
+	 * @param  \Fuel\Kernel\Application\Base  $app
+	 */
+	public function _set_app(Application\Base $app)
+	{
+		$this->app = $app;
+	}
+
+	/**
 	 * PHP Exception handler
 	 *
 	 * @param   \Exception  $e  the exception
@@ -75,7 +90,7 @@ class Error
 		{
 			return $e->handle();
 		}
-		$this->show_error($e);
+		return $this->show_error($e);
 	}
 
 	/**
@@ -89,7 +104,7 @@ class Error
 	 */
 	public function show_error(\Exception $e)
 	{
-		$continue_on = _app() ? _app('config')->get('errors.continue_on', array()) : array();
+		$continue_on = $this->app->config->get('errors.continue_on', array());
 		$fatal       = ! in_array($e->getCode(), $continue_on);
 		$data        = $this->prepare_exception($e, $fatal);
 
@@ -100,7 +115,7 @@ class Error
 			{
 				ob_end_clean();
 			}
-			$ob_callback = _app() ? _app('config')->get('ob_callback', null) : null;
+			$ob_callback = $this->app->config->get('ob_callback', null);
 			ob_start($ob_callback);
 		}
 		else
@@ -110,7 +125,7 @@ class Error
 
 		if (_env('is_cli'))
 		{
-			$cli = _app() ? _app()->get_object('Cli') : _env()->get_object('Cli');
+			$cli = $this->app->config->get_object('Cli');
 			$cli->write($cli->color($data['severity'].' - '.$data['message'].' in '.$data['filepath'].' on line '.$data['error_line'], 'red'));
 			$fatal and exit(1);
 			return;
@@ -128,7 +143,7 @@ class Error
 
 			$data['non_fatal'] = $this->non_fatal_cache;
 
-			$view_fatal = _app() ? _app('config')->get('errors.view_fatal') : '';
+			$view_fatal = $this->app->config->get('errors.view_fatal', false);
 			if ($view_fatal)
 			{
 				exit(_forge('View', $view_fatal, $data, false));
@@ -141,7 +156,7 @@ class Error
 
 		try
 		{
-			echo _forge('View', _env('config')->get('errors.view_error'), $data, false);
+			echo _forge('View', $this->app->config->get('errors.view_error', 'error/500'), $data, false);
 		}
 		catch (\Exception $e)
 		{
