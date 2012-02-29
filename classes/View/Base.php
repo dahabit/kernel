@@ -152,6 +152,14 @@ class Base implements Viewable
 	 */
 	public function __toString()
 	{
+		// Check if app is active
+		$application_activated = false;
+		if (_app() !== $this->_app)
+		{
+			$this->_app->activate();
+			$application_activated = true;
+		}
+
 		// Then make sure the Request that created this is active
 		$request_activated = false;
 		if ($this->_app->active_request() !== $this->_context)
@@ -165,6 +173,7 @@ class Base implements Viewable
 
 		// When Request/Application was activated, deactivate now we're done
 		$request_activated and $this->_context->deactivate();
+		$application_activated and $this->_app->deactivate();
 
 		return $view;
 	}

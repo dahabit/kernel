@@ -86,7 +86,7 @@ class Base implements Dependable
 		}
 
 		// Nothing matched, return unchanged
-		return $classname;
+		return $translated;
 	}
 
 	/**
