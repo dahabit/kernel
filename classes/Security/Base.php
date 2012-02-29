@@ -1,27 +1,52 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\Security;
 use Fuel\Kernel\Application;
 
+/**
+ * Base Security class
+ *
+ * Container for various Security handlers.
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  1.0.0
+ */
 class Base
 {
 	/**
 	 * @var  \Fuel\Kernel\Application\Base
+	 *
+	 * @since  2.0.0
 	 */
 	protected $app;
 
 	/**
 	 * @var  \Fuel\Kernel\Security\Crypt\Cryptable
+	 *
+	 * @since  2.0.0
 	 */
 	public $crypt;
 
 	/**
 	 * @var  \Fuel\Kernel\Security\Csrf\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public $csrf;
 
 	/**
 	 * @var  \Fuel\Kernel\Security\String\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public $string;
 
@@ -29,6 +54,8 @@ class Base
 	 * Magic Fuel method that is the setter for the current app
 	 *
 	 * @param  \Fuel\Kernel\Application\Base  $app
+	 *
+	 * @since  2.0.0
 	 */
 	public function _set_app(Application\Base $app)
 	{
@@ -39,6 +66,8 @@ class Base
 	 * Returns the App's Crypt instance
 	 *
 	 * @return  Crypt\Cryptable
+	 *
+	 * @since  2.0.0
 	 */
 	public function crypt()
 	{
@@ -53,6 +82,8 @@ class Base
 	 * Returns the App's Csrf instance
 	 *
 	 * @return  Csrf\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public function csrf()
 	{
@@ -67,6 +98,8 @@ class Base
 	 * Returns the App's String cleaner instance
 	 *
 	 * @return  String\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public function string()
 	{
@@ -82,6 +115,8 @@ class Base
 	 *
 	 * @param   string  $uri
 	 * @return  string
+	 *
+	 * @since  1.1.0
 	 */
 	public function clean_uri($uri)
 	{
@@ -93,6 +128,8 @@ class Base
 	 *
 	 * @param   mixed  $input
 	 * @return  mixed
+	 *
+	 * @since  1.0.0
 	 */
 	public function clean($input)
 	{
@@ -103,6 +140,8 @@ class Base
 	 * Fetch the CSRF token
 	 *
 	 * @return string
+	 *
+	 * @since  1.0.0
 	 */
 	public function get_token()
 	{
@@ -114,6 +153,8 @@ class Base
 	 *
 	 * @param   null|string  $token
 	 * @return  bool
+	 *
+	 * @since  1.0.0
 	 */
 	public function check_token($token = null)
 	{

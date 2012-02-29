@@ -1,12 +1,31 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\Security\String;
 use Fuel\Kernel\Application;
 
+/**
+ * Base String Security class
+ *
+ * Basis for classes dealing with securing strings.
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
+ */
 abstract class Base
 {
 	/**
 	 * @var  \Fuel\Kernel\Application\Base  app that created this
+	 *
+	 * @since  2.0.0
 	 */
 	protected $app;
 
@@ -14,6 +33,8 @@ abstract class Base
 	 * Magic Fuel method that is the setter for the current app
 	 *
 	 * @param  \Fuel\Kernel\Application\Base  $app
+	 *
+	 * @since  2.0.0
 	 */
 	public function _set_app(Application\Base $app)
 	{
@@ -26,6 +47,8 @@ abstract class Base
 	 * @param   mixed  $input
 	 * @return  mixed
 	 * @throws  \RuntimeException
+	 *
+	 * @since  2.0.0
 	 */
 	public function secure($input)
 	{
@@ -94,6 +117,8 @@ abstract class Base
 	 *
 	 * @param   string
 	 * @return  string
+	 *
+	 * @since  2.0.0
 	 */
 	abstract public function clean($input);
 }

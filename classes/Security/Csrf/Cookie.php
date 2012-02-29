@@ -1,17 +1,38 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\Security\Csrf;
 use Fuel\Kernel\Application;
 
+/**
+ * Cookie CSRF Security class
+ *
+ * Cookie based tokens to secure against CSRF attacks.
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  2.0.0
+ */
 class Cookie extends Base
 {
 	/**
 	 * @var  string  token key used in cookie
+	 *
+	 * @since  2.0.0
 	 */
 	protected $token_key = 'fuel_csrf_token';
 
 	/**
 	 * @var  null|string  token for the next Request
+	 *
+	 * @since  2.0.0
 	 */
 	protected $new_token;
 
@@ -40,6 +61,8 @@ class Cookie extends Base
 			// @todo implement cookie class
 			// \Cookie::set(static::$csrf_token_key, static::$csrf_token, $expiration);
 		}
+
+		return $this;
 	}
 
 	public function get_token()

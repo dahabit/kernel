@@ -1,35 +1,71 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\Route;
 use Classes;
 
+/**
+ * Fuel Route class
+ *
+ * Default Route object class used in Fuel.
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  1.1.0
+ */
 class Fuel extends Classes\Route\Base
 {
 	/**
 	 * @var  array  HTTP methods
+	 *
+	 * @since  1.1.0
 	 */
 	protected $methods = array();
 
 	/**
 	 * @var  string  uri this must match
+	 *
+	 * @since  1.1.0
 	 */
 	protected $search = '';
 
 	/**
 	 * @var  string  uri it translates to
+	 *
+	 * @since  1.1.0
 	 */
 	protected $translation = '';
 
 	/**
 	 * @var  callback  something callable that matched
+	 *
+	 * @since  2.0.0
 	 */
 	protected $match;
 
 	/**
 	 * @var  array  URI segments
+	 *
+	 * @since  2.0.0
 	 */
 	protected $segments = array();
 
+	/**
+	 * Constructor
+	 *
+	 * @param  string|\Closure       $search
+	 * @param  null|string|\Closure  $translation
+	 * @param  array                 $methods
+	 *
+	 * @since  1.0.0
+	 */
 	public function __construct($search, $translation = null, array $methods = array())
 	{
 		$this->methods = $methods;
@@ -60,6 +96,8 @@ class Fuel extends Classes\Route\Base
 	 *
 	 * @param   string  $uri
 	 * @return  bool    whether it matched
+	 *
+	 * @since  2.0.0
 	 */
 	public function matches($uri)
 	{
@@ -98,6 +136,8 @@ class Fuel extends Classes\Route\Base
 	 *
 	 * @param   string  $translation
 	 * @return  bool
+	 *
+	 * @since  1.1.0
 	 */
 	protected function parse($translation)
 	{
@@ -124,6 +164,8 @@ class Fuel extends Classes\Route\Base
 	 *
 	 * @param   $uri
 	 * @return  bool|string
+	 *
+	 * @since  2.0.0
 	 */
 	protected function find_class($uri)
 	{
@@ -143,6 +185,8 @@ class Fuel extends Classes\Route\Base
 	 * Return an array with 1. callable to be the controller and 2. additional params array
 	 *
 	 * @return  array(callback, params)
+	 *
+	 * @since  2.0.0
 	 */
 	public function match()
 	{

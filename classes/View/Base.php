@@ -1,41 +1,79 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\View;
 use Fuel\Kernel\Application;
 use Fuel\Kernel\Parser;
 
+/**
+ * Base View class
+ *
+ * Default Fuel View implementation.
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  1.0.0
+ */
 class Base implements Viewable
 {
 	/**
 	 * @var  null|string  path to the View file
+	 *
+	 * @since  1.0.0
 	 */
 	protected $_path;
 
 	/**
 	 * @var  null|string  raw template to use as View
+	 *
+	 * @since  2.0.0
 	 */
 	protected $_template;
 
 	/**
 	 * @var  array  data to be passed to the view
+	 *
+	 * @since  1.0.0
 	 */
 	protected $_data = array();
 
 	/**
 	 * @var  \Fuel\Kernel\Parser\Parsable
+	 *
+	 * @since  2.0.0
 	 */
 	protected $_parser = 'Parser:View';
 
 	/**
 	 * @var  \Fuel\Kernel\Application\Base
+	 *
+	 * @since  2.0.0
 	 */
 	protected $_app;
 
 	/**
 	 * @var  \Fuel\Kernel\Request\Base
+	 *
+	 * @since  1.1.0
 	 */
 	protected $_context;
 
+	/**
+	 * Constructor
+	 *
+	 * @param  null|string  $file
+	 * @param  array        $data
+	 * @param  null|string|\Fuel\Kernel\Parser\Parsable  $parser
+	 *
+	 * @since  1.0.0
+	 */
 	public function __construct($file = null, array $data = array(), $parser = null)
 	{
 		$this->_path = $file;
@@ -57,6 +95,8 @@ class Base implements Viewable
 	 * Magic Fuel method that is the setter for the current app
 	 *
 	 * @param  \Fuel\Kernel\Application\Base  $app
+	 *
+	 * @since  2.0.0
 	 */
 	public function _set_app(Application\Base $app)
 	{
@@ -78,6 +118,8 @@ class Base implements Viewable
 	 *
 	 * @param   string  $file
 	 * @return  Base
+	 *
+	 * @since  1.0.0
 	 */
 	public function set_filename($file)
 	{
@@ -91,6 +133,8 @@ class Base implements Viewable
 	 *
 	 * @param   string  $template
 	 * @return  Base
+	 *
+	 * @since  2.0.0
 	 */
 	public function set_template($template)
 	{
@@ -105,6 +149,8 @@ class Base implements Viewable
 	 * @param   string  $name
 	 * @param   mixed   $value
 	 * @throws  \LogicException
+	 *
+	 * @since  1.0.0
 	 */
 	public function __set($name, $value)
 	{
@@ -122,6 +168,8 @@ class Base implements Viewable
 	 * @param   string  $name
 	 * @return  mixed
 	 * @throws  \OutOfBoundsException
+	 *
+	 * @since  1.0.0
 	 */
 	public function & __get($name)
 	{
@@ -137,6 +185,8 @@ class Base implements Viewable
 	 * Render the View
 	 *
 	 * @return  string
+	 *
+	 * @since  1.0.0
 	 */
 	protected function render()
 	{
@@ -149,6 +199,8 @@ class Base implements Viewable
 	 * Turns the presenter into a string
 	 *
 	 * @return  string
+	 *
+	 * @since  1.0.0
 	 */
 	public function __toString()
 	{
