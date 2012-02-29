@@ -18,12 +18,8 @@
  */
 function _env($var = null)
 {
-	if ($var)
-	{
-		return Fuel\Kernel\Environment::instance()->{$var};
-	}
-
-	return Fuel\Kernel\Environment::instance();
+	$env = Fuel\Kernel\Environment::instance();
+	return is_null($var) ? $env : $env->{$var};
 }
 
 /**
@@ -36,9 +32,7 @@ function _env($var = null)
  */
 function _app($var = null)
 {
-	$app = _env()->active_app();
-
-	if ( ! $app)
+	if ( ! ($app = _env()->active_app()))
 	{
 		return null;
 	}
@@ -58,7 +52,6 @@ function _app($var = null)
 function _req($var = null)
 {
 	$req = ($app = _app()) ? $app->active_request() : null;
-
 	if ( ! $req)
 	{
 		return null;
@@ -70,11 +63,12 @@ function _req($var = null)
 /**
  * Forge an object
  *
+ * @param   string  $classname
  * @return  object
  *
  * @since  2.0.0
  */
-function _forge()
+function _forge($classname)
 {
 	return call_user_func_array(array(_app() ?: _env(), 'forge'), func_get_args());
 }
