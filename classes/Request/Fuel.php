@@ -1,26 +1,57 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\Request;
 use Fuel\Kernel\Application;
 use Fuel\Kernel\Response;
 
+/**
+ * Fuel Request class
+ *
+ * Default implementation of the Request base class for Fuel.
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  1.0.0
+ */
 class Fuel extends \Classes\Request\Base
 {
 	/**
 	 * @var  string
+	 *
+	 * @since  2.0.0
 	 */
 	public $request_uri = '';
 
 	/**
 	 * @var  callback
+	 *
+	 * @since  2.0.0
 	 */
 	public $controller;
 
 	/**
 	 * @var  array
+	 *
+	 * @since  2.0.0
 	 */
 	public $controller_params = array();
 
+	/**
+	 * Constructor
+	 *
+	 * @param  string  $uri
+	 * @param  array|\Fuel\Kernel\Input  $input
+	 *
+	 * @since  1.0.0
+	 */
 	public function __construct($uri = '', array $input = array())
 	{
 		$this->request_uri  = '/'.trim((string) $uri, '/');
@@ -31,6 +62,8 @@ class Fuel extends \Classes\Request\Base
 	 * Magic Fuel method that is the setter for the current app
 	 *
 	 * @param  \Fuel\Kernel\Application\Base  $app
+	 *
+	 * @since  2.0.0
 	 */
 	public function _set_app(Application\Base $app)
 	{
@@ -49,6 +82,8 @@ class Fuel extends \Classes\Request\Base
 	 * Must use $this->activate() as the first statement and $this->deactivate() as the last one
 	 *
 	 * @return  Fuel
+	 *
+	 * @since  1.0.0
 	 */
 	public function execute()
 	{

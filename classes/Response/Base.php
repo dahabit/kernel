@@ -1,12 +1,32 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 namespace Fuel\Kernel\Response;
 use Fuel\Kernel\Application;
 
+/**
+ * Base Response Class
+ *
+ * Default implementation of the Responsible interface. Objects of this class
+ * are valid Responses from a Controller to a Request.
+ *
+ * @package  Fuel\Kernel
+ *
+ * @since  1.0.0
+ */
 class Base implements Responsible
 {
 	/**
 	 * @var  array  An array of status codes and messages
+	 *
+	 * @since  1.0.0
 	 */
 	public static $statuses = array(
 		100 => 'Continue',
@@ -59,29 +79,40 @@ class Base implements Responsible
 
 	/**
 	 * @var  int  The HTTP status code
+	 *
+	 * @since  1.0.0
 	 */
 	public $status = 200;
 
 	/**
 	 * @var  array  An array of headers
+	 *
+	 * @since  1.0.0
 	 */
 	public $headers = array();
 
 	/**
 	 * @var  string  The content of the response
+	 *
+	 * @since  1.0.0
 	 */
 	public $body = null;
 
 	/**
 	 * @var  \Fuel\Kernel\Request\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public $request;
 
 	/**
-	 * Sets up the response with a body and a status code.
+	 * Constructor
 	 *
-	 * @param  string  $body    The response body
-	 * @param  string  $status  The response status
+	 * @param  string  $body
+	 * @param  int     $status
+	 * @param  array   $headers
+	 *
+	 * @since  1.0.0
 	 */
 	public function __construct($body = '', $status = 200, array $headers = array())
 	{
@@ -97,6 +128,8 @@ class Base implements Responsible
 	 * Magic Fuel method that is the setter for the current app
 	 *
 	 * @param   \Fuel\Kernel\Application\Base  $app
+	 *
+	 * @since  2.0.0
 	 */
 	public function _set_app(Application\Base $app)
 	{
@@ -106,8 +139,10 @@ class Base implements Responsible
 	/**
 	 * Sets the response status code
 	 *
-	 * @param   string  $status  The status code
-	 * @return  $this
+	 * @param   int  $status  The status code
+	 * @return  Base
+	 *
+	 * @since  1.0.0
 	 */
 	public function set_status($status = 200)
 	{
@@ -120,8 +155,10 @@ class Base implements Responsible
 	 *
 	 * @param   string  $name     The header name
 	 * @param   string  $value    The header value
-	 * @param   string  $replace  Whether to replace existing value for the header
-	 * @return  $this
+	 * @param   bool    $replace  Whether to replace existing value for the header
+	 * @return  Base
+	 *
+	 * @since  1.0.0
 	 */
 	public function set_header($name, $value, $replace = true)
 	{
@@ -144,6 +181,8 @@ class Base implements Responsible
 	 * @param   mixed   $default  Default return when header not set
 	 * @param   bool    $all      Whether to return all or just the last
 	 * @return  array|string
+	 *
+	 * @since  2.0.0
 	 */
 	public function get_header($name = null, $default = null, $all = false)
 	{
@@ -163,7 +202,9 @@ class Base implements Responsible
 	 * Sets (or returns) the body for the response
 	 *
 	 * @param   string  $value  The response content
-	 * @return  $this|string
+	 * @return  Base|string
+	 *
+	 * @since  1.0.0
 	 */
 	public function body($value = null)
 	{
@@ -182,6 +223,8 @@ class Base implements Responsible
 	 *
 	 * @return  Base
 	 * @throws  \RuntimeException
+	 *
+	 * @since  1.0.0
 	 */
 	public function send_headers()
 	{
@@ -220,6 +263,8 @@ class Base implements Responsible
 	 * Returns the body as a string.
 	 *
 	 * @return  string
+	 *
+	 * @since  1.0.0
 	 */
 	public function __toString()
 	{
