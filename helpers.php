@@ -80,7 +80,7 @@ function _forge($classname)
  * @param   null|string  $name
  * @return  object
  */
-function _($classname, $name = null)
+function _obj($classname, $name = null)
 {
 	$dic = _app('dic') ?: _env('dic');
 	return $dic->get_object($classname, $name);
