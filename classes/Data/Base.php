@@ -20,6 +20,15 @@ abstract class Base
 	 */
 	protected $_app;
 
+	public function __construct(array $data = array(), $name = null, $parent = null)
+	{
+		$this->_data = $data;
+		if (is_string($name) and $parent instanceof self)
+		{
+			$parent->add_child($name, $this);
+		}
+	}
+
 	/**
 	 * Magic Fuel method that is the setter for the current app
 	 *
@@ -28,6 +37,19 @@ abstract class Base
 	public function _set_app(Application\Base $app)
 	{
 		$this->_app = $app;
+	}
+
+	/**
+	 * Add a named child Data object
+	 *
+	 * @param   string  $name
+	 * @param   Base    $child
+	 * @return  Base
+	 */
+	public function add_child($name, self $child)
+	{
+		$this->_children[$name] = $child;
+		return $this;
 	}
 
 	/**
@@ -56,7 +78,19 @@ abstract class Base
 			return $return;
 		}
 
-		return array_get_dot_key($key, $this->_data, $return) ? $return : $default;
+		// When found, return
+		if (array_get_dot_key($key, $this->_data, $return))
+		{
+			return $return;
+		}
+		// Attempt to find child that matches first segment and if so attempt there
+		elseif (($pos = strpos($key, '.')) and isset($this->_children[$name = substr($key, 0, $pos)]))
+		{
+			return $this->_children[$name]->get(substr($key, $pos + 1), $default);
+		}
+
+		// Failure
+		return $default;
 	}
 
 	/**
@@ -79,5 +113,28 @@ abstract class Base
 
 		array_set_dot_key($key, $this->_data, $value);
 		return $this;
+	}
+
+	/**
+	 * PHP magic method, gets a simple (non dot-notated) value from config
+	 *
+	 * @param   string  $property
+	 * @return  mixed
+	 */
+	public function __get($property)
+	{
+		return $this->get($property);
+	}
+
+	/**
+	 * PHP magic method, sets a simple (non dot-notated) value in config
+	 *
+	 * @param   string  $property
+	 * @param   mixed   $value
+	 * @return  void
+	 */
+	public function __set($property, $value)
+	{
+		$this->set($property, $value);
 	}
 }
