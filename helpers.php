@@ -63,7 +63,7 @@ function _req($var = null)
 /**
  * Forge an object
  *
- * @param   string  $classname
+ * @param   string|array  $classname  classname or array($obj_name, $classname)
  * @return  object
  *
  * @since  2.0.0
@@ -71,6 +71,19 @@ function _req($var = null)
 function _forge($classname)
 {
 	return call_user_func_array(array(_app() ?: _env(), 'forge'), func_get_args());
+}
+
+/**
+ * Get an instance of a class
+ *
+ * @param   string       $classname
+ * @param   null|string  $name
+ * @return  object
+ */
+function _($classname, $name = null)
+{
+	$dic = _app('dic') ?: _env('dic');
+	return $dic->get_object($classname, $name);
 }
 
 /**

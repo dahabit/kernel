@@ -631,12 +631,12 @@ class Environment
 	/**
 	 * Forges a new object for the given class, supporting DI replacement
 	 *
-	 * @param   string  $class
+	 * @param   string|array  $classname  classname or array($obj_name, $classname)
 	 * @return  object
 	 *
 	 * @since  2.0.0
 	 */
-	public function forge($class)
+	public function forge($classname)
 	{
 		return call_user_func_array(array($this->dic, 'forge'), func_get_args());
 	}

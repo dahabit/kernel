@@ -92,25 +92,34 @@ class Base implements Dependable
 	/**
 	 * Forges a new object for the given class
 	 *
-	 * @param   string  $classname
+	 * @param   string|array  $classname  classname or array($obj_name, $classname)
 	 * @return  object
 	 */
 	public function forge($classname)
 	{
-		$classname = $this->get_class($classname);
-		if ( ! class_exists($classname))
+		// Detect if a name was given for the DiC
+		$name = null;
+		is_array($classname) and list($name, $classname) = $classname;
+
+		$class = $this->get_class($classname);
+		if ( ! class_exists($class))
 		{
-			throw new \RuntimeException('Class "'.$classname.'" not found.');
+			throw new \RuntimeException('Class "'.$class.'" not found.');
 		}
 
 		$args        = array_slice(func_get_args(), 1);
-		$reflection  = new \ReflectionClass($classname);
+		$reflection  = new \ReflectionClass($class);
 		$instance    = $args ? $reflection->newInstanceArgs($args) : $reflection->newInstance();
 
 		// Setter support for the instance to know which app created it
 		if ($reflection->hasMethod('_set_app'))
 		{
 			$instance->_set_app($this->app);
+		}
+
+		if ( ! is_null($name))
+		{
+			$this->set_object($classname, $name, $instance);
 		}
 
 		return $instance;
