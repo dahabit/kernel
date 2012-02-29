@@ -71,7 +71,7 @@ abstract class Base
 		{
 			try
 			{
-				_loader()->load_package($pkg, Loader::TYPE_PACKAGE);
+				_env('loader')->load_package($pkg, Loader::TYPE_PACKAGE);
 			}
 			// ignore exception thrown for double package load
 			catch (\RuntimeException $e) {}
@@ -288,7 +288,7 @@ abstract class Base
 		// If not found or searching for multiple continue with packages
 		foreach ($this->packages as $pkg)
 		{
-			if ($path = _loader()->package($pkg)->find_file($location, $file))
+			if ($path = _env('loader')->package($pkg)->find_file($location, $file))
 			{
 				if ( ! $multiple)
 				{
@@ -337,7 +337,7 @@ abstract class Base
 		foreach ($this->packages as $pkg)
 		{
 			is_array($pkg) and $pkg = reset($pkg);
-			if ($found = _loader()->package($pkg)->find_class($type, $classname))
+			if ($found = _env('loader')->package($pkg)->find_class($type, $classname))
 			{
 				return $found;
 			}

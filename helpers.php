@@ -68,18 +68,6 @@ function _req($var = null)
 }
 
 /**
- * Fetch the Fuel loader
- *
- * @return  Fuel\Kernel\Loader
- *
- * @since  2.0.0
- */
-function _loader()
-{
-	return _env('loader');
-}
-
-/**
  * Forge an object
  *
  * @return  object

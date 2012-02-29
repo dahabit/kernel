@@ -159,7 +159,7 @@ class Loader
 	 */
 	public static function load_app($appname, \Closure $config)
 	{
-		$loader = _loader()->load_package($appname, Loader::TYPE_APP);
+		$loader = _env('loader')->load_package($appname, Loader::TYPE_APP);
 		$loader->set_routable(true);
 
 		$class = _env()->app_class($appname);
