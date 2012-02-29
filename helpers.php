@@ -1,10 +1,20 @@
 <?php
+/**
+ * Part of the FuelPHP framework.
+ *
+ * @package    Fuel\Kernel
+ * @version    2.0
+ * @license    MIT License
+ * @copyright  2010 - 2012 Fuel Development Team
+ */
 
 /**
  * Fetch the Fuel Environment
  *
  * @param   null|string  $var
  * @return  mixed
+ *
+ * @since  2.0.0
  */
 function _env($var = null)
 {
@@ -21,6 +31,8 @@ function _env($var = null)
  *
  * @param   null|string  $var
  * @return  mixed
+ *
+ * @since  2.0.0
  */
 function _app($var = null)
 {
@@ -40,6 +52,8 @@ function _app($var = null)
  *
  * @param   null|string  $var
  * @return  mixed
+ *
+ * @since  2.0.0
  */
 function _req($var = null)
 {
@@ -57,6 +71,8 @@ function _req($var = null)
  * Fetch the Fuel loader
  *
  * @return  Fuel\Kernel\Loader
+ *
+ * @since  2.0.0
  */
 function _loader()
 {
@@ -67,6 +83,8 @@ function _loader()
  * Forge an object
  *
  * @return  object
+ *
+ * @since  2.0.0
  */
 function _forge()
 {
@@ -77,10 +95,12 @@ function _forge()
  * Set a value on an array according to a dot-notated key
  *
  * @param   string              $key
- * @param   array|\ArrayAccess  $data
+ * @param   array|\ArrayAccess  $input
  * @param   bool                $setting
  * @return  bool
  * @throws  \InvalidArgumentException
+ *
+ * @since  2.0.0
  */
 function array_set_dot_key($key, &$input, $setting)
 {
@@ -114,10 +134,12 @@ function array_set_dot_key($key, &$input, $setting)
  * Get a value from an array according to a dot-notated key
  *
  * @param   string              $key
- * @param   array|\ArrayAccess  $data
+ * @param   array|\ArrayAccess  $input
  * @param   mixed               $return
  * @return  bool
  * @throws  \InvalidArgumentException
+ *
+ * @since  2.0.0
  */
 function array_get_dot_key($key, &$input, &$return)
 {
