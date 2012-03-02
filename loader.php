@@ -23,6 +23,7 @@ _env('dic')->set_classes(array(
 	'Request'          => 'Fuel\\Kernel\\Request\\Fuel',
 	'Response'         => 'Fuel\\Kernel\\Response\\Base',
 	'Route'            => 'Fuel\\Kernel\\Route\\Fuel',
+	'Route:Task'       => 'Fuel\\Kernel\\Route\\Task',
 	'Security'         => 'Fuel\\Kernel\\Security\\Base',
 	'Security_Csrf'    => 'Fuel\\Kernel\\Security\\Csrf\\Cookie',
 	'Security_String'  => 'Fuel\\Kernel\\Security\\String\\Htmlentities',
@@ -55,6 +56,9 @@ return _forge('Loader:Package')
 
 		'Classes\\Route\\Base'  => 'Fuel\\Kernel\\Route\\Base',
 		'Classes\\Route\\Fuel'  => 'Fuel\\Kernel\\Route\\Fuel',
+		'Classes\\Route\\Task'  => 'Fuel\\Kernel\\Route\\Task',
+
+		'Classes\\Task\\Base'   => 'Fuel\\Kernel\\Task\\Base',
 
 		'Classes\\View\\Base'  => 'Fuel\\Kernel\\View\\Base',
 	));
