@@ -220,7 +220,7 @@ class Environment
 		// Set (if array) or load (when empty/string) environments
 		$environments = isset($config['environments'])
 			? $config['environments']
-			: trim($config['paths']['fuel'], '\\/').'/environments.php';
+			: rtrim($config['paths']['fuel'], '\\/').'/environments.php';
 		is_string($environments)
 			and $environments = require $environments;
 		unset($config['environments']);
@@ -538,7 +538,7 @@ class Environment
 			throw new \OutOfBoundsException('Already a path registered for name: '.$name);
 		}
 
-		$this->paths[$name] = trim($path, '/\\').'/';
+		$this->paths[$name] = rtrim($path, '/\\').'/';
 		return $this;
 	}
 

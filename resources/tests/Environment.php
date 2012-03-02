@@ -113,9 +113,13 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('https://example.com/test/', $this->env->detect_base_url());
 	}
 
+	/**
+	 * Tests usage of setlocale(), this will not work on all systems
+	 */
 	public function test_set_locale()
 	{
-		$this->markTestIncomplete('Have to figure out how to reliably test this.');
+		$this->env->set_locale(null);
+		$this->assertAttributeEquals(null, 'locale', $this->env);
 	}
 
 	/**
