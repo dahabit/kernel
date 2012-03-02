@@ -53,11 +53,11 @@ class Environment
 	}
 
 	/**
-	 * @var  array  environment names with closures as values
+	 * @var  bool  whether init() has been run
 	 *
 	 * @since  2.0.0
 	 */
-	protected $environments = array();
+	protected $initialized = false;
 
 	/**
 	 * @var  string  name of the current environment
@@ -199,11 +199,9 @@ class Environment
 	 */
 	public function init(array $config)
 	{
-		// Prevent double init
-		static $init = false;
-		if ($init)
+		if ($this->initialized)
 		{
-			trigger_error('Environment config shouldn\'t be initiated more than once.', E_USER_NOTICE);
+			trigger_error('Environment config shouldn\'t be initiated more than once.', E_USER_ERROR);
 		}
 
 		// Fuel path must be given
@@ -220,20 +218,20 @@ class Environment
 		}
 
 		// Load environments
-		$this->environments = require trim($config['paths']['fuel'], '\\/').'/environments.php';
+		$environments = require trim($config['paths']['fuel'], '\\/').'/environments.php';
 
 		// Run default environment
 		$finish_callbacks = array();
-		if (isset($this->environments['__default']))
+		if (isset($environments['__default']))
 		{
-			$finish_callbacks[] = call_user_func($this->environments['__default'], $this);
+			$finish_callbacks[] = call_user_func($environments['__default'], $this);
 		}
 
 		// Run specific environment config when given
 		$config['name'] = isset($config['name']) ? $config['name'] : 'development';
-		if (isset($this->environments[$config['name']]))
+		if (isset($environments[$config['name']]))
 		{
-			$finish_callbacks[] = call_user_func($this->environments[$config['name']], $this);
+			$finish_callbacks[] = call_user_func($environments[$config['name']], $this);
 		}
 
 		// Separate out the packages for later usage (after loader init)
@@ -285,7 +283,7 @@ class Environment
 			is_callable($cb) and call_user_func($cb, $this);
 		}
 
-		$init = true;
+		$this->initialized = true;
 
 		return $this;
 	}
