@@ -13,33 +13,21 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
 	public $env;
 
 	/**
-	 * @var  array  to save some environment vars
+	 * Sets up a persistent environment object with some known server var values
+	 * and sets the timezone to a known setting.
 	 */
-	public $_saved = array();
-
 	public function setUp()
 	{
 		$this->env = new Environment();
-		$this->env->input = new Input();
+		$this->env->input = new Input(array(
+			'server' => array(
+				'HTTPS' => 'on',
+				'HTTP_HOST' => 'example.com',
+				'SCRIPT_NAME' => '/test/index.php',
+			),
+		));
 
-		$this->_saved['https']   = isset($_SERVER['HTTPS']) ? $_SERVER['HTTPS'] : null;
-		$_SERVER['HTTPS']        = 'on';
-		$this->_saved['host']    = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null;
-		$_SERVER['HTTP_HOST']    = 'example.com';
-		$this->_saved['script']  = isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : null;
-		$_SERVER['SCRIPT_NAME']  = '/test/index.php';
-
-		$this->_saved['timezone'] = date_default_timezone_get();
 		date_default_timezone_set('Europe/Amsterdam');
-	}
-
-	public function tearDown()
-	{
-		$_SERVER['HTTPS']        = $this->_saved['https'];
-		$_SERVER['HTTP_HOST']    = $this->_saved['host'];
-		$_SERVER['SCRIPT_NAME']  = $this->_saved['script'];
-
-		date_default_timezone_set($this->_saved['timezone']);
 	}
 
 	/**
@@ -106,6 +94,17 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function test_init_error_2nd_time(Environment $env)
 	{
+		$env->init(array());
+	}
+
+	/**
+	 * Test if init() without a path
+	 *
+	 * @expectedException RuntimeException
+	 */
+	public function test_init_error_without_path()
+	{
+		$env = new Environment();
 		$env->init(array());
 	}
 
