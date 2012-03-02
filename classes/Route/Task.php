@@ -85,6 +85,7 @@ class Task extends Classes\Route\Fuel
 	protected function find_class($uri)
 	{
 		$uri_array = explode('/', trim($uri, '/'));
+		$uri_array = array_map(function($val) { return ucfirst(strtolower($val)); }, $uri_array);
 		while ($uri_array)
 		{
 			if ($task = $this->app->find_class('Task', implode('/', $uri_array)))
