@@ -228,7 +228,7 @@ class Base implements Responsible
 	 */
 	public function send_headers()
 	{
-		$input = property_exists($this->request, 'input') ? $this->request->input : _env('input');
+		$input = property_exists($this->request, 'input') ? $this->request->input : $this->request->app->env->input;
 
 		if (headers_sent())
 		{

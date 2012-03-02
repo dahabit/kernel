@@ -22,6 +22,13 @@ namespace Fuel\Kernel;
 class Input
 {
 	/**
+	 * @var  \Fuel\Kernel\Environment
+	 *
+	 * @since  2.0.0
+	 */
+	protected $env;
+
+	/**
 	 * @var  Input  parent Input object to fall back on
 	 *
 	 * @since  2.0.0
@@ -137,6 +144,19 @@ class Input
 	}
 
 	/**
+	 * Fuel method that is the setter for the app's environment
+	 *
+	 * @param   \Fuel\Kernel\Environment  $env
+	 * @return  void
+	 *
+	 * @since  2.0.0
+	 */
+	public function _set_env(Environment $env)
+	{
+		$this->env = $env;
+	}
+
+	/**
 	 * Detects and returns the current URI based on a number of different server
 	 * variables.
 	 *
@@ -148,20 +168,6 @@ class Input
 	{
 		if ($this->detected_uri !== null)
 		{
-			return $this->detected_uri;
-		}
-
-		if (_env('is_cli'))
-		{
-			if ($uri = \Cli::option('uri') !== null)
-			{
-				$this->detected_uri = $uri;
-			}
-			else
-			{
-				$this->detected_uri = \Cli::option(1);
-			}
-
 			return $this->detected_uri;
 		}
 
@@ -189,14 +195,14 @@ class Input
 			}
 
 			// Remove the base URL from the URI
-			$base_url = parse_url(_env('base_url'), PHP_URL_PATH);
+			$base_url = parse_url($this->env->base_url, PHP_URL_PATH);
 			if ($uri != '' and strncmp($uri, $base_url, strlen($base_url)) === 0)
 			{
 				$uri = substr($uri, strlen($base_url));
 			}
 
 			// If we are using an index file (not mod_rewrite) then remove it
-			$index_file = _env('index_file');
+			$index_file = $this->env->index_file;
 			if ($index_file and strncmp($uri, $index_file, strlen($index_file)) === 0)
 			{
 				$uri = substr($uri, strlen($index_file));

@@ -44,6 +44,13 @@ class Loader
 	const TYPE_CORE = 100000;
 
 	/**
+	 * @var  \Fuel\Kernel\Environment
+	 *
+	 * @since  2.0.0
+	 */
+	protected $env;
+
+	/**
 	 * @var  array  active loaders in a prioritized list
 	 *
 	 * @since  2.0.0
@@ -67,6 +74,19 @@ class Loader
 	 * @since  2.0.0
 	 */
 	protected $__current_class_load = '';
+
+	/**
+	 * Fuel method that is the setter for the app's environment
+	 *
+	 * @param   \Fuel\Kernel\Environment  $env
+	 * @return  void
+	 *
+	 * @since  2.0.0
+	 */
+	public function _set_env(Environment $env)
+	{
+		$this->env = $env;
+	}
 
 	/**
 	 * Adds a package
@@ -103,6 +123,9 @@ class Loader
 			{
 				throw new \RuntimeException('Package already loaded, can\'t be loaded twice.');
 			}
+
+			// Set variable necessary for the package loader object
+			$env = $this->env;
 
 			// Fetch the Package loader
 			$loader = require $path.'loader.php';
@@ -174,13 +197,15 @@ class Loader
 	 *
 	 * @since  2.0.0
 	 */
-	public static function load_application($appname, \Closure $config)
+	public function load_application($appname, \Closure $config)
 	{
-		$loader = _env('loader')->load_package($appname, Loader::TYPE_APP);
+		$loader = $this->load_package($appname, Loader::TYPE_APP);
 		$loader->set_routable(true);
 
-		$class = _env()->application_class($appname);
-		return new $class($config, $loader);
+		$class = $this->env->application_class($appname);
+		$app = new $class($this->env, $config, $loader);
+
+		return $app;
 	}
 
 	/**

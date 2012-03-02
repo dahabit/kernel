@@ -9,6 +9,7 @@
  */
 
 namespace Fuel\Kernel\Loader;
+use Fuel\Kernel\Environment;
 
 /**
  * Loadable Interface
@@ -21,6 +22,16 @@ namespace Fuel\Kernel\Loader;
  */
 interface Loadable
 {
+	/**
+	 * Fuel method that is the setter for the app's environment
+	 *
+	 * @param   \Fuel\Kernel\Environment  $env
+	 * @return  void
+	 *
+	 * @since  2.0.0
+	 */
+	public function _set_env(Environment $env);
+
 	/**
 	 * Returns the base path for this package
 	 *

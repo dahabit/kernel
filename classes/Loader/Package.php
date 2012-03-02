@@ -9,6 +9,7 @@
  */
 
 namespace Fuel\Kernel\Loader;
+use Fuel\Kernel\Environment;
 
 /**
  * Package Loader
@@ -21,6 +22,11 @@ namespace Fuel\Kernel\Loader;
  */
 class Package implements Loadable
 {
+	/**
+	 * @var  \Fuel\Kernel\Environment
+	 */
+	protected $env;
+
 	/**
 	 * @var  string  basepath for the package
 	 *
@@ -74,6 +80,19 @@ class Package implements Loadable
 	 * @since  2.0.0
 	 */
 	protected $routable = false;
+
+	/**
+	 * Fuel method that is the setter for the app's environment
+	 *
+	 * @param   \Fuel\Kernel\Environment  $env
+	 * @return  void
+	 *
+	 * @since  2.0.0
+	 */
+	public function _set_env(Environment $env)
+	{
+		$this->env = $env;
+	}
 
 	/**
 	 * Returns the base path for this package

@@ -107,12 +107,12 @@ class Cli
 
 		if (is_null($this->args))
 		{
-			if ( ! _env('is_cli'))
+			if ( ! $this->app->env->is_cli)
 			{
 				throw new \Exception('Cli class cannot be instantiated empty outside of the command line.');
 			}
 
-			$input = $app->active_request() ? $app->active_request()->input : _env('input');
+			$input = $app->active_request() ? $app->active_request()->input : $this->app->env->input;
 			$this->parse_args($input->server('argv'));
 		}
 	}
@@ -174,7 +174,7 @@ class Cli
 	 */
 	public function input($prefix = '')
 	{
-		if (_env('readline_support'))
+		if ($this->app->env->readline_support)
 		{
 			return readline($prefix);
 		}
@@ -470,7 +470,7 @@ class Cli
 	 */
 	public function color($text, $foreground, $background = null)
 	{
-		$input = $this->app->active_request() ? $this->app->active_request()->input : _env('input');
+		$input = $this->app->active_request() ? $this->app->active_request()->input : $this->app->env->input;
 
 		if ($this->is_windows() and ! $input->server('ANSICON'))
 		{

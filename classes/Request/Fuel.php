@@ -10,6 +10,7 @@
 
 namespace Fuel\Kernel\Request;
 use Fuel\Kernel\Application;
+use Fuel\Kernel\Input;
 use Fuel\Kernel\Response;
 
 /**
@@ -52,10 +53,10 @@ class Fuel extends \Classes\Request\Base
 	 *
 	 * @since  1.0.0
 	 */
-	public function __construct($uri = '', array $input = array())
+	public function __construct($uri = '', $input = null)
 	{
 		$this->request_uri  = '/'.trim((string) $uri, '/');
-		$this->input        = $input ?: _env('input');
+		$this->input        = $input;
 	}
 
 	/**
@@ -72,7 +73,13 @@ class Fuel extends \Classes\Request\Base
 		// Create the new Input object when an array was passed
 		if (is_array($this->input))
 		{
-			$this->input = $app->forge('Input', $this->parent ? $this->parent->input : _env('input'));
+			$this->input = $app->forge('Input', $this->parent ? $this->parent->input : $this->app->env->input);
+		}
+
+		// If there's no valid input object as input: default to environment input
+		if ( ! $this->input instanceof Input)
+		{
+			$this->input = $this->app->env->input;
 		}
 	}
 

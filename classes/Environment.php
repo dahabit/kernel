@@ -203,7 +203,7 @@ class Environment
 		static $init = false;
 		if ($init)
 		{
-			trigger_error('Environment config can\'t be initiated more than once.', E_USER_ERROR);
+			trigger_error('Environment config shouldn\'t be initiated more than once.', E_USER_NOTICE);
 		}
 
 		// Fuel path must be given
@@ -223,26 +223,24 @@ class Environment
 		$this->environments = require trim($config['paths']['fuel'], '\\/').'/environments.php';
 
 		// Run default environment
-		$env = array();
+		$finish_callbacks = array();
 		if (isset($this->environments['__default']))
 		{
-			$env = (array) call_user_func($this->environments['__default']);
+			$finish_callbacks[] = call_user_func($this->environments['__default'], $this);
 		}
 
 		// Run specific environment config when given
 		$config['name'] = isset($config['name']) ? $config['name'] : 'development';
 		if (isset($this->environments[$config['name']]))
 		{
-			$env = array_merge($env, (array) call_user_func($this->environments[$config['name']]));
+			$finish_callbacks[] = call_user_func($this->environments[$config['name']], $this);
 		}
 
-		// Merge given config with environment returns
-		$env = array_merge($env, $config);
-
 		// Separate out the packages for later usage (after loader init)
-		$packages = isset($env['packages']) ? (array) $env['packages'] : array();
+		$packages = isset($config['packages']) ? (array) $config['packages'] : array();
+		unset($config['packages']);
 
-		foreach ($env as $key => $val)
+		foreach ($config as $key => $val)
 		{
 			if (property_exists($this, $key))
 			{
@@ -266,6 +264,7 @@ class Environment
 
 		// Load the input container if not yet set
 		( ! $this->input instanceof Input) and $this->input = new Input();
+		$this->input->_set_env($this);
 
 		// Configure the localization options for PHP
 		$this->set_locale($this->locale);
@@ -278,6 +277,12 @@ class Environment
 		foreach ($packages as $pkg)
 		{
 			$this->loader->load_package($pkg, Loader::TYPE_CORE);
+		}
+
+		// Run callbacks to finish up
+		foreach ($finish_callbacks as $cb)
+		{
+			is_callable($cb) and call_user_func($cb, $this);
 		}
 
 		$init = true;
@@ -314,42 +319,43 @@ class Environment
 		$this->set_encoding($this->encoding);
 
 		// Setup Error & Exception handlers
-		register_shutdown_function(function ()
+		$env = $this;
+		register_shutdown_function(function () use ($env)
 		{
 			$error = error_get_last();
 
 			if ( ! $error)
 			{
-				return;
+				return true;
 			}
 
 			$error = new \ErrorException($error['message'], $error['type'], 0, $error['file'], $error['line']);
-			if ($handler = _app('error'))
+			if (($app = $env->active_application()) and $handler = $app->error)
 			{
 				return $handler->handle($error);
 			}
-			exit(_env('is_cli') ? $error : nl2br($error));
+			exit($env->is_cli ? $error : nl2br($error));
 		});
-		set_error_handler(function ($severity, $message, $filepath, $line)
+		set_error_handler(function ($severity, $message, $filepath, $line) use ($env)
 		{
 			$error = new \ErrorException($message, $severity, 0, $filepath, $line);
-			if ($handler = _app('error'))
+			if (($app = $env->active_application()) and $handler = $app->error)
 			{
 				return $handler->handle($error);
 			}
-			exit(nl2br($error));
+			exit($env->is_cli ? $error : nl2br($error));
 		});
-		set_exception_handler(function (\Exception $e)
+		set_exception_handler(function (\Exception $e) use ($env)
 		{
-			if ($handler = _app('error'))
+			if (($app = $env->active_application()) and $handler = $app->error)
 			{
 				return $handler->handle($e);
 			}
 
-			echo '<h1>Error code: #'.$e->getCode().'</h1>';
-			echo '<p>'.$e->getMessage().'</p>';
-			echo '<p>Occorred in file "'.$e->getFile().'" on line "'.$e->getLine().'".</p>';
-			exit(1);
+			! $env->is_cli and print('<pre>');
+			echo $e;
+			! $env->is_cli and print('</pre>');
+			exit($e->getCode() ?: 1);
 		});
 	}
 
@@ -447,6 +453,7 @@ class Environment
 
 		// Set the loader as a property and register it with PHP
 		$this->loader = $loader;
+		$this->loader->_set_env($this);
 		spl_autoload_register(array($this->loader, 'load_class'), true, true);
 
 		// Add the Kernel as a core package

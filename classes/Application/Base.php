@@ -10,6 +10,7 @@
 
 namespace Fuel\Kernel\Application;
 use Fuel\Kernel\DiC;
+use Fuel\Kernel\Environment;
 use Fuel\Kernel\Loader;
 use Fuel\Kernel\Request;
 use Fuel\Kernel\Route;
@@ -25,6 +26,13 @@ use Fuel\Kernel\Route;
  */
 abstract class Base
 {
+	/**
+	 * @var  \Fuel\Kernel\Environment
+	 *
+	 * @since  2.0.0
+	 */
+	public $env;
+
 	/**
 	 * @var  \Fuel\Kernel\Loader\Loadable  the Application's own loader instance
 	 *
@@ -105,20 +113,22 @@ abstract class Base
 	/**
 	 * Constructor
 	 *
+	 * @param  \Fuel\Kernel\Environment      $env
 	 * @param  Closure  $config
 	 * @param  \Fuel\Kernel\Loader\Loadable  $loader
 	 *
 	 * @since  2.0.0
 	 */
-	public function __construct(\Closure $config, Loader\Loadable $loader)
+	public function __construct(Environment $env, \Closure $config, Loader\Loadable $loader)
 	{
-		$this->loader = $loader;
+		$this->env     = $env;
+		$this->loader  = $loader;
 
 		foreach ($this->packages as $pkg)
 		{
 			try
 			{
-				_env('loader')->load_package($pkg, Loader::TYPE_PACKAGE);
+				$this->env->loader->load_package($pkg, Loader::TYPE_PACKAGE);
 			}
 			// ignore exception thrown for double package load
 			catch (\RuntimeException $e) {}
@@ -127,7 +137,7 @@ abstract class Base
 		call_user_func($config);
 
 		// When not set by the closure default to Kernel DiC
-		( ! $this->dic instanceof DiC\Dependable) and $this->dic = new DiC\Base($this, _env('dic'));
+		( ! $this->dic instanceof DiC\Dependable) and $this->dic = new DiC\Base($this, $this->env->dic);
 		$this->setup();
 
 		// Load the Exception Handler
@@ -303,8 +313,8 @@ abstract class Base
 	 */
 	public function activate()
 	{
-		array_push($this->_before_activate, _env()->active_application());
-		_env()->set_active_application($this);
+		array_push($this->_before_activate, $this->env->active_application());
+		$this->env->set_active_application($this);
 		return $this;
 	}
 
@@ -317,7 +327,7 @@ abstract class Base
 	 */
 	public function deactivate()
 	{
-		_env()->set_active_application(array_pop($this->_before_activate));
+		$this->env->set_active_application(array_pop($this->_before_activate));
 		return $this;
 	}
 
@@ -361,7 +371,7 @@ abstract class Base
 		// If not found or searching for multiple continue with packages
 		foreach ($this->packages as $pkg)
 		{
-			if ($path = _env('loader')->package($pkg)->find_file($location, $file))
+			if ($path = $this->env->loader->package($pkg)->find_file($location, $file))
 			{
 				if ( ! $multiple)
 				{
@@ -414,7 +424,7 @@ abstract class Base
 		foreach ($this->packages as $pkg)
 		{
 			is_array($pkg) and $pkg = reset($pkg);
-			if ($found = _env('loader')->package($pkg)->find_class($type, $classname))
+			if ($found = $this->env->loader->package($pkg)->find_class($type, $classname))
 			{
 				return $found;
 			}

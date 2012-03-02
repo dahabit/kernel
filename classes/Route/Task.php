@@ -46,7 +46,7 @@ class Task extends Classes\Route\Fuel
 	public function _set_app(Application\Base $app)
 	{
 		parent::_set_app($app);
-		_env('is_cli') and $this->cli = $this->app->get_object('Cli');
+		$this->app->env->is_cli and $this->cli = $this->app->get_object('Cli');
 	}
 
 	/**

@@ -81,7 +81,7 @@ abstract class Base
 		$this->parent and $this->parent->set_descendant($this);
 
 		// Default the Input object to the environment
-		$this->input = _env('input');
+		$this->input = $this->app->env->input;
 	}
 
 	/**

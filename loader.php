@@ -9,10 +9,10 @@
  */
 
 // Add the Kernel path to the globally available paths
-_env()->add_path('kernel', __DIR__, true);
+$env->add_path('kernel', __DIR__, true);
 
 // Add some Kernel classes to the global DiC
-_env('dic')->set_classes(array(
+$env->dic->set_classes(array(
 	'Cli'              => 'Fuel\\Kernel\\Cli',
 	'Config'           => 'Fuel\\Kernel\\Data\\Config',
 	'Error'            => 'Fuel\\Kernel\\Error',
@@ -31,7 +31,7 @@ _env('dic')->set_classes(array(
 ));
 
 // Forge & return the Kernel Package object
-return _forge('Loader:Package')
+return $env->forge('Loader:Package')
 	->set_path(__DIR__)
 	->set_namespace('Fuel\\Kernel')
 	->add_class_aliases(array(

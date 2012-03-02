@@ -37,7 +37,7 @@ class Language extends \Classes\Data\Base
 	 */
 	public function load($file, $language = null)
 	{
-		$language = $language ?: _env('language');
+		$language = $language ?: $this->_app->env->language;
 		$files = $this->_app->find_files('language/'.$language, $file);
 		foreach ($files as $file)
 		{

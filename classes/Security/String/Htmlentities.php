@@ -23,6 +23,6 @@ class Htmlentities extends Base
 {
 	public function clean($input)
 	{
-		return htmlentities($input, ENT_QUOTES, _env('encoding'), false);
+		return htmlentities($input, ENT_QUOTES, $this->app->env->encoding, false);
 	}
 }

@@ -9,6 +9,7 @@
  */
 
 namespace Fuel\Core\Loader;
+use Fuel\Kernel\Environment;
 use Classes\Loader\Loadable;
 
 /**
@@ -22,6 +23,11 @@ use Classes\Loader\Loadable;
  */
 class Composer implements Loadable
 {
+	/**
+	 * @var  \Fuel\Kernel\Environment
+	 */
+	protected $env;
+
 	/**
 	 * @var  array  class mappings gotten from Composer
 	 *
@@ -38,8 +44,28 @@ class Composer implements Loadable
 	 */
 	public function __construct($path = null)
 	{
-		is_null($path) and $path = _env()->path('fuel').'_composer/.composer/autoload_namespaces.php';
-		$this->mappings = require $path;
+		$this->mappings = $path;
+	}
+
+	/**
+	 * Fuel method that is the setter for the app's environment
+	 *
+	 * @param   \Fuel\Kernel\Environment  $env
+	 * @return  void
+	 *
+	 * @since  2.0.0
+	 */
+	public function _set_env(Environment $env)
+	{
+		$this->env = $env;
+
+		// When no mapping path set or mapping array given, use default
+		is_null($this->mappings)
+			and $this->mappings = $env->path('fuel').'_composer/.composer/autoload_namespaces.php';
+
+		// When the mappings property is still a string it's a path to be required
+		is_string($this->mappings)
+			and $this->mappings = require $this->mappings;
 	}
 
 	/**
@@ -51,7 +77,7 @@ class Composer implements Loadable
 	 */
 	public function path()
 	{
-		return _env()->path('fuel');
+		return $this->env->path('fuel');
 	}
 
 	/**

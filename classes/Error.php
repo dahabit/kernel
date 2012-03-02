@@ -127,7 +127,7 @@ class Error
 			$this->non_fatal_cache[] = $data;
 		}
 
-		if (_env('is_cli'))
+		if ($this->app->env->is_cli)
 		{
 			$cli = $this->app->config->get_object('Cli');
 			$cli->write($cli->color($data['severity'].' - '.$data['message'].' in '.$data['filepath'].' on line '.$data['error_line'], 'red'));
@@ -139,8 +139,8 @@ class Error
 		{
 			if ( ! headers_sent())
 			{
-				$protocol = _env('input')->server('SERVER_PROTOCOL')
-					? _env('input')->server('SERVER_PROTOCOL')
+				$protocol = $this->app->env->input->server('SERVER_PROTOCOL')
+					? $this->app->env->input->server('SERVER_PROTOCOL')
 					: 'HTTP/1.1';
 				header($protocol.' 500 Internal Server Error');
 			}
