@@ -203,6 +203,7 @@ class Base implements Dependable
 	public function get_object($classname, $name = null)
 	{
 		$class = strtolower($classname);
+		$default = is_null($name);
 
 		// When colon found, shorten to classname without colon
 		// and default name to everything after the first colon
@@ -217,7 +218,7 @@ class Base implements Dependable
 		if ( ! isset($this->objects[$class][$name]))
 		{
 			// Return 'default' instance when no name is given, is forged without params
-			if ($name == self::DEFAULT_NAME)
+			if ($default)
 			{
 				$default = $this->forge($classname);
 				$this->set_object($class, $name, $default);

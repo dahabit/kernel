@@ -206,7 +206,7 @@ class Base implements Viewable
 	{
 		// Check if app is active
 		$application_activated = false;
-		if (_app() !== $this->_app)
+		if ($this->_app->env->active_application() !== $this->_app)
 		{
 			$this->_app->activate();
 			$application_activated = true;
