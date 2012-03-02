@@ -48,6 +48,13 @@ abstract class Base
 	public $security;
 
 	/**
+	 * @var  \Fuel\Kernel\Notifier\Notifiable
+	 *
+	 * @since  2.0.0
+	 */
+	public $notifier;
+
+	/**
 	 * @var  \Fuel\Kernel\Data\Config
 	 *
 	 * @since  2.0.0
@@ -146,6 +153,9 @@ abstract class Base
 		// Load main Application config
 		$this->config = $this->forge('Config', (array) $this->config())->load('config.php');
 
+		// Add Application notifier
+		$this->notifier = $this->forge('Notifier', $this->config->get('observers', array()));
+
 		// Load the Security class
 		$this->security = $this->forge('Security');
 
@@ -155,7 +165,7 @@ abstract class Base
 		// Add the routes
 		$this->router();
 
-		$this->get_object('Log')->info('Application created.', __METHOD__);
+		$this->notifier->notify('app_created', $this, __METHOD__);
 	}
 
 	/**

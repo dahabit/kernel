@@ -95,7 +95,7 @@ class Fuel extends \Classes\Request\Base
 	public function execute()
 	{
 		$this->activate();
-		$this->app->get_object('Log')->info('Request execution started.', __METHOD__);
+		$this->app->notifier->notify('request_started', $this, __METHOD__);
 
 		list($this->controller, $this->controller_params) = $this->app->process_route($this->request_uri);
 
@@ -110,7 +110,7 @@ class Fuel extends \Classes\Request\Base
 			throw new \DomainException('Result from a Controller must implement the Responsible interface.');
 		}
 
-		$this->app->get_object('Log')->info('Request execution finished.', __METHOD__);
+		$this->app->notifier->notify('request_finished', $this, __METHOD__);
 		$this->deactivate();
 		return $this;
 	}

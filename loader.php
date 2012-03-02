@@ -20,6 +20,7 @@ $env->dic->set_classes(array(
 	'Loader:Composer'  => 'Fuel\\Kernel\\Loader\\Composer',
 	'Loader:Package'   => 'Fuel\\Kernel\\Loader\\Package',
 	'Log'              => 'Fuel\\Kernel\\Log',
+	'Notifier'         => 'Fuel\\Kernel\\Notifier\\Base',
 	'Parser'           => 'Fuel\\Kernel\\Parser\\Php',
 	'Request'          => 'Fuel\\Kernel\\Request\\Fuel',
 	'Response'         => 'Fuel\\Kernel\\Response\\Base',

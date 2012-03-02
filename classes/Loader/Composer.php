@@ -69,7 +69,7 @@ class Composer implements Loadable
 
 		// Show package loads inside application
 		($app = $env->active_application())
-			and $app->get_object('Log')->info('Composer Loader initialized.', __METHOD__);
+			and $app->notifier->notify('composer_loader_created', $this, __METHOD__);
 	}
 
 	/**

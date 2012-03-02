@@ -135,7 +135,7 @@ class Base implements Responsible
 	{
 		$this->request = $app->active_request();
 
-		$app->get_object('Log')->info('Response created.', __METHOD__);
+		$app->notifier->notify('response_created', $this, __METHOD__);
 	}
 
 	/**

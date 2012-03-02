@@ -83,7 +83,7 @@ abstract class Base
 		// Default the Input object to the environment
 		$this->input = $this->app->env->input;
 
-		$app->get_object('Log')->info('Request created.', __METHOD__);
+		$app->notifier->notify('request_created', $this, __METHOD__);
 	}
 
 	/**

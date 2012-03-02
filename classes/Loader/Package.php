@@ -95,7 +95,7 @@ class Package implements Loadable
 
 		// Show package loads inside application
 		($app = $env->active_application())
-			and $app->get_object('Log')->info('Package Loader initialized.', __METHOD__);
+			and $app->notifier->notify('package_loader_created', $this, __METHOD__);
 	}
 
 	/**
