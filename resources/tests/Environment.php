@@ -50,9 +50,63 @@ class EnvironmentTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('Fuel\\Kernel\\Environment', Environment::instance());
 	}
 
+	/**
+	 * Test the init method
+	 */
 	public function test_init()
 	{
-		$this->markTestIncomplete('Have to figure out how to test this.');
+		// Mock the environment and stub methods called by init()
+		$env = $this->getMock('Fuel\\Kernel\\Environment', array(
+			'set_locale',
+			'set_timezone',
+			'php_env',
+			'set_loader'
+		));
+
+		// The configuration that is given for testing
+		$config = array(
+			'path'          => Environment::instance()->path('fuel'),
+			'language'      => 'nl',
+			'timezone'      => 'America/New_York',
+			'locale'        => 'nl_NL',
+			'environments'  => array(),
+			'loader'        => 'this_isn\'t_actually_a_loader',
+		);
+
+		// Create the method subs
+		$env->expects($this->once())
+			->method('set_locale')
+			->with($this->equalTo($config['locale']));
+		$env->expects($this->once())
+			->method('set_timezone')
+			->with($this->equalTo($config['timezone']));
+		$env->expects($this->once())
+			->method('set_loader')
+			->with($this->equalTo($config['loader']));
+		$env->expects($this->once())
+			->method('php_env');
+
+		// Execute the method that's being tested
+		$env->init($config);
+
+		// Some additional testing if properties were set as they are meant to
+		$this->assertAttributeEquals($config['language'], 'language', $env);
+		$this->assertEquals($config['path'], Environment::instance()->path('fuel'));
+		$this->assertAttributeInstanceOf('Fuel\\Kernel\\DiC\\Dependable', 'dic', $env);
+		$this->assertAttributeInstanceOf('Fuel\\Kernel\\Input', 'input', $env);
+
+		return $env;
+	}
+
+	/**
+	 * Test if init() fails when it's being run a second time
+	 *
+	 * @depends test_init
+	 * @expectedException RuntimeException
+	 */
+	public function test_init_error_2nd_time(Environment $env)
+	{
+		$env->init(array());
 	}
 
 	public function test_detect_base_url()

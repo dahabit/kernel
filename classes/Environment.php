@@ -201,13 +201,13 @@ class Environment
 	{
 		if ($this->initialized)
 		{
-			trigger_error('Environment config shouldn\'t be initiated more than once.', E_USER_ERROR);
+			throw new \RuntimeException('Environment config shouldn\'t be initiated more than once.', E_USER_ERROR);
 		}
 
 		// Fuel path must be given
 		if ( ! isset($config['path']) and ! isset($config['paths']['fuel']))
 		{
-			trigger_error('The path to the Fuel packages directory must be provided to Environment.', E_USER_ERROR);
+			throw new \RuntimeException('The path to the Fuel packages directory must be provided to Environment.', E_USER_ERROR);
 		}
 
 		// Rewrite single paths into multiple
@@ -217,8 +217,13 @@ class Environment
 			unset($config['path']);
 		}
 
-		// Load environments
-		$environments = require trim($config['paths']['fuel'], '\\/').'/environments.php';
+		// Set (if array) or load (when empty/string) environments
+		$environments = isset($config['environments'])
+			? $config['environments']
+			: trim($config['paths']['fuel'], '\\/').'/environments.php';
+		is_string($environments)
+			and $environments = require $environments;
+		unset($config['environments']);
 
 		// Run default environment
 		$finish_callbacks = array();
@@ -252,8 +257,10 @@ class Environment
 		// Set the environment DiC when not yet set
 		if ( ! $this->dic instanceof DiC\Dependable)
 		{
-			! class_exists('Fuel\\Kernel\\DiC\\Dependable', false) and require __DIR__ . '/DiC/Dependable.php';
-			! class_exists('Fuel\\Kernel\\DiC\\Base', false) and require __DIR__ . '/DiC/Base.php';
+			! interface_exists('Fuel\\Kernel\\DiC\\Dependable', false)
+				and require __DIR__ . '/DiC/Dependable.php';
+			! class_exists('Fuel\\Kernel\\DiC\\Base', false)
+				and require __DIR__ . '/DiC/Base.php';
 			$this->dic = new DiC\Base();
 		}
 
