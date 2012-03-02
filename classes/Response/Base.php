@@ -134,6 +134,8 @@ class Base implements Responsible
 	public function _set_app(Application\Base $app)
 	{
 		$this->request = $app->active_request();
+
+		$app->get_object('Log')->info('Response created.', __METHOD__);
 	}
 
 	/**

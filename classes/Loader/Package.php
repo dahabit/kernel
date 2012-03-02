@@ -92,6 +92,10 @@ class Package implements Loadable
 	public function _set_env(Environment $env)
 	{
 		$this->env = $env;
+
+		// Show package loads inside application
+		($app = $env->active_application())
+			and $app->get_object('Log')->info('Package Loader initialized.', __METHOD__);
 	}
 
 	/**

@@ -82,6 +82,8 @@ abstract class Base
 
 		// Default the Input object to the environment
 		$this->input = $this->app->env->input;
+
+		$app->get_object('Log')->info('Request created.', __METHOD__);
 	}
 
 	/**
@@ -172,6 +174,8 @@ abstract class Base
 
 	/**
 	 * Fetch the request response after execution
+	 *
+	 * @return  \Fuel\Kernel\Response\Responsible
 	 *
 	 * @since  1.0.0
 	 */

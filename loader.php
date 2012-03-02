@@ -19,6 +19,7 @@ $env->dic->set_classes(array(
 	'Language'         => 'Fuel\\Kernel\\Data\\Language',
 	'Loader:Composer'  => 'Fuel\\Kernel\\Loader\\Composer',
 	'Loader:Package'   => 'Fuel\\Kernel\\Loader\\Package',
+	'Log'              => 'Fuel\\Kernel\\Log',
 	'Parser'           => 'Fuel\\Kernel\\Parser\\Php',
 	'Request'          => 'Fuel\\Kernel\\Request\\Fuel',
 	'Response'         => 'Fuel\\Kernel\\Response\\Base',

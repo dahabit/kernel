@@ -40,7 +40,7 @@ class Config extends \Classes\Data\Base
 		}
 
 		// Find optional overwrites
-		$this->_app->find_files('config/'.$this->_app->env->name, $file);
+		$files = $this->_app->find_files('config/'.$this->_app->env->name, $file);
 		foreach ($files as $file)
 		{
 			$array = require $file;

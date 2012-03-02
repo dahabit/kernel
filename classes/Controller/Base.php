@@ -63,6 +63,8 @@ abstract class Base
 	public function _set_app(Application\Base $app)
 	{
 		$this->app = $app;
+
+		$this->app->get_object('Log')->info('Controller created.', __METHOD__);
 	}
 
 	/**
@@ -76,11 +78,15 @@ abstract class Base
 	 */
 	public function execute($method, array $args = array())
 	{
+		$this->app->get_object('Log')->info('Controller execution started.', __METHOD__);
 		! $method instanceof \ReflectionMethod and $method = new \ReflectionMethod($this, $method);
 
 		$this->before();
 		$response = $method->invokeArgs($this, $args);
-		return $this->after($response);
+		$response = $this->after($response);
+
+		$this->app->get_object('Log')->info('Controller execution finished.', __METHOD__);
+		return $response;
 	}
 
 	/**

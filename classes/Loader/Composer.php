@@ -66,6 +66,10 @@ class Composer implements Loadable
 		// When the mappings property is still a string it's a path to be required
 		is_string($this->mappings)
 			and $this->mappings = require $this->mappings;
+
+		// Show package loads inside application
+		($app = $env->active_application())
+			and $app->get_object('Log')->info('Composer Loader initialized.', __METHOD__);
 	}
 
 	/**

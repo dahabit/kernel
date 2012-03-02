@@ -154,6 +154,8 @@ abstract class Base
 
 		// Add the routes
 		$this->router();
+
+		$this->get_object('Log')->info('Application created.', __METHOD__);
 	}
 
 	/**

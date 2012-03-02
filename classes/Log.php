@@ -20,6 +20,13 @@ namespace Fuel\Kernel;
 class Log
 {
 	/**
+	 * @var  int  no logging
+	 *
+	 * @since  2.0.0
+	 */
+	const L_NONE = 0;
+
+	/**
 	 * @var  int  error level
 	 *
 	 * @since  1.0.0
@@ -38,19 +45,42 @@ class Log
 	 *
 	 * @since  1.0.0
 	 */
-	const L_DEBUG = 3;
+	const L_NOTICE = 4;
 
 	/**
 	 * @var  int  info level
 	 *
 	 * @since  1.0.0
 	 */
-	const L_INFO = 4;
+	const L_INFO = 8;
+
+	/**
+	 * @var  int  info level
+	 *
+	 * @since  1.0.0
+	 */
+	const L_DEPRECATED = 32;
+
+	/**
+	 * @var  int  show any errors within 16bits
+	 */
+	const L_ALL = 65535;
 
 	/**
 	 * @var  \Fuel\Kernel\Application\Base
 	 */
 	public $app;
+
+	/**
+	 * @var  array  levels and their textual meaning
+	 */
+	public $levels = array(
+		self::L_ERROR       => 'Error',
+		self::L_WARNING     => 'Warning',
+		self::L_NOTICE      => 'Debug',
+		self::L_INFO        => 'Info',
+		self::L_DEPRECATED  => 'Deprecated',
+	);
 
 	/**
 	 * Magic Fuel method that is the setter for the current app
@@ -62,6 +92,20 @@ class Log
 	public function _set_app(Application\Base $app)
 	{
 		$this->app = $app;
+	}
+
+	/**
+	 * Logs a message with the Deprecated Log Level
+	 *
+	 * @param   string  $msg     The log message
+	 * @param   string  $method  The method that logged
+	 * @return  bool    If it was successfully logged
+	 *
+	 * @since  2.0.0
+	 */
+	public function deprecated($msg, $method = null)
+	{
+		return static::write(self::L_DEPRECATED, $msg, $method);
 	}
 
 	/**
@@ -79,17 +123,17 @@ class Log
 	}
 
 	/**
-	 * Logs a message with the Debug Log Level
+	 * Logs a message with the Notice Log Level
 	 *
 	 * @param   string  $msg     The log message
 	 * @param   string  $method  The method that logged
 	 * @return  bool    If it was successfully logged
 	 *
-	 * @since  1.0.0
+	 * @since  2.0.0
 	 */
-	public function debug($msg, $method = null)
+	public function notice($msg, $method = null)
 	{
-		return static::write(self::L_DEBUG, $msg, $method);
+		return static::write(self::L_NOTICE, $msg, $method);
 	}
 
 	/**
@@ -125,7 +169,7 @@ class Log
 	 *
 	 * Generally this function will be called using the global log_message() function
 	 *
-	 * @param   string  $level   the error level
+	 * @param   int     $level   the error level
 	 * @param   string  $msg     the error message
 	 * @param   string  $method  method or function that triggers this
 	 * @return  bool
@@ -134,58 +178,49 @@ class Log
 	 */
 	public function write($level, $msg, $method = null)
 	{
-		if ($level > $this->app->config->get('log_threshold', 0))
+		// Check if the given level is valid and part of the bitmask for reporting
+		if ( ! is_int($level) or ($this->app->config->get('log.threshold', 0) & $level) !== $level)
 		{
 			return false;
 		}
-		$levels = array(
-			1  => 'Error',
-			2  => 'Warning',
-			3  => 'Debug',
-			4  => 'Info',
-		);
-		$level = isset($levels[$level]) ? $levels[$level] : $level;
 
-		$filepath = $this->app->config->get('log_path').date('Y/m').'/';
+		// Translate the level when possible
+		$level = isset($this->levels[$level]) ? $this->levels[$level] : $level;
 
+		// Fetch the path and check if it exists
+		$filepath = $this->app->config->get('log.path', $this->app->loader->path().'resources/logs/').date('Y/m').'/';
+
+		// Attempt to create the directory if it doesn't exist
 		if ( ! is_dir($filepath))
 		{
 			$old = umask(0);
-
 			mkdir($filepath, $this->app->config->get('file.chmod.folders', 0777), true);
 			umask($old);
 		}
 
+		// Define the filename to be used
 		$filename = $filepath.date('d').'.php';
+		$exists = ! file_exists($filename);
 
-		$message  = '';
-
-		if ( ! $exists = file_exists($filename))
-		{
-			$message .= "<"."?php defined('COREPATH') or exit('No direct script access allowed'); ?".">".PHP_EOL.PHP_EOL;
-		}
-
+		// Open the file or fail when not possible
 		if ( ! $fp = @fopen($filename, 'a'))
 		{
 			return false;
 		}
 
-		$call = '';
-		if ( ! empty($method))
-		{
-			$call .= $method;
-		}
+		// Build the message
+		$message  = $level.' - ';
+		$message .= date($this->app->config->get('log.date_format', 'Y-m-d'));
+		$message .= ' - '.$msg.(empty($method) ? '' : ' --> '.$method).PHP_EOL;
 
-		$message .= $level.' '.(($level == 'info') ? ' -' : '-').' ';
-		$message .= date($this->app->config->get('log_date_format', 'Y-m-d'));
-		$message .= ' --> '.(empty($call) ? '' : $call.' - ').$msg.PHP_EOL;
-
+		// Write the file
 		flock($fp, LOCK_EX);
 		fwrite($fp, $message);
 		flock($fp, LOCK_UN);
 		fclose($fp);
 
-		if ( ! $exists)
+		// Chmod the file if it was just created
+		if ($exists)
 		{
 			$old = umask(0);
 			@chmod($filename, $this->app->config->get('file.chmod.files', 0666));
