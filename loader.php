@@ -16,7 +16,6 @@ $env->dic->set_classes(array(
 	'Cli'              => 'Fuel\\Kernel\\Cli',
 	'Config'           => 'Fuel\\Kernel\\Data\\Config',
 	'Cookie'           => 'Fuel\\Kernel\\Cookie\\Base',
-	'Debug'            => 'Fuel\\Kernel\\Debug',
 	'Error'            => 'Fuel\\Kernel\\Error',
 	'Language'         => 'Fuel\\Kernel\\Data\\Language',
 	'Loader:Composer'  => 'Fuel\\Kernel\\Loader\\Composer',

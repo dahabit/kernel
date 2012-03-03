@@ -43,7 +43,15 @@ interface Viewable
 	public function & __get($name);
 
 	/**
+	 * Renders the view
+	 *
+	 * @since  1.0.0
+	 */
+	public function render();
+
+	/**
 	 * The Viewable must be able to turn into a string
+	 * should return $this->render() and catch exceptions
 	 *
 	 * @since  1.0.0
 	 */

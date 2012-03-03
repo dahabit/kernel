@@ -125,6 +125,12 @@ class Base implements Viewable
 	{
 		$this->_path      = $this->_app->find_file('views', $file.'.'.$this->_parser->extension());
 		$this->_template  = null;
+
+		if (empty($this->_path) or ! file_exists($this->_path))
+		{
+			throw new \OutOfBoundsException('Given path could not be found by set_filename(): '.$file);
+		}
+
 		return $this;
 	}
 
@@ -188,21 +194,7 @@ class Base implements Viewable
 	 *
 	 * @since  1.0.0
 	 */
-	protected function render()
-	{
-		return $this->_path
-			? $this->_parser->parse_file($this->_path, $this->_data)
-			: $this->_parser->parse_string($this->_template, $this->_data);
-	}
-
-	/**
-	 * Turns the presenter into a string
-	 *
-	 * @return  string
-	 *
-	 * @since  1.0.0
-	 */
-	public function __toString()
+	public function render()
 	{
 		// Check if app is active
 		$application_activated = false;
@@ -221,12 +213,38 @@ class Base implements Viewable
 		}
 
 		// Render the View
-		$view = $this->render();
+		$view = $this->parse();
 
 		// When Request/Application was activated, deactivate now we're done
 		$request_activated and $this->_context->deactivate();
 		$application_activated and $this->_app->deactivate();
 
 		return $view;
+	}
+
+	protected function parse()
+	{
+		return $this->_path
+			? $this->_parser->parse_file($this->_path, $this->_data)
+			: $this->_parser->parse_string($this->_template, $this->_data);
+	}
+
+	/**
+	 * Turns the presenter into a string
+	 *
+	 * @return  string
+	 *
+	 * @since  1.0.0
+	 */
+	public function __toString()
+	{
+		try
+		{
+			return $this->render();
+		}
+		catch (\Exception $e)
+		{
+			echo '<pre>'.$e.'</pre>';
+		}
 	}
 }
