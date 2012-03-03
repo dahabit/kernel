@@ -179,7 +179,7 @@ class Log
 	public function write($level, $msg, $method = null)
 	{
 		// Check if the given level is valid and part of the bitmask for reporting
-		if ( ! is_int($level) or ($this->app->config->get('log.threshold', 0) & $level) !== $level)
+		if ( ! is_int($level) or ($this->app->config->get('log.flags', 0) & $level) !== $level)
 		{
 			return false;
 		}
