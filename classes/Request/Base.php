@@ -10,6 +10,7 @@
 
 namespace Fuel\Kernel\Request;
 use Fuel\Kernel\Application;
+use Fuel\Kernel\Input;
 
 /**
  * Base Request class
@@ -148,18 +149,6 @@ abstract class Base
 	public function get_descendants()
 	{
 		return $this->descendants;
-	}
-
-	/**
-	 * Return the Input for this object
-	 *
-	 * @return  \Fuel\Kernel\Input
-	 *
-	 * @since  2.0.0
-	 */
-	public function input()
-	{
-		return $this->input;
 	}
 
 	/**

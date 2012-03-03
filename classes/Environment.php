@@ -275,8 +275,7 @@ class Environment
 		$this->set_loader($this->loader);
 
 		// Load the input container if not yet set
-		( ! $this->input instanceof Input) and $this->input = new Input();
-		$this->input->_set_env($this);
+		( ! $this->input instanceof Input) and $this->input = $this->dic->forge('Input');
 
 		// Configure the localization options for PHP
 		$this->set_locale($this->locale);
