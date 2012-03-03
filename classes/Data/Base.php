@@ -41,7 +41,7 @@ abstract class Base
 	 *
 	 * @since  2.0.0
 	 */
-	protected $_children = array();
+	protected $_descendants = array();
 
 	/**
 	 * @var  \Fuel\Kernel\Application\Base
@@ -64,7 +64,7 @@ abstract class Base
 		$this->_data = $data;
 		if (is_string($name) and $parent instanceof self)
 		{
-			$parent->add_child($name, $this);
+			$parent->add_descendant($name, $this);
 		}
 	}
 
@@ -82,17 +82,17 @@ abstract class Base
 	}
 
 	/**
-	 * Add a named child Data object
+	 * Add a named descendant Data object
 	 *
 	 * @param   string  $name
-	 * @param   Base    $child
+	 * @param   Base    $descendant
 	 * @return  Base
 	 *
 	 * @since  2.0.0
 	 */
-	public function add_child($name, self $child)
+	public function add_descendant($name, self $descendant)
 	{
-		$this->_children[$name] = $child;
+		$this->_descendants[$name] = $descendant;
 		return $this;
 	}
 
@@ -160,15 +160,15 @@ abstract class Base
 			return __val($return);
 		}
 
-		// When found, return
-		if (array_get_dot_key($key, $this->_data, $return))
+		// Attempt to find descendant instance that matches first segment and if so attempt there
+		if (($pos = strpos($key, '.')) and isset($this->_descendants[$name = substr($key, 0, $pos)]))
+		{
+			return __val($this->_descendants[$name]->get(substr($key, $pos + 1), $default));
+		}
+		// Search locally and return result when found
+		elseif (array_get_dot_key($key, $this->_data, $return))
 		{
 			return __val($return);
-		}
-		// Attempt to find child that matches first segment and if so attempt there
-		elseif (($pos = strpos($key, '.')) and isset($this->_children[$name = substr($key, 0, $pos)]))
-		{
-			return __val($this->_children[$name]->get(substr($key, $pos + 1), $default));
 		}
 
 		// Failure
