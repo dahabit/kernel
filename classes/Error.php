@@ -107,15 +107,9 @@ class Error
 
 		if ($this->app->env->is_cli)
 		{
-			$cli = $this->app->get_object('Cli');
-			$cli->write($cli->color((string) $e, 'red'));
-			$fatal and exit(1);
-			return;
+			$this->show_cli($e, $fatal);
 		}
-
-		echo '<pre style="background: white; padding: 10px; margin: 10px; border: 2px dashed red; color: red;
-			font-weight: bold; font-size: 12px; font-family: Courier, sans-serif;">';
-		if ($fatal)
+		elseif ($fatal)
 		{
 			if ( ! headers_sent())
 			{
@@ -124,10 +118,55 @@ class Error
 					: 'HTTP/1.1';
 				header($protocol.' 500 Internal Server Error');
 			}
-
-			exit($e.'</pre>');
+			$this->show_fatal($e);
 		}
 
-		echo $e->getMessage().'</pre>';
+		$this->show_non_fatal($e);
+	}
+
+	/**
+	 * Show error on CLI
+	 *
+	 * @param   \Exception  $e
+	 * @param   bool        $fatal
+	 * @return  void
+	 *
+	 * @since  2.0.0
+	 */
+	public function show_cli(\Exception $e, $fatal)
+	{
+		$cli = $this->app->get_object('Cli');
+		$cli->write($cli->color((string) $e, 'red'));
+		$fatal and exit(1);
+		return;
+	}
+
+	/**
+	 * Show non fatal error
+	 *
+	 * @param   \Exception  $e
+	 * @return  void
+	 *
+	 * @since  2.0.0
+	 */
+	public function show_non_fatal(\Exception $e)
+	{
+		echo '<pre style="background: white; padding: 10px; margin: 10px; border: 2px dashed #ff4500; color: #ff4500;
+			font-weight: bold; font-size: 12px; font-family: Courier, sans-serif;">'.$e->getMessage().'</pre>';
+	}
+
+	/**
+	 * Show fatal error
+	 *
+	 * @param   \Exception  $e
+	 * @return  void
+	 *
+	 * @since  2.0.0
+	 */
+	public function show_fatal(\Exception $e)
+	{
+		echo '<pre style="background: white; padding: 10px; margin: 10px; border: 2px dashed red; color: red;
+			font-weight: bold; font-size: 12px; font-family: Courier, sans-serif;">'.$e.'</pre>';
+		exit(1);
 	}
 }
