@@ -40,6 +40,10 @@ class Language extends \Classes\Data\Base
 		// Make application available in config file
 		$app   = $this->_app;
 		$lang  = $this;
+		$new   = function($name, $values) use ($app, $lang)
+		{
+			return $app->forge(array($name, 'Language'), $values, $name, $lang);
+		};
 
 		$language = $language ?: $this->_app->env->language;
 		$files = $this->_app->find_files('language/'.$language, $file);

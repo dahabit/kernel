@@ -34,6 +34,10 @@ class Config extends \Classes\Data\Base
 		// Make application available in config file
 		$app     = $this->_app;
 		$config  = $this;
+		$new     = function($name, $values) use ($app, $config)
+		{
+			return $app->forge(array($name, 'Config'), $values, $name, $config);
+		};
 
 		// Find the main files
 		$files = $this->_app->find_files('config', $file);
