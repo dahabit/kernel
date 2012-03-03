@@ -9,6 +9,7 @@
  */
 
 namespace Fuel\Kernel\DiC;
+use Fuel\Kernel\Environment;
 
 /**
  * Dependency Injection Container Interface
@@ -20,12 +21,15 @@ namespace Fuel\Kernel\DiC;
 interface Dependable
 {
 	/**
+	 * Constructor
+	 *
+	 * @param  \Fuel\Kernel\Environment       $env
 	 * @param  \Fuel\Kernel\Application\Base  $app
 	 * @param  Dependable  $parent
 	 *
 	 * @since  2.0.0
 	 */
-	public function __construct($app = null, $parent = null);
+	public function __construct(Environment $env, $app = null, $parent = null);
 
 	/**
 	 * Add a class to use for a given classname

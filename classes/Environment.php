@@ -179,7 +179,7 @@ class Environment
 	protected $vars = array();
 
 	/**
-	 * @var  Debug
+	 * @var  \Fuel\Core\Debug
 	 *
 	 * @since  2.0.0
 	 */
@@ -268,7 +268,7 @@ class Environment
 				and require __DIR__ . '/DiC/Dependable.php';
 			! class_exists('Fuel\\Kernel\\DiC\\Base', false)
 				and require __DIR__ . '/DiC/Base.php';
-			$this->dic = new DiC\Base();
+			$this->dic = new DiC\Base($this);
 		}
 
 		// Set the class & fileloader
@@ -638,7 +638,6 @@ class Environment
 		if (empty($this->debug))
 		{
 			$this->debug = $this->dic->get_object('Debug');
-			$this->debug->_set_env($this);
 		}
 
 		return $this->debug;

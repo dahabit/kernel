@@ -9,6 +9,7 @@
  */
 
 namespace Fuel\Kernel\DiC;
+use Fuel\Kernel\Environment;
 
 /**
  * Dependency Injection Container Base class
@@ -44,6 +45,13 @@ class Base implements Dependable
 	protected $objects = array();
 
 	/**
+	 * @var  \Fuel\Kernel\Environment
+	 *
+	 * @since  2.0.0
+	 */
+	protected $env;
+
+	/**
 	 * @var  \Fuel\Kernel\Application\Base
 	 *
 	 * @since  2.0.0
@@ -60,13 +68,15 @@ class Base implements Dependable
 	/**
 	 * Constructor
 	 *
+	 * @param  \Fuel\Kernel\Environment            $env
 	 * @param  null|\Fuel\Kernel\Application\Base  $app
 	 * @param  null|Base  $parent  fallback if a call to this DiC fails
 	 *
 	 * @since  2.0.0
 	 */
-	public function __construct($app = null, $parent = null)
+	public function __construct(Environment $env, $app = null, $parent = null)
 	{
+		$this->env = $env;
 		$this->app = $app;
 		if ($parent instanceof Dependable)
 		{
@@ -160,7 +170,12 @@ class Base implements Dependable
 		$reflection  = new \ReflectionClass($class);
 		$instance    = $args ? $reflection->newInstanceArgs($args) : $reflection->newInstance();
 
-		// Setter support for the instance to know which app created it
+		// Setter support for the instance to take the current environment
+		if ($reflection->hasMethod('_set_env'))
+		{
+			$instance->_set_env($this->env);
+		}
+		// Setter support for the instance to take the app that created it
 		if ($reflection->hasMethod('_set_app'))
 		{
 			$instance->_set_app($this->app);

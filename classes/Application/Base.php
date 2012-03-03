@@ -143,8 +143,11 @@ abstract class Base
 
 		call_user_func($config);
 
-		// When not set by the closure default to Kernel DiC
-		( ! $this->dic instanceof DiC\Dependable) and $this->dic = new DiC\Base($this, $this->env->dic);
+		// When not set by the environment closure default to Kernel DiC
+		( ! $this->dic instanceof DiC\Dependable)
+			and $this->dic = new DiC\Base($this->env, $this, $this->env->dic);
+
+		// Run Application setup function
 		$this->setup();
 
 		// Load the Exception Handler
