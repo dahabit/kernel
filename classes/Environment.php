@@ -179,6 +179,13 @@ class Environment
 	protected $vars = array();
 
 	/**
+	 * @var  Debug
+	 *
+	 * @since  2.0.0
+	 */
+	protected $debug;
+
+	/**
 	 * Constructor
 	 *
 	 * @since  2.0.0
@@ -521,6 +528,26 @@ class Environment
 	}
 
 	/**
+	 * Attempt make the path relative to a registered path
+	 *
+	 * @param   string  $path
+	 * @return  string
+	 *
+	 * @since  1.0.0
+	 */
+	public function clean_path($path)
+	{
+		foreach ($this->paths as $name => $p)
+		{
+			if (strpos($path, $p) === 0)
+			{
+				return $name.'::'.substr($path, strlen($p));
+			}
+		}
+		return $path;
+	}
+
+	/**
 	 * Register a new named path
 	 *
 	 * @param   string       $name       name for the path
@@ -599,6 +626,22 @@ class Environment
 	{
 		$usage = $peak ? memory_get_peak_usage() : memory_get_usage();
 		return $usage - $this->get_var('init_mem');
+	}
+
+	/**
+	 * Returns a debugging helper
+	 *
+	 * @return  Debug
+	 */
+	public function debug()
+	{
+		if (empty($this->debug))
+		{
+			$this->debug = $this->dic->get_object('Debug');
+			$this->debug->_set_env($this);
+		}
+
+		return $this->debug;
 	}
 
 	/**
