@@ -49,7 +49,7 @@ function array_set_dot_key($key, &$input, $setting)
 
 	// Explode the key and start iterating
 	$keys = explode('.', $key);
-	while (count($keys) > 0)
+	while (count($keys) > 1)
 	{
 		$key = array_shift($keys);
 		if ( ! isset($input[$key])
@@ -60,12 +60,8 @@ function array_set_dot_key($key, &$input, $setting)
 		}
 		$input =& $input[$key];
 	}
-
-	// Set when this is a set operation
-	if ( ! is_null($setting))
-	{
-		$input = $setting;
-	}
+	$key = array_shift($keys);
+	$input[$key] = $setting;
 }
 
 /**
