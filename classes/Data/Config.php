@@ -32,7 +32,8 @@ class Config extends \Classes\Data\Base
 	public function load($file)
 	{
 		// Make application available in config file
-		$app = $this->_app;
+		$app     = $this->_app;
+		$config  = $this;
 
 		// Find the main files
 		$files = $this->_app->find_files('config', $file);

@@ -30,6 +30,13 @@ abstract class Base
 	protected $_data = array();
 
 	/**
+	 * @var  array  callbacks indexed by key for data validation (must return bool)
+	 *
+	 * @since  2.0.0
+	 */
+	protected $_validators = array();
+
+	/**
 	 * @var  array  descendants of this class
 	 *
 	 * @since  2.0.0
@@ -90,6 +97,42 @@ abstract class Base
 	}
 
 	/**
+	 * Overwrites internal data array with given data
+	 *
+	 * @param   array  $data
+	 * @return  Base
+	 *
+	 * @since  2.0.0
+	 */
+	public function reset(array $data = array())
+	{
+		$this->_data = array();
+		return $this->set($data);
+	}
+
+	/**
+	 * Takes validators as callbacks indexed by key
+	 *
+	 * @param   callback[]  $validations
+	 * @return  Base
+	 *
+	 * @since  2.0.0
+	 */
+	public function validators(array $validations)
+	{
+		// Save validations
+		foreach ($validations as $key => $validation)
+		{
+			$this->_validators[$key] = $validation;
+
+			// Validate existing values
+			$this->set($key, $this->get($key));
+		}
+
+		return $this;
+	}
+
+	/**
 	 * Gets a dot-notated key from data, with a default value if it does not exist.
 	 *
 	 * @param   mixed   $key      The dot-notated key or array of keys
@@ -137,23 +180,55 @@ abstract class Base
 	 *
 	 * @param   mixed   $key    The dot-notated key to set or array of keys
 	 * @param   mixed   $value  The value
+	 * @param   bool    $overwrite
 	 * @return  Base    for method chaining
 	 *
 	 * @since  2.0.0
 	 */
-	public function set($key, $value = null)
+	public function set($key, $value = null, $overwrite = true)
 	{
+		// Allow for array input when setting multiple keys
 		if (is_null($value) and is_array($key))
 		{
 			foreach ($key as $k => $v)
 			{
-				$this->set($k, $v);
+				$this->set($k, $v, $overwrite);
 			}
 			return $this;
 		}
 
+		// Validate when a validator was set
+		if (isset($this->_validators[$key]))
+		{
+			if ( ! call_user_func($this->_validators[$key], $value))
+			{
+				throw new \UnexpectedValueException('Value given for config key "'.$key.'" did not validate.');
+			}
+		}
+
+		// Check if value exists when overwriting is not allowed
+		if ( ! $overwrite and array_get_dot_key($key, $this->_data, $return))
+		{
+			return $this;
+		}
+
+		// Set the key
 		array_set_dot_key($key, $this->_data, __val($value));
 		return $this;
+	}
+
+	/**
+	 * Shortcut for set without overwriting
+	 *
+	 * @param   string  $key
+	 * @param   mixed   $value
+	 * @return  Base
+	 *
+	 * @since  2.0.0
+	 */
+	public function add($key, $value = null)
+	{
+		return $this->set($key, $value, false);
 	}
 
 	/**

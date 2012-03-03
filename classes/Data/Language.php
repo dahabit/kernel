@@ -38,7 +38,8 @@ class Language extends \Classes\Data\Base
 	public function load($file, $language = null)
 	{
 		// Make application available in config file
-		$app = $this->_app;
+		$app   = $this->_app;
+		$lang  = $this;
 
 		$language = $language ?: $this->_app->env->language;
 		$files = $this->_app->find_files('language/'.$language, $file);
