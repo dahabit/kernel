@@ -15,6 +15,7 @@ $env->add_path('kernel', __DIR__, true);
 $env->dic->set_classes(array(
 	'Cli'              => 'Fuel\\Kernel\\Cli',
 	'Config'           => 'Fuel\\Kernel\\Data\\Config',
+	'Cookie'           => 'Fuel\\Kernel\\Cookie\\Base',
 	'Error'            => 'Fuel\\Kernel\\Error',
 	'Language'         => 'Fuel\\Kernel\\Data\\Language',
 	'Loader:Composer'  => 'Fuel\\Kernel\\Loader\\Composer',
