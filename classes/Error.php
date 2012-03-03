@@ -22,27 +22,6 @@ namespace Fuel\Kernel;
 class Error
 {
 	/**
-	 * @var  array  add names for the error levels
-	 *
-	 * @since  1.0.0
-	 */
-	public $levels = array(
-		0                  => 'Error',
-		E_ERROR            => 'Error',
-		E_WARNING          => 'Warning',
-		E_PARSE            => 'Parsing Error',
-		E_NOTICE           => 'Notice',
-		E_CORE_ERROR       => 'Core Error',
-		E_CORE_WARNING     => 'Core Warning',
-		E_COMPILE_ERROR    => 'Compile Error',
-		E_COMPILE_WARNING  => 'Compile Warning',
-		E_USER_ERROR       => 'User Error',
-		E_USER_WARNING     => 'User Warning',
-		E_USER_NOTICE      => 'User Notice',
-		E_STRICT           => 'Runtime Notice'
-	);
-
-	/**
 	 * @var  array  types of error that are considered fatal
 	 *
 	 * @since  1.0.0
@@ -108,9 +87,8 @@ class Error
 	 */
 	public function show_error(\Exception $e)
 	{
-		$continue_on = $this->app->config->get('errors.continue_on', array());
-		$fatal       = ! in_array($e->getCode(), $continue_on);
-		$data        = $this->prepare_exception($e, $fatal);
+		$continue_on  = $this->app->config->get('errors.continue_on', array());
+		$fatal        = ! in_array($e->getCode(), $continue_on);
 
 		if ($fatal)
 		{
@@ -124,17 +102,19 @@ class Error
 		}
 		else
 		{
-			$this->non_fatal_cache[] = $data;
+			$this->non_fatal_cache[] = $e;
 		}
 
 		if ($this->app->env->is_cli)
 		{
-			$cli = $this->app->config->get_object('Cli');
-			$cli->write($cli->color($data['severity'].' - '.$data['message'].' in '.$data['filepath'].' on line '.$data['error_line'], 'red'));
+			$cli = $this->app->get_object('Cli');
+			$cli->write($cli->color((string) $e, 'red'));
 			$fatal and exit(1);
 			return;
 		}
 
+		echo '<pre style="background: white; padding: 10px; margin: 10px; border: 2px dashed red; color: red;
+			font-weight: bold; font-size: 12px; font-family: Courier, sans-serif;">';
 		if ($fatal)
 		{
 			if ( ! headers_sent())
@@ -145,73 +125,9 @@ class Error
 				header($protocol.' 500 Internal Server Error');
 			}
 
-			$data['non_fatal'] = $this->non_fatal_cache;
-
-			$view_fatal = $this->app->config->get('errors.view_fatal', false);
-			if ($view_fatal)
-			{
-				exit(_forge('View', $view_fatal, $data, false));
-			}
-			else
-			{
-				exit($data['severity'].' - '.$data['message'].' in '.$data['filepath'].' on line '.$data['error_line']);
-			}
+			exit($e.'</pre>');
 		}
 
-		try
-		{
-			echo _forge('View', $this->app->config->get('errors.view_error', 'error/500'), $data, false);
-		}
-		catch (\Exception $e)
-		{
-			echo $e->getMessage().'<br />';
-		}
-	}
-
-	/**
-	 * Prepares Exception data for passage to the Viewable
-	 *
-	 * @param   \Exception  $e
-	 * @param   bool        $fatal
-	 * @return  array
-	 *
-	 * @since  1.0.0
-	 */
-	protected function prepare_exception(\Exception $e, $fatal = true)
-	{
-		// Convert exception to data array for error View
-		$data = array();
-		$data['type']        = get_class($e);
-		$data['severity']    = $e->getCode();
-		$data['message']     = $e->getMessage();
-		$data['filepath']    = $e->getFile();
-		$data['error_line']  = $e->getLine();
-		$data['backtrace']   = $e->getTrace();
-
-		// Translate severity int to string
-		$data['severity'] = ( ! isset($this->levels[$data['severity']]))
-			? $data['severity']
-			: $this->levels[$data['severity']];
-
-		// Unset unnecessary backtrace entries
-		foreach ($data['backtrace'] as $key => $trace)
-		{
-			if ( ! isset($trace['file']))
-			{
-				unset($data['backtrace'][$key]);
-			}
-			elseif ($trace['file'] == __FILE__)
-			{
-				unset($data['backtrace'][$key]);
-			}
-		}
-
-		// @todo implement the commented out lines
-		// $data['debug_lines'] = \Debug::file_lines($data['filepath'], $data['error_line'], $fatal);
-		$data['orig_filepath'] = $data['filepath'];
-		// $data['filepath'] = \Fuel::clean_path($data['filepath']);
-		$data['filepath'] = str_replace("\\", "/", $data['filepath']);
-
-		return $data;
+		echo $e->getMessage().'</pre>';
 	}
 }

@@ -631,7 +631,7 @@ class Environment
 	/**
 	 * Returns a debugging helper
 	 *
-	 * @return  Debug
+	 * @return  \Fuel\Core\Debug
 	 */
 	public function debug()
 	{
