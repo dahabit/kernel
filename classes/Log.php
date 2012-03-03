@@ -63,16 +63,22 @@ class Log
 
 	/**
 	 * @var  int  show any errors within 16bits
+	 *
+	 * @since  2.0.0
 	 */
 	const L_ALL = 65535;
 
 	/**
 	 * @var  \Fuel\Kernel\Application\Base
+	 *
+	 * @since  2.0.0
 	 */
 	public $app;
 
 	/**
 	 * @var  array  levels and their textual meaning
+	 *
+	 * @since  2.0.0
 	 */
 	public $levels = array(
 		self::L_ERROR       => 'Error',
@@ -85,7 +91,8 @@ class Log
 	/**
 	 * Magic Fuel method that is the setter for the current app
 	 *
-	 * @param  \Fuel\Kernel\Application\Base  $app
+	 * @param   \Fuel\Kernel\Application\Base  $app
+	 * @return  void
 	 *
 	 * @since  2.0.0
 	 */

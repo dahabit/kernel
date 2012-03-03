@@ -94,7 +94,8 @@ class Base implements Viewable
 	/**
 	 * Magic Fuel method that is the setter for the current app
 	 *
-	 * @param  \Fuel\Kernel\Application\Base  $app
+	 * @param   \Fuel\Kernel\Application\Base  $app
+	 * @return  void
 	 *
 	 * @since  2.0.0
 	 */

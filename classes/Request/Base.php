@@ -130,13 +130,15 @@ abstract class Base
 	/**
 	 * Adds a descendant to the current Request
 	 *
-	 * @param  Base  $request
+	 * @param   Base  $request
+	 * @return  Base
 	 *
 	 * @since  1.1.0
 	 */
 	public function set_descendant(Base $request)
 	{
 		$this->descendants[] = $request;
+		return $this;
 	}
 
 	/**

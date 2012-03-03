@@ -82,7 +82,7 @@ class Package implements Loadable
 	protected $routable = false;
 
 	/**
-	 * Fuel method that is the setter for the app's environment
+	 * Magic Fuel method that is the setter for the current Environment
 	 *
 	 * @param   \Fuel\Kernel\Environment  $env
 	 * @return  void
