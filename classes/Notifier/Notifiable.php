@@ -53,4 +53,11 @@ interface Notifiable
 	 * @since  2.0.0
 	 */
 	public function unregister($callback);
+
+	/**
+	 * Return array of observed events indexed by microtime timestamp
+	 *
+	 * @return  array
+	 */
+	public function observed();
 }
