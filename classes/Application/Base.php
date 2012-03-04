@@ -310,7 +310,13 @@ abstract class Base
 	public function execute()
 	{
 		$this->activate();
+
+		// Start output buffer
+		ob_start($this->config->get('ob_callback', null));
+
+		// Execute the request
 		$this->request->execute();
+
 		$this->deactivate();
 		return $this;
 	}
@@ -381,6 +387,20 @@ abstract class Base
 
 		// If not found or searching for multiple continue with packages
 		foreach ($this->packages as $pkg)
+		{
+			if ($path = $pkg->find_file($location, $file))
+			{
+				if ( ! $multiple)
+				{
+					return $path;
+				}
+				$return[] = $path;
+			}
+		}
+
+		// If still not found or searching for multiple continue with core packages
+		$core = $this->env->loader->packages(Loader::TYPE_CORE);
+		foreach ($core as $pkg)
 		{
 			if ($path = $pkg->find_file($location, $file))
 			{
