@@ -61,7 +61,7 @@ class Base
 	 */
 	public function notify($event, $source = null, $method = '')
 	{
-		$this->observed[strval(microtime(true)).'-'.uniqid()] = $event;
+		$this->observed[strval(microtime(true))][] = $event;
 
 		// Walk through all registered observers
 		foreach ($this->observers as $observer)
