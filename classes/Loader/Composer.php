@@ -24,6 +24,13 @@ use Classes\Loader\Loadable;
 class Composer implements Loadable
 {
 	/**
+	 * @var  string  name of this loader
+	 *
+	 * @since  2.0.0
+	 */
+	public $name;
+
+	/**
 	 * @var  \Fuel\Kernel\Environment
 	 */
 	protected $env;
@@ -70,6 +77,20 @@ class Composer implements Loadable
 		// Show package loads inside application
 		($app = $env->active_application())
 			and $app->notifier->notify('composer_loader_created', $this, __METHOD__);
+	}
+
+	/**
+	 * Assigns a name to this package
+	 *
+	 * @param   string  $name
+	 * @return  Loadable
+	 *
+	 * @since  2.0.0
+	 */
+	public function set_name($name)
+	{
+		$this->name = $name;
+		return $this;
 	}
 
 	/**

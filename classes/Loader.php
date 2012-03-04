@@ -141,7 +141,7 @@ class Loader
 			require_once $loader->path().'application.php';
 		}
 
-		$this->packages[$type][$name] = $loader;
+		$this->packages[$type][$name] = $loader->set_name($name);
 		return $loader;
 	}
 

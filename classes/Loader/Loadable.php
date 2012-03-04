@@ -33,6 +33,17 @@ interface Loadable
 	public function _set_env(Environment $env);
 
 	/**
+	 * Assigns a name to this package
+	 * MUST return this instance
+	 *
+	 * @param   string  $name
+	 * @return  Loadable
+	 *
+	 * @since  2.0.0
+	 */
+	public function set_name($name);
+
+	/**
 	 * Returns the base path for this package
 	 *
 	 * @return  string

@@ -131,14 +131,10 @@ abstract class Base
 		$this->env     = $env;
 		$this->loader  = $loader;
 
-		foreach ($this->packages as $pkg)
+		foreach ($this->packages as $i => $pkg)
 		{
-			try
-			{
-				$this->env->loader->load_package($pkg, Loader::TYPE_PACKAGE);
-			}
-			// ignore exception thrown for double package load
-			catch (\RuntimeException $e) {}
+			unset($this->packages[$i]);
+			$this->load_package($pkg);
 		}
 
 		call_user_func($config);
@@ -386,7 +382,7 @@ abstract class Base
 		// If not found or searching for multiple continue with packages
 		foreach ($this->packages as $pkg)
 		{
-			if ($path = $this->env->loader->package($pkg)->find_file($location, $file))
+			if ($path = $pkg->find_file($location, $file))
 			{
 				if ( ! $multiple)
 				{
@@ -438,8 +434,7 @@ abstract class Base
 		// if not found attempt loaded packages
 		foreach ($this->packages as $pkg)
 		{
-			is_array($pkg) and $pkg = reset($pkg);
-			if ($found = $this->env->loader->package($pkg)->find_class($type, $classname))
+			if ($found = $pkg->find_class($type, $classname))
 			{
 				return $found;
 			}
@@ -447,6 +442,20 @@ abstract class Base
 
 		// all is lost
 		return false;
+	}
+
+	/**
+	 * Loads a package and assigns it to the application
+	 *
+	 * @param   mixed  $package
+	 * @return  Base
+	 */
+	public function load_package($package)
+	{
+		$loader = $this->env->loader->load_package($package, Loader::TYPE_PACKAGE);
+		$this->packages[$loader->name] = $loader;
+
+		return $this;
 	}
 
 	/**
