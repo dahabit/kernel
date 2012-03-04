@@ -473,7 +473,7 @@ abstract class Base
 	public function load_package($package)
 	{
 		$loader = $this->env->loader->load_package($package, Loader::TYPE_PACKAGE);
-		$this->packages[$loader->name] = $loader;
+		array_splice($this->packages, 0, 0, array($loader->name => $loader));
 
 		return $this;
 	}
