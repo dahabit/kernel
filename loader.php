@@ -51,8 +51,6 @@ return $env->forge('Loader:Package')
 
 		'Classes\\Loader\\Base'  => 'Fuel\\Kernel\\Loader\\Base',
 
-		'Classes\\Presenter\\Base'  => 'Fuel\\Kernel\\Presenter\\Base',
-
 		'Classes\\Request\\Base'  => 'Fuel\\Kernel\\Request\\Base',
 		'Classes\\Request\\Fuel'  => 'Fuel\\Kernel\\Request\\Fuel',
 
