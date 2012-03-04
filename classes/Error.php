@@ -98,8 +98,7 @@ class Error
 			{
 				ob_end_clean();
 			}
-			$ob_callback = $this->app->config->get('ob_callback', null);
-			ob_start($ob_callback);
+			ob_start($this->app->config->get('ob_callback', null));
 		}
 		else
 		{
