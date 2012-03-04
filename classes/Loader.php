@@ -100,6 +100,13 @@ class Loader
 	 */
 	public function load_package($name, $type = Loader::TYPE_PACKAGE)
 	{
+		// Return directly when already loaded
+		try
+		{
+			return $this->package($name, $type);
+		}
+		catch (\Exception $e) {}
+
 		// Directly add an unnamed package
 		if ($name instanceof Loader\Loadable)
 		{
@@ -157,10 +164,18 @@ class Loader
 	 */
 	public function package($name, $type = Loader::TYPE_PACKAGE)
 	{
+		// Ensure the name is a string
+		if ( ! is_string($name))
+		{
+			$name = is_array($name) ? reset($name) : $name->name;
+		}
+
+		// Check if it exists
 		if ( ! isset($this->packages[$type][$name]))
 		{
 			throw new \OutOfBoundsException('Unknown package: '.$name);
 		}
+
 		return $this->packages[$type][$name];
 	}
 
