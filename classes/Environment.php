@@ -609,32 +609,6 @@ class Environment
 	}
 
 	/**
-	 * Fetch the time that has elapsed since Fuel Kernel init
-	 *
-	 * @return  float
-	 *
-	 * @since  2.0.0
-	 */
-	public function time_elapsed()
-	{
-		return microtime(true) - $this->get_var('init_time');
-	}
-
-	/**
-	 * Fetch the mem usage change since Fuel Kernel init
-	 *
-	 * @param   bool  $peak  whether to report the peak usage instead of the current
-	 * @return  float
-	 *
-	 * @since  2.0.0
-	 */
-	public function mem_usage($peak = false)
-	{
-		$usage = $peak ? memory_get_peak_usage() : memory_get_usage();
-		return $usage - $this->get_var('init_mem');
-	}
-
-	/**
 	 * Returns a debugging helper
 	 *
 	 * @return  \Fuel\Core\Debug
