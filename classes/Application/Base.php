@@ -41,6 +41,13 @@ abstract class Base
 	public $loader;
 
 	/**
+	 * @var  \Fuel\Kernel\DiC\Dependable
+	 *
+	 * @since  2.0.0
+	 */
+	public $dic;
+
+	/**
 	 * @var  \Fuel\Kernel\Security\Base  the Application's security instance
 	 *
 	 * @since  2.0.0
@@ -109,13 +116,6 @@ abstract class Base
 	 * @since  2.0.0
 	 */
 	protected $_before_activate = array();
-
-	/**
-	 * @var  \Fuel\Kernel\DiC\Dependable
-	 *
-	 * @since  2.0.0
-	 */
-	public $dic;
 
 	/**
 	 * Constructor

@@ -186,6 +186,13 @@ class Environment
 	protected $debug;
 
 	/**
+	 * @var  \Fuel\Core\Profiler
+	 *
+	 * @since  2.0.0
+	 */
+	protected $profiler;
+
+	/**
 	 * Constructor
 	 *
 	 * @since  2.0.0
@@ -640,6 +647,21 @@ class Environment
 		}
 
 		return $this->debug;
+	}
+
+	/**
+	 * Returns the Profiler
+	 *
+	 * @return  \Fuel\Core\Profiler
+	 */
+	public function profiler()
+	{
+		if (empty($this->profiler))
+		{
+			$this->profiler = $this->dic->get_object('Profiler');
+		}
+
+		return $this->profiler;
 	}
 
 	/**

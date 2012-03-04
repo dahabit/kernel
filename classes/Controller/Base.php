@@ -46,13 +46,6 @@ abstract class Base
 	public $app;
 
 	/**
-	 * @var  \Fuel\Kernel\Loader\Loadable
-	 *
-	 * @since  2.0.0
-	 */
-	public $loader;
-
-	/**
 	 * Magic Fuel method that is the setter for the current app
 	 *
 	 * @param   \Fuel\Kernel\Application\Base  $app
