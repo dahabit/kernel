@@ -62,6 +62,11 @@ class Loader
 	);
 
 	/**
+	 * @var  array  loaded applications
+	 */
+	public $apps = array();
+
+	/**
 	 * @var  array  namespaces that may be aliased to global (for Fuel v1 BC)
 	 *
 	 * @since  2.0.0
@@ -229,6 +234,8 @@ class Loader
 
 		$class = $this->env->application_class($appname);
 		$app = new $class($this->env, $config, $loader);
+
+		$this->apps[$appname] = $app;
 
 		return $app;
 	}
