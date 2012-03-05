@@ -199,8 +199,8 @@ class Environment
 	 */
 	public function __construct()
 	{
-		$this->vars['init_time'] = microtime(true);
-		$this->vars['init_mem']  = memory_get_usage();
+		$this->vars['init_time'] = defined('FUEL_INIT_TIME') ? FUEL_INIT_TIME : microtime(true);
+		$this->vars['init_mem']  = defined('FUEL_INIT_MEM') ? FUEL_INIT_MEM : memory_get_usage();
 	}
 
 	/**
