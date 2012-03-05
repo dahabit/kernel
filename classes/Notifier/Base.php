@@ -89,7 +89,7 @@ class Base
 	 */
 	public function notify($event, $source = null, $method = '')
 	{
-		$this->observed[strval(microtime(true) - $this->_init_time)][] = $event;
+		$this->observed[strval(microtime(true) - $this->_init_time)] = $event;
 
 		// Walk through all registered observers
 		foreach ($this->observers as $observer)
