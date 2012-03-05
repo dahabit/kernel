@@ -134,7 +134,7 @@ class Base implements Viewable
 		is_null($this->_filter) and $this->_filter = $app->config->get('security.output_filter', true);
 		if ($this->_filter === true)
 		{
-			$this->_filter = $app->get_object('Security_String');
+			$this->_filter = $app->security->string();
 		}
 		elseif (is_string($this->_filter))
 		{

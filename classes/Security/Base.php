@@ -115,13 +115,24 @@ class Base
 	 * Separate method for cleaning the URI
 	 *
 	 * @param   string  $uri
+	 * @param   null|bool|string|String\Base  $filter
 	 * @return  string
 	 *
 	 * @since  1.1.0
 	 */
-	public function clean_uri($uri)
+	public function clean_uri($uri, $filter = null)
 	{
-		return $this->clean($uri);
+		// Set default when null
+		is_null($filter) and $filter = $this->app->config->get('security.uri_filter', true);
+
+		// When true use internal security filter
+		$filter === true and $filter = $this->string();
+
+		// When string is passed try to fetch special filter from DiC
+		is_string($filter) and $filter = $this->app->get_object('Security_String:'.$filter);
+
+		// Whatever is left is either boolean false or a String Security object
+		return $filter ? $filter->clean($uri) : $uri;
 	}
 
 	/**
