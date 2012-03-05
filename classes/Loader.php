@@ -146,12 +146,6 @@ class Loader
 			}
 		}
 
-		// If it's an app, include the Application class
-		if ($type == static::TYPE_APP)
-		{
-			require_once $loader->path().'application.php';
-		}
-
 		array_splice($this->packages[$type], 0, 0, array($name => $loader->set_name($name)));
 		return $loader;
 	}
