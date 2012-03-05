@@ -158,7 +158,8 @@ class Package implements Loadable
 		}
 
 		// If a base namespace was set and doesn't match the class: fail
-		if ($this->namespace and strpos($class, $this->namespace) !== 0)
+		if ($this->namespace === false
+			or ($this->namespace and strpos($class, $this->namespace) !== 0))
 		{
 			return false;
 		}
@@ -241,7 +242,7 @@ class Package implements Loadable
 	 */
 	public function set_namespace($namespace)
 	{
-		$this->namespace = trim($namespace, '\\').'\\';
+		$this->namespace = $namespace ? trim($namespace, '\\').'\\' : $namespace;
 		return $this;
 	}
 
