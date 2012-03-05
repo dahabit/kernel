@@ -33,6 +33,20 @@ class Base
 	protected $observed = array();
 
 	/**
+	 * @var  \Fuel\Kernel\Application\Base
+	 *
+	 * @since  2.0.0
+	 */
+	protected $app;
+
+	/**
+	 * @var  float  keeps the Environment init_time to get meaningfull timestamps
+	 *
+	 * @since  2.0.0
+	 */
+	protected $_init_time;
+
+	/**
 	 * Constructor
 	 *
 	 * @param  array  $observers
@@ -50,6 +64,20 @@ class Base
 	}
 
 	/**
+	 * Magic Fuel method that is the setter for the current app
+	 *
+	 * @param   \Fuel\Kernel\Application\Base  $app
+	 * @return  void
+	 *
+	 * @since  2.0.0
+	 */
+	public function _set_app(Application\Base $app)
+	{
+		$this->app = $app;
+		$this->_init_time = $this->app->env->get_var('init_time');
+	}
+
+	/**
 	 * Notify the Notifiable of an event
 	 *
 	 * @param   string       $event
@@ -61,7 +89,7 @@ class Base
 	 */
 	public function notify($event, $source = null, $method = '')
 	{
-		$this->observed[strval(microtime(true))][] = $event;
+		$this->observed[strval(microtime(true) - $this->_init_time)][] = $event;
 
 		// Walk through all registered observers
 		foreach ($this->observers as $observer)
