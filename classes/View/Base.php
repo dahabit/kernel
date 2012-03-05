@@ -215,39 +215,17 @@ class Base implements Viewable
 	 */
 	protected function get_data()
 	{
-		/**
-		 * Clean data array closure
-		 *
-		 * @param   array  $data
-		 * @param   array  $rules
-		 * @param   null|\Fuel\Kernel\Security\String\Base  $default_filter
-		 * @return  array
-		 */
-		$clean_it = function($data, $rules, $default_filter)
-		{
-			foreach ($data as $key => $value)
-			{
-				$filter = isset($rules[$key]) ? $rules[$key] : $default_filter;
-				$data[$key] = $filter ? $filter->clean($value) : $value;
-			}
-
-			return $data;
-		};
-
 		$data = array();
 
 		// First add the view data
-		if ( ! empty($this->_data))
+		foreach ($this->_data as $key => $value)
 		{
-			$data += $clean_it($this->_data, $this->_data_filters, $this->_filter);
+			$filter = isset($this->_data_filters[$key]) ? $this->_data_filters[$key] : $this->_filter;
+			$data[$key] = $filter ? $filter->clean($value) : $value;
 		}
 
 		// Then add environment data, this is always unfiltered
-		$global = $this->_app->env->get_var();
-		if ( ! empty($global))
-		{
-			$data += $clean_it($global, array(), false);
-		}
+		$data += $this->_app->env->get_var();
 
 		return $data;
 	}
