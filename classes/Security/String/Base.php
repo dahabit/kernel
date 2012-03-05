@@ -43,7 +43,7 @@ abstract class Base
 	}
 
 	/**
-	 * Secure string, object or array
+	 * Clean string, object or array
 	 *
 	 * @param   mixed  $input
 	 * @return  mixed
@@ -51,7 +51,7 @@ abstract class Base
 	 *
 	 * @since  2.0.0
 	 */
-	public function secure($input)
+	public function clean($input)
 	{
 		static $already_cleaned = array();
 
@@ -63,7 +63,7 @@ abstract class Base
 
 		if (is_string($input))
 		{
-			$input = $this->clean($input);
+			$input = $this->secure($input);
 		}
 		elseif (is_array($input) or ($input instanceof \Iterator and $input instanceof \ArrayAccess))
 		{
@@ -72,7 +72,7 @@ abstract class Base
 
 			foreach ($input as $k => $v)
 			{
-				$input[$k] = $this->secure($v);
+				$input[$k] = $this->clean($v);
 			}
 		}
 		elseif ($input instanceof \Iterator or get_class($input) == 'stdClass')
@@ -107,19 +107,19 @@ abstract class Base
 					'to allow it to be passed unchecked.');
 			}
 
-			$input = $this->secure((string) $input);
+			$input = $this->clean((string) $input);
 		}
 
 		return $input;
 	}
 
 	/**
-	 * Clean string
+	 * Secure string
 	 *
 	 * @param   string
 	 * @return  string
 	 *
 	 * @since  2.0.0
 	 */
-	abstract public function clean($input);
+	abstract protected function secure($input);
 }

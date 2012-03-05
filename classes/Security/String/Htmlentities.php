@@ -21,7 +21,7 @@ namespace Fuel\Kernel\Security\String;
  */
 class Htmlentities extends Base
 {
-	public function clean($input)
+	protected function secure($input)
 	{
 		return htmlentities($input, ENT_QUOTES, $this->app->env->encoding, false);
 	}

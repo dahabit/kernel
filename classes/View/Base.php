@@ -11,6 +11,7 @@
 namespace Fuel\Kernel\View;
 use Fuel\Kernel\Application;
 use Fuel\Kernel\Parser;
+use Fuel\Kernel\Security;
 
 /**
  * Base View class
@@ -45,6 +46,20 @@ class Base implements Viewable
 	protected $_data = array();
 
 	/**
+	 * @var  bool|string  name after 'Security_String:' for the DiC, false to disable
+	 *
+	 * @since  1.0.0
+	 */
+	protected $_filter = true;
+
+	/**
+	 * @var  array  filters for individual data keys
+	 *
+	 * @since  1.0.0
+	 */
+	protected $_data_filters = array();
+
+	/**
 	 * @var  \Fuel\Kernel\Parser\Parsable
 	 *
 	 * @since  2.0.0
@@ -70,14 +85,16 @@ class Base implements Viewable
 	 *
 	 * @param  null|string  $file
 	 * @param  array        $data
-	 * @param  null|string|\Fuel\Kernel\Parser\Parsable  $parser
+	 * @param  null|string|\Fuel\Kernel\Parser\Parsable       $parser
+	 * @param  bool|string|\Fuel\Kernel\Security\String\Base  $filter
 	 *
 	 * @since  1.0.0
 	 */
-	public function __construct($file = null, array $data = array(), $parser = null)
+	public function __construct($file = null, array $data = array(), $parser = null, $filter = null)
 	{
-		$this->_path = $file;
-		$this->_data = $data;
+		$this->_path    = $file;
+		$this->_data    = $data;
+		$this->_filter  = $filter;
 
 		// Allow overwriting default Parsable
 		if ( ! is_null($parser))
@@ -112,6 +129,22 @@ class Base implements Viewable
 
 		// Fetch the full path from the Application
 		$this->_path and $this->set_filename($this->_path);
+
+		// Set the filter object
+		is_null($this->_filter) and $this->_filter = $app->config->get('security.output_filter', true);
+		if ($this->_filter === true)
+		{
+			$this->_filter = $app->get_object('Security_String');
+		}
+		elseif (is_string($this->_filter))
+		{
+			$this->_filter = $app->get_object('Security_String:'.$this->_filter);
+		}
+		// Check if filter has become a valid filter object
+		if ( ! $this->_filter instanceof Security\String\Base and $this->_filter !== false)
+		{
+			throw new \RuntimeException('Filter set on the View is not a valid string filter.');
+		}
 	}
 
 	/**
@@ -151,15 +184,17 @@ class Base implements Viewable
 	}
 
 	/**
-	 * Magic setter
+	 * Set variable on View
 	 *
 	 * @param   string  $name
 	 * @param   mixed   $value
+	 * @param   mixed   $filter
+	 * @return  Base
 	 * @throws  \LogicException
 	 *
 	 * @since  1.0.0
 	 */
-	public function __set($name, $value)
+	public function set($name, $value, $filter = null)
 	{
 		if (strlen($name) > 2 and $name[0] == '_' and $name[1] != '_')
 		{
@@ -167,25 +202,54 @@ class Base implements Viewable
 		}
 
 		$this->_data[$name] = __val($value);
+		! is_null($filter) and $this->_data_filters[$name] = $filter;
+
+		return $this;
 	}
 
 	/**
-	 * Magic getter
+	 * Retrieves all the data, both local and global.  It filters the data if
+	 * necessary.
 	 *
-	 * @param   string  $name
-	 * @return  mixed
-	 * @throws  \OutOfBoundsException
-	 *
-	 * @since  1.0.0
+	 * @return  array
 	 */
-	public function & __get($name)
+	protected function get_data()
 	{
-		if ( ! isset($this->_data[$name]))
+		/**
+		 * Clean data array closure
+		 *
+		 * @param   array  $data
+		 * @param   array  $rules
+		 * @param   null|\Fuel\Kernel\Security\String\Base  $default_filter
+		 * @return  array
+		 */
+		$clean_it = function($data, $rules, $default_filter)
 		{
-			throw new \OutOfBoundsException('Property "'.$name.'" not set upon Viewable.');
+			foreach ($data as $key => $value)
+			{
+				$filter = isset($rules[$key]) ? $rules[$key] : $default_filter;
+				$data[$key] = $filter ? $filter->clean($value) : $value;
+			}
+
+			return $data;
+		};
+
+		$data = array();
+
+		// First add the view data
+		if ( ! empty($this->_data))
+		{
+			$data += $clean_it($this->_data, $this->_data_filters, $this->_filter);
 		}
 
-		return $this->_data[$name];
+		// Then add environment data, this is always unfiltered
+		$global = $this->_app->env->get_var();
+		if ( ! empty($global))
+		{
+			$data += $clean_it($global, array(), false);
+		}
+
+		return $data;
 	}
 
 	/**
@@ -226,8 +290,41 @@ class Base implements Viewable
 	protected function parse()
 	{
 		return $this->_path
-			? $this->_parser->parse_file($this->_path, $this->_data)
-			: $this->_parser->parse_string($this->_template, $this->_data);
+			? $this->_parser->parse_file($this->_path, $this->get_data())
+			: $this->_parser->parse_string($this->_template, $this->get_data());
+	}
+
+	/**
+	 * Magic setter
+	 *
+	 * @param   string  $name
+	 * @param   mixed   $value
+	 * @throws  \LogicException
+	 *
+	 * @since  1.0.0
+	 */
+	public function __set($name, $value)
+	{
+		$this->set($name, $value);
+	}
+
+	/**
+	 * Magic getter
+	 *
+	 * @param   string  $name
+	 * @return  mixed
+	 * @throws  \OutOfBoundsException
+	 *
+	 * @since  1.0.0
+	 */
+	public function & __get($name)
+	{
+		if ( ! isset($this->_data[$name]))
+		{
+			throw new \OutOfBoundsException('Property "'.$name.'" not set upon Viewable.');
+		}
+
+		return $this->_data[$name];
 	}
 
 	/**

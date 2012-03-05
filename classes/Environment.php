@@ -599,12 +599,20 @@ class Environment
 	 *
 	 * @since  2.0.0
 	 */
-	public function get_var($name, $default = null)
+	public function get_var($name = null, $default = null)
 	{
+		// Return all when no arguments were given
+		if (func_num_args() == 0)
+		{
+			return $this->vars;
+		}
+
+		// Check if value exists, return default when it doesn't
 		if ( ! isset($this->vars[$name]))
 		{
 			return $default;
 		}
+
 		return $this->vars[$name];
 	}
 
